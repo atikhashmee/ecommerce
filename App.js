@@ -40,8 +40,9 @@ const defaultheaders = {
 };
 
 function Home(){
-  let {products} = React.useContext(AppContext);
+  let {products, setInit} = React.useContext(AppContext);
  useEffect( ()=>{
+      setInit();
       console.log(products, 'aaaaaa');
  }, [])
   return  <ScrollView>
@@ -69,7 +70,7 @@ function Home(){
                         <View style={{ width: '95%', height: 150, backgroundColor: 'lightblue'}}>
                           <Image
                             style={AppStyle.image}
-                            source={{uri: 'https://www.gstatic.com/webp/gallery3/5.png'}}
+                            source={{uri: 'https://images.unsplash.com/photo-1566740810093-a62a1b63a9ec?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80'}}
                           />
                           
                         </View>
@@ -80,7 +81,7 @@ function Home(){
                         <View style={{ width: '95%', height: 150, backgroundColor: 'lightblue'}}>
                           <Image
                               style={AppStyle.image}
-                              source={{uri: 'https://www.gstatic.com/webp/gallery3/2.png'}}
+                              source={{uri: 'https://images.unsplash.com/photo-1587647482405-50089cb95927?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80'}}
                             />
                         </View>
                         <Text style={{ color: '#000', fontSize: 16 }}>Product Name</Text>
@@ -92,7 +93,7 @@ function Home(){
                         <View style={{ width: '95%', height: 150, backgroundColor: 'lightblue'}}>
                           <Image
                             style={AppStyle.image}
-                            source={{uri: 'https://www.gstatic.com/webp/gallery3/2.png'}}
+                            source={{uri: 'https://images.unsplash.com/photo-1593273757264-9ff6e8ba5ee7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=375&q=80'}}
                           />
                         </View>
                         <Text style={{ color: '#000', fontSize: 16 }}>Product Name</Text>
@@ -102,7 +103,7 @@ function Home(){
                         <View style={{ width: '95%', height: 150, backgroundColor: 'lightblue'}}>
                         <Image
                             style={AppStyle.image}
-                            source={{uri: 'https://www.gstatic.com/webp/gallery3/2.png'}}
+                            source={{uri: 'https://images.unsplash.com/photo-1484704849700-f032a568e944?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80'}}
                           />
                         </View>
                         <Text style={{ color: '#000', fontSize: 16 }}>Product Name</Text>
@@ -111,6 +112,9 @@ function Home(){
                 </View>
               </View>
           </View>)}
+          { products.length == 0 &&<View style={{height: 600, justifyContent: 'center', alignItems: 'center' }}>
+              <Text>Loading......</Text>
+          </View>}
     </View>
   </ScrollView>
 }
@@ -247,6 +251,7 @@ function  Dashboard(props) {
 };
 
 function CustomDrawerContent(props) {
+  let {storeInfo} = React.useContext(AppContext);
   return (
     <View style={{flex: 1, justifyContent: 'space-between'}}>
       <View
@@ -267,7 +272,7 @@ function CustomDrawerContent(props) {
               height: 60,
               alignItems: 'center',
               justifyContent: 'center', }}>
-                <Text style={{ fontSize: 30, fontWeight: 'bold' }}>Evaly</Text> 
+                <Text style={{ fontSize: 30, fontWeight: 'bold' }}> {storeInfo!==null && storeInfo.name} </Text> 
             </View>
           <View
             style={{
@@ -332,32 +337,38 @@ function CustomDrawerContent(props) {
 
 const DrawerHolder = () => {
   let [products, setProducts] = useState([]);
+  let [storeInfo, setStoreInfo] = useState(null);
   useEffect(()=>{
-      let formD = new FormData;
-      formD.append('api_token', defaultArr.api_token);
-      formD.append('store_id', defaultArr.store_id);
-      fetch(baseUrl + 'home-content', {
-        method: 'POST',
-        body: formD,
-      })
-      .then(res=>{
-        if (!res.ok) {
-          throw res;
-        }
-       return res.json()
-      })
-      .then(res=>{
-        setProducts(res.data.section_details);
-      })
-      .catch(err=>{
-        console.log(err);
-      });
-  },  []);
+      console.log('App init');
+  }, []);
   const appContextVal = React.useMemo(() => {
     return {
+      setInit: ()=>{
+        let formD = new FormData;
+        formD.append('api_token', defaultArr.api_token);
+        formD.append('store_id', defaultArr.store_id);
+        fetch(baseUrl + 'home-content', {
+          method: 'POST',
+          body: formD,
+        })
+        .then(res=>{
+          if (!res.ok) {
+            throw res;
+          }
+         return res.json()
+        })
+        .then(res=>{
+          setStoreInfo(res.data.store_details);
+          setProducts(res.data.section_details);
+        })
+        .catch(err=>{
+          console.log(err);
+        });
+      },
       products,
+      storeInfo,
     };
-  }, []);
+  }, [products]);
   return (
     <AppContext.Provider value={appContextVal}>
         <Drawer.Navigator
