@@ -1,11 +1,4 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow strict-local
- */
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -15,7 +8,6 @@ import {
   StatusBar,
   TouchableHighlight,
   Dimensions,
-  Pressable,
   ScrollView,
 } from 'react-native';
 import { createDrawerNavigator, DrawerItem,  DrawerContentScrollView, DrawerItemList} from '@react-navigation/drawer';
@@ -27,131 +19,114 @@ import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import SplashScreen from 'react-native-splash-screen'
 import {Slider} from './src/dashboard/Slider';
+import {TopSearchBar} from './src/components/TopSearchBar';
 import Categories from './src/dashboard/Categories';
 import ExpressView from './src/dashboard/ExpressView';
+import {AppContext} from './src/utils/GlobalContext';
+
 const screenWidth = Math.round(Dimensions.get('window').width);
 const Drawer = createDrawerNavigator();
 const NotAuthenticate = createStackNavigator();
 const Authenticate = createStackNavigator();
 const { width, height } = Dimensions.get('window');
+const baseUrl = 'http://mpoints.xyz/api/';
+const defaultArr = {
+  store_id: 1,
+  api_token: '2y12QoRuPscrVSVZcPCREXSO9gcY8u0FQXP8EBmfMWnltjsoqyWhaNMO',
+}
+const defaultheaders = {
+  'Content-Type': 'application/json',
+  'Accept': 'application/json',
+};
+
 function Home(){
+  let {products} = React.useContext(AppContext);
+ useEffect( ()=>{
+      console.log(products, 'aaaaaa');
+ }, [])
   return  <ScrollView>
       <View style={{ height: '100%', flex: 1, paddingLeft: 10, paddingRight:10, backgroundColor: '#fff' }}>
           {/* slider */}
-          <View style={{ height: 130, borderRadius: 10 }}>
+          {/* <View style={{ height: 130, borderRadius: 10 }}>
             <Slider />
-          </View>
+          </View> */}
         {/* category tag */}
-          <View style={{ width: width, height: 40, marginTop: 10, marginBottom: 50 }}>
+          {/* <View style={{ width: width, height: 40, marginTop: 10, marginBottom: 50 }}>
             <Categories />
-          </View>
+          </View> */}
           {/* express view */}
-          <View style={{ height: 250, backgroundColor: '#fff' }}> 
+          {/* <View style={{ height: 250, backgroundColor: '#fff' }}> 
             <ExpressView  />
-          </View>
+          </View> */}
           {/* category products */}
-          <View style={{  height: 450, backgroundColor: '#fff' }}>
+          {products.length>0 && products.map(item=><View key={item.id} style={{  height: 450, backgroundColor: '#fff' }}>
               <View style={{ flex: 1, flexBasis: '10%' }}>
-                  <Text style={{ fontSize: 29 }}>Recent Products</Text>
+                  <Text style={{ fontSize: 29 }}> { item.name } </Text>
               </View>
               <View style={{ flexBasis: '90%' }}>
                 <View style={{ flexDirection: 'row', justifyContent:'space-between' }}>
                     <View style={{ flexBasis: '50%' }}>
-                        <View style={{ width: '95%', height: 150, backgroundColor: 'lightblue'}}></View>
+                        <View style={{ width: '95%', height: 150, backgroundColor: 'lightblue'}}>
+                          <Image
+                            style={AppStyle.image}
+                            source={{uri: 'https://www.gstatic.com/webp/gallery3/5.png'}}
+                          />
+                          
+                        </View>
                         <Text style={{ color: '#000', fontSize: 16 }}>Product Name</Text>
                         <Text>$234</Text>
                     </View>
                     <View style={{ flexBasis: '50%' }}>
-                        <View style={{ width: '95%', height: 150, backgroundColor: 'lightblue'}}></View>
+                        <View style={{ width: '95%', height: 150, backgroundColor: 'lightblue'}}>
+                          <Image
+                              style={AppStyle.image}
+                              source={{uri: 'https://www.gstatic.com/webp/gallery3/2.png'}}
+                            />
+                        </View>
                         <Text style={{ color: '#000', fontSize: 16 }}>Product Name</Text>
                         <Text>$234</Text>
                     </View>
                 </View>
                 <View style={{ flexDirection: 'row', justifyContent:'space-between' }}>
                     <View style={{ flexBasis: '50%' }}>
-                        <View style={{ width: '95%', height: 150, backgroundColor: 'lightblue'}}></View>
+                        <View style={{ width: '95%', height: 150, backgroundColor: 'lightblue'}}>
+                          <Image
+                            style={AppStyle.image}
+                            source={{uri: 'https://www.gstatic.com/webp/gallery3/2.png'}}
+                          />
+                        </View>
                         <Text style={{ color: '#000', fontSize: 16 }}>Product Name</Text>
                         <Text>$234</Text>
                     </View>
                     <View style={{ flexBasis: '50%' }}>
-                        <View style={{ width: '95%', height: 150, backgroundColor: 'lightblue'}}></View>
+                        <View style={{ width: '95%', height: 150, backgroundColor: 'lightblue'}}>
+                        <Image
+                            style={AppStyle.image}
+                            source={{uri: 'https://www.gstatic.com/webp/gallery3/2.png'}}
+                          />
+                        </View>
                         <Text style={{ color: '#000', fontSize: 16 }}>Product Name</Text>
                         <Text>$234</Text>
                     </View>
                 </View>
               </View>
-          </View>
-          <View style={{  height: 500, backgroundColor: '#fff' }}>
-          <View style={{ flex: 1, flexBasis: '10%' }}>
-              <Text style={{ fontSize: 29 }}>Feature Products</Text>
-          </View>
-          <View style={{ flexBasis: '90%' }}>
-            <View style={{ flexDirection: 'row', justifyContent:'space-between' }}>
-                <View style={{ flexBasis: '50%' }}>
-                    <View style={{ width: '95%', height: 150, backgroundColor: '#d4d4d4'}}></View>
-                    <Text style={{ color: '#000', fontSize: 16 }}>Product Name</Text>
-                    <Text>$234</Text>
-                </View>
-                <View style={{ flexBasis: '50%' }}>
-                    <View style={{ width: '95%', height: 150, backgroundColor: '#d4d4d4'}}></View>
-                    <Text style={{ color: '#000', fontSize: 16 }}>Product Name</Text>
-                    <Text>$234</Text>
-                </View>
-            </View>
-            <View style={{ flexDirection: 'row', justifyContent:'space-between' }}>
-                <View style={{ flexBasis: '50%' }}>
-                    <View style={{ width: '95%', height: 150, backgroundColor: '#d4d4d4'}}></View>
-                    <Text style={{ color: '#000', fontSize: 16 }}>Product Name</Text>
-                    <Text>$234</Text>
-                </View>
-                <View style={{ flexBasis: '50%' }}>
-                    <View style={{ width: '95%', height: 150, backgroundColor: '#d4d4d4'}}></View>
-                    <Text style={{ color: '#000', fontSize: 16 }}>Product Name</Text>
-                    <Text>$234</Text>
-                </View>
-            </View>
-          </View>
-      </View>
+          </View>)}
     </View>
   </ScrollView>
 }
+
 function Cases(){
   return <View>
     <Text>Hello Cases</Text>
   </View>
 }
+
 function CreateCases(){
   return <View>
     <Text>Hello CreateCases</Text>
   </View>
 }
-function LogoTitle()
-{
-  return (
-    <>
-       <Pressable
-        onPress={() => {
-          alert('hello world');
-        }}
-        style={{ 
-          flex: 1, 
-          borderRadius: 20, 
-          flexDirection: 'row', 
-          backgroundColor: '#eee',
-          padding: 10
-        }}
-        >
-           <Icon
-                name="search"
-                size={20}
-                color="#000"
-                style={{marginLeft: 5}}
-              />
-          <Text style={{ marginLeft: 10 }}>What would you like to buy?</Text>
-      </Pressable>
-    </>
-  );
-}
+
 function  Dashboard(props) {
   return (
     <>
@@ -161,7 +136,7 @@ function  Dashboard(props) {
           component={Home}
           options={{
             title: 'Dashboard',
-            headerTitle: props => <LogoTitle {...props} />,
+            headerTitle: props => <TopSearchBar {...props} />,
             headerStyle: {
               backgroundColor: '#fff', //when I make it transparent it look even more worse,
               borderWidth: 0,
@@ -354,39 +329,70 @@ function CustomDrawerContent(props) {
     </View>
   );
 }
+
 const DrawerHolder = () => {
+  let [products, setProducts] = useState([]);
+  useEffect(()=>{
+      let formD = new FormData;
+      formD.append('api_token', defaultArr.api_token);
+      formD.append('store_id', defaultArr.store_id);
+      fetch(baseUrl + 'home-content', {
+        method: 'POST',
+        body: formD,
+      })
+      .then(res=>{
+        if (!res.ok) {
+          throw res;
+        }
+       return res.json()
+      })
+      .then(res=>{
+        setProducts(res.data.section_details);
+      })
+      .catch(err=>{
+        console.log(err);
+      });
+  },  []);
+  const appContextVal = React.useMemo(() => {
+    return {
+      products,
+    };
+  }, []);
   return (
-      <Drawer.Navigator
-        drawerType={'front'}
-        drawerStyle={{
-          width: 280,
-        }}
-        drawerContent={props => (
-          <CustomDrawerContent {...props} />
-        )}
-        drawerContentOptions={{
-          activeTintColor: '#535b6c',
-          itemStyle: AppStyle.drawerItem,
-          labelStyle: {fontSize: 17, fontWeight: 'bold'},
-        }}>
-        <Drawer.Screen
-          name="dashboard"
-          component={Dashboard}
-          options={{
-            title: 'Home',
-            // drawerIcon: () => (
-            //   <IonIcon name="md-home" size={30} color= '#ccc' />
-            // ),
-            style: {
-              borderWidth: 1,
-              borderColor: '#535b6c',
-            },
+    <AppContext.Provider value={appContextVal}>
+        <Drawer.Navigator
+          drawerType={'front'}
+          drawerStyle={{
+            width: 280,
           }}
-          
-        />
-      </Drawer.Navigator>
+          drawerContent={props => (
+            <CustomDrawerContent {...props} />
+          )}
+          drawerContentOptions={{
+            activeTintColor: '#535b6c',
+            itemStyle: AppStyle.drawerItem,
+            labelStyle: {fontSize: 17, fontWeight: 'bold'},
+          }}>
+          <Drawer.Screen
+            name="dashboard"
+            component={Dashboard}
+            options={{
+              title: 'Home',
+              // drawerIcon: () => (
+              //   <IonIcon name="md-home" size={30} color= '#ccc' />
+              // ),
+              style: {
+                borderWidth: 1,
+                borderColor: '#535b6c',
+              },
+            }}
+            
+          />
+        </Drawer.Navigator>
+    </AppContext.Provider>
   );
 };
+
 const App: () => React$Node = () => {
   useEffect(()=>{
     SplashScreen.hide();
