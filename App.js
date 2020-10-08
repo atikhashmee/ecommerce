@@ -5,7 +5,7 @@
  * @format
  * @flow strict-local
  */
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   View,
   Text,
@@ -25,8 +25,8 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 import  AppStyle  from './src/assets/style';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import IonIcon from 'react-native-vector-icons/Ionicons';
-import ViewSlider from 'react-native-view-slider'
 import Swiper from 'react-native-swiper'
+import SplashScreen from 'react-native-splash-screen'
 
 const screenWidth = Math.round(Dimensions.get('window').width);
 const Drawer = createDrawerNavigator();
@@ -544,6 +544,9 @@ const DrawerHolder = () => {
   );
 };
 const App: () => React$Node = () => {
+  useEffect(()=>{
+    SplashScreen.hide();
+  }, []);
   return (
     <>
      <NavigationContainer>
