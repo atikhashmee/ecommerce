@@ -25,9 +25,10 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 import  AppStyle  from './src/assets/style';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import IonIcon from 'react-native-vector-icons/Ionicons';
-import Swiper from 'react-native-swiper'
 import SplashScreen from 'react-native-splash-screen'
-
+import {Slider} from './src/dashboard/Slider';
+import Categories from './src/dashboard/Categories';
+import ExpressView from './src/dashboard/ExpressView';
 const screenWidth = Math.round(Dimensions.get('window').width);
 const Drawer = createDrawerNavigator();
 const NotAuthenticate = createStackNavigator();
@@ -36,208 +37,51 @@ const { width, height } = Dimensions.get('window');
 function Home(){
   return  <ScrollView>
       <View style={{ height: '100%', flex: 1, paddingLeft: 10, paddingRight:10, backgroundColor: '#fff' }}>
-      {/* slider */}
-      <View style={{ height: 130, borderRadius: 10 }}>
-        <Swiper style={AppStyle.wrapper} 
-            dot={
-              <View
-                style={{
-                  backgroundColor: 'rgba(255,255,255,.3)',
-                  width: 13,
-                  height: 13,
-                  borderRadius: 7,
-                  marginLeft: 7,
-                  marginRight: 7
-                }}
-              />
-            }
-            paginationStyle={{
-              bottom: 10
-            }}
-            loop={true}
-            >
-          <View style={AppStyle.slide}>
-              <View style={{...AppStyle.slide, flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-                  <Text style={{ color: '#000', fontSize: 29 }}>New Platform | design</Text>
+          {/* slider */}
+          <View style={{ height: 130, borderRadius: 10 }}>
+            <Slider />
+          </View>
+        {/* category tag */}
+          <View style={{ width: width, height: 40, marginTop: 10, marginBottom: 50 }}>
+            <Categories />
+          </View>
+          {/* express view */}
+          <View style={{ height: 250, backgroundColor: '#fff' }}> 
+            <ExpressView  />
+          </View>
+          {/* category products */}
+          <View style={{  height: 450, backgroundColor: '#fff' }}>
+              <View style={{ flex: 1, flexBasis: '10%' }}>
+                  <Text style={{ fontSize: 29 }}>Recent Products</Text>
               </View>
-            </View>
-            <View style={AppStyle.slide}>
-            <Image
-                style={AppStyle.image}
-                source={{uri: 'https://image.shutterstock.com/image-photo/beautiful-autumn-scene-hintersee-lake-260nw-747646759.jpg'}}
-                resizeMode="cover"
-              />
-            </View>
-            <View style={{...AppStyle.slide, flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-                <Text style={{ color: '#000', fontSize: 29 }}>Hello Evaly App design</Text>
-            </View>
-        </Swiper>
-      </View>
-    {/* category tag */}
-      <View style={{ width: width, height: 40, marginTop: 10, marginBottom: 50 }}>
-        <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between' }}>
-          <View style={{ flexBasis: '18%' }}>
-            <View style={{ 
-              backgroundColor: '#eee',
-              padding: 10, 
-              borderRadius: 50, 
-              width: '80%',
-              textAlign: 'center' }}>
-                <Icon 
-                  name="list"
-                  size={20}
-                  style={{ textAlign: 'center' }}
-                  color="violet"
-                />
-            </View>
-            <Text>News Feed</Text>
-          </View>
-          <View style={{ flexBasis: '18%' }}>
-            <View style={{  
-              backgroundColor: '#eee', 
-              padding: 10, 
-              width: '80%',
-              borderRadius: 50,
-                }}>
-            <Icon 
-                  name="gift"
-                  size={20}
-                  style={{ textAlign: 'center' }}
-                  color="lightblue"
-                />
-            </View>
-            <Text>Gift Card</Text>
-          </View>
-          <View style={{ flexBasis: '18%' }}>
-            <View style={{  
-              backgroundColor: '#eee', 
-              padding: 10, 
-              width: '80%',
-              borderRadius: 50,
-              }}>
-            <Icon 
-                  name="tag"
-                  size={20}
-                  style={{ textAlign: 'center' }}
-                  color="blue"
-                />
-            </View>
-            <Text>Campaigns</Text>
-          </View>
-            
-          <View style={{ flexBasis: '18%' }}>
-            <View style={{  
-              backgroundColor: '#eee', 
-              padding: 10, 
-              width: '80%',
-              borderRadius: 50,
-
-              }}>
-            <Icon 
-                  name="trademark"
-                  size={20}
-                  style={{ textAlign: 'center' }}
-                  color="green"
-                />
-            </View>
-            <Text>Categories</Text>
-          </View>
-          <View style={{ flexBasis: '18%' }}>
-            <View style={{  
-              backgroundColor: '#eee', 
-              padding: 10, 
-              width: '80%',
-              borderRadius: 50,
-              }}>
-            <Icon 
-                  name="exchange"
-                  size={20}
-                  style={{ textAlign: 'center' }}
-                  color="red"
-                />
-            </View>
-            <Text>Orders</Text>
-          </View>
-        </View>
-      </View>
-      {/* express view */}
-      <View style={{ height: 250, backgroundColor: '#fff' }}> 
-        <View style={{ flex: 1, flexBasis: '10%', flexDirection: 'row', justifyContent: 'space-between' }}>
-          <View><Text>Evaly Express</Text></View>
-          <View><Text>Show All</Text></View>
-        </View>
-        <View style={{ flexBasis: '90%' }}>
-          <View style={{ flex: 1, flexDirection: 'row', flexBasis: '50%', justifyContent: 'space-between' }}>
-              <View style={{ flexBasis: '22%', textAlign: 'center', marginRight:3}}>
-                <View style={{ width: 80, height: 80, backgroundColor: 'lightgreen' }}></View>
-                <Text style={{textAlignVertical: "center",textAlign: "center",}}>Shorong</Text>
-              </View>
-              <View style={{ flexBasis: '22%', textAlign: 'center', marginRight:3}}>
-                <View style={{ width: 80, height: 80, backgroundColor: 'lightgreen' }}></View>
-                <Text style={{textAlignVertical: "center",textAlign: "center",}}>Angelic</Text>
-              </View>
-              <View style={{ flexBasis: '22%', textAlign: 'center', marginRight:3}}>
-                <View style={{ width: 80, height: 80, backgroundColor: 'lightgreen' }}></View>
-                <Text style={{textAlignVertical: "center",textAlign: "center",}}>SUHA</Text>
-              </View>
-              <View style={{ flexBasis: '22%', textAlign: 'center', marginRight:3}}>
-                <View style={{ width: 80, height: 80, backgroundColor: 'lightgreen' }}></View>
-                <Text style={{textAlignVertical: "center",textAlign: "center",}}>Daily Bazar</Text>
-              </View>
-          </View>
-          <View style={{ flex: 1, flexDirection: 'row', flexBasis: '50%', justifyContent: 'space-between' }}>
-                  <View style={{ flexBasis: '22%', textAlign: 'center', marginRight:3}}>
-                    <View style={{ width: 80, height: 80, backgroundColor: 'royalblue' }}></View>
-                    <Text style={{textAlignVertical: "center",textAlign: "center",}}>Khass Food</Text>
-                  </View>
-                  <View style={{ flexBasis: '22%', textAlign: 'center', marginRight:3}}>
-                    <View style={{ width: 80, height: 80, backgroundColor: 'royalblue' }}></View>
-                    <Text style={{textAlignVertical: "center",textAlign: "center",}}>Khaleq</Text>
-                  </View>
-                  <View style={{ flexBasis: '22%', textAlign: 'center', marginRight:3}}>
-                    <View style={{ width: 80, height: 80, backgroundColor: 'royalblue' }}></View>
-                    <Text style={{textAlignVertical: "center",textAlign: "center",}}>Unimart</Text>
-                  </View>
-                  <View style={{ flexBasis: '22%', textAlign: 'center', marginRight:3}}>
-                    <View style={{ width: 80, height: 80, backgroundColor: 'royalblue' }}></View>
-                    <Text style={{textAlignVertical: "center",textAlign: "center",}}>Bengal Meat</Text>
-                  </View>
-              </View>
-        </View>
-      </View>
-      {/* category products */}
-      <View style={{  height: 450, backgroundColor: '#fff' }}>
-          <View style={{ flex: 1, flexBasis: '10%' }}>
-              <Text style={{ fontSize: 29 }}>Recent Products</Text>
-          </View>
-          <View style={{ flexBasis: '90%' }}>
-            <View style={{ flexDirection: 'row', justifyContent:'space-between' }}>
-                <View style={{ flexBasis: '50%' }}>
-                    <View style={{ width: '95%', height: 150, backgroundColor: 'lightblue'}}></View>
-                    <Text style={{ color: '#000', fontSize: 16 }}>Product Name</Text>
-                    <Text>$234</Text>
+              <View style={{ flexBasis: '90%' }}>
+                <View style={{ flexDirection: 'row', justifyContent:'space-between' }}>
+                    <View style={{ flexBasis: '50%' }}>
+                        <View style={{ width: '95%', height: 150, backgroundColor: 'lightblue'}}></View>
+                        <Text style={{ color: '#000', fontSize: 16 }}>Product Name</Text>
+                        <Text>$234</Text>
+                    </View>
+                    <View style={{ flexBasis: '50%' }}>
+                        <View style={{ width: '95%', height: 150, backgroundColor: 'lightblue'}}></View>
+                        <Text style={{ color: '#000', fontSize: 16 }}>Product Name</Text>
+                        <Text>$234</Text>
+                    </View>
                 </View>
-                <View style={{ flexBasis: '50%' }}>
-                    <View style={{ width: '95%', height: 150, backgroundColor: 'lightblue'}}></View>
-                    <Text style={{ color: '#000', fontSize: 16 }}>Product Name</Text>
-                    <Text>$234</Text>
+                <View style={{ flexDirection: 'row', justifyContent:'space-between' }}>
+                    <View style={{ flexBasis: '50%' }}>
+                        <View style={{ width: '95%', height: 150, backgroundColor: 'lightblue'}}></View>
+                        <Text style={{ color: '#000', fontSize: 16 }}>Product Name</Text>
+                        <Text>$234</Text>
+                    </View>
+                    <View style={{ flexBasis: '50%' }}>
+                        <View style={{ width: '95%', height: 150, backgroundColor: 'lightblue'}}></View>
+                        <Text style={{ color: '#000', fontSize: 16 }}>Product Name</Text>
+                        <Text>$234</Text>
+                    </View>
                 </View>
-            </View>
-            <View style={{ flexDirection: 'row', justifyContent:'space-between' }}>
-                <View style={{ flexBasis: '50%' }}>
-                    <View style={{ width: '95%', height: 150, backgroundColor: 'lightblue'}}></View>
-                    <Text style={{ color: '#000', fontSize: 16 }}>Product Name</Text>
-                    <Text>$234</Text>
-                </View>
-                <View style={{ flexBasis: '50%' }}>
-                    <View style={{ width: '95%', height: 150, backgroundColor: 'lightblue'}}></View>
-                    <Text style={{ color: '#000', fontSize: 16 }}>Product Name</Text>
-                    <Text>$234</Text>
-                </View>
-            </View>
+              </View>
           </View>
-      </View>
-      <View style={{  height: 500, backgroundColor: '#fff' }}>
+          <View style={{  height: 500, backgroundColor: '#fff' }}>
           <View style={{ flex: 1, flexBasis: '10%' }}>
               <Text style={{ fontSize: 29 }}>Feature Products</Text>
           </View>
