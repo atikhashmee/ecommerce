@@ -132,8 +132,7 @@ import {
       },
       categoryIconHolder: {
         backgroundColor: '#eee',
-        padding: 20, 
-        borderRadius: wp('50%'),
+        padding: 20,
         textAlign: 'center'
       },
   });

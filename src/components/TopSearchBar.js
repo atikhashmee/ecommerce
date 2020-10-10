@@ -7,7 +7,7 @@ export function TopSearchBar() {
     <>
       <Pressable
         onPress={() => {
-          alert('hello world');
+          alert('searching.......');
         }}
         style={{
           flex: 1,
@@ -22,7 +22,7 @@ export function TopSearchBar() {
           size={20}
           color="#000"
           style={{ marginLeft: 5 }} />
-        <Text style={{ marginLeft: 10 }}>What would you like to buy?</Text>
+        <Text>What would you like to buy?</Text>
       </Pressable>
     </>
   );

@@ -49,10 +49,10 @@ function Home(){
   let {products, setInit} = React.useContext(AppContext);
  useEffect( ()=>{
       setInit();
-      //console.log(products, 'aaaaaa');
+      console.log('products loads', products.length);
  }, [])
   return  <ScrollView>
-      <View style={{ height: hp('100%'), flex: 1, paddingLeft: 10, paddingRight:10, backgroundColor: '#f9f9f9' }}>
+      <View style={{ height: '100%', flex: 1, paddingLeft: 10, paddingRight:10, backgroundColor: '#f9f9f9' }}>
           {/* slider */}
           {/* <View style={{ height: 130, borderRadius: 10 }}>
             <Slider />
@@ -67,8 +67,8 @@ function Home(){
           </View> */}
           {/* category products */}
           {products.length>0 && products.map(item=><View key={item.id} >
-              <View style={{ flex: 1, flexBasis: '6%' }}>
-                  <Text style={{ fontSize: 22, fontFamily: 'Zocial' }}> { item.name } </Text>
+              <View style={{ flex: 1, flexBasis: '6%', paddingBottom: 10, paddingTop: 10 }}>
+                  <Text style={{ fontSize: 22, fontFamily: 'Zocial' }}> { item.name }</Text>
               </View>
               <View style={{ flexBasis: '94%' }}>
                 <View style={{ flexDirection: 'row', justifyContent:'space-between', marginBottom: 10 }}>
@@ -78,7 +78,6 @@ function Home(){
                             style={AppStyle.image}
                             source={{uri: 'https://images.unsplash.com/photo-1566740810093-a62a1b63a9ec?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80'}}
                           />
-                          
                         </View>
                         <Text style={ AppStyle.prductTitle }>Nikon Camera</Text>
                         <Text>$234</Text>
@@ -196,8 +195,8 @@ function  Dashboard(props) {
               </TouchableOpacity>
             ),
             headerRight: () => (
-              <Icon
-                name="comments"
+              <IonIcon
+                name="chatbox-ellipses-outline"
                 size={30}
                 color="#000"
                 style={{marginRight: 10}}

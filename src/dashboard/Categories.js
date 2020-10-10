@@ -5,8 +5,8 @@ import IonIcon from 'react-native-vector-icons/Ionicons';
 import  AppStyle  from '../assets/style';
 
 export default function Categories () {
-    return (<ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-        <View style={{flexDirection: 'row', justifyContent: 'space-between' }}>
+    return (<ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={ {backgroundColor: '#f8f8f8'}}>
+        <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
             <View style={AppStyle.categoryEachBox}>
                 <View style={AppStyle.categoryIconHolder}>
                     <Icon name="list" size={20} style={{ textAlign: 'center' }} color="violet" />
