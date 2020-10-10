@@ -8,6 +8,7 @@ import {
   StatusBar,
   TouchableHighlight,
   Dimensions,
+  ActivityIndicator,
   Button,
   ScrollView,
 } from 'react-native';
@@ -24,6 +25,10 @@ import {TopSearchBar} from './src/components/TopSearchBar';
 import Categories from './src/dashboard/Categories';
 import ExpressView from './src/dashboard/ExpressView';
 import {AppContext} from './src/utils/GlobalContext';
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
 
 const screenWidth = Math.round(Dimensions.get('window').width);
 const Drawer = createDrawerNavigator();
@@ -47,80 +52,74 @@ function Home(){
       //console.log(products, 'aaaaaa');
  }, [])
   return  <ScrollView>
-      <View style={{ height: '100%', flex: 1, paddingLeft: 10, paddingRight:10, backgroundColor: '#fff' }}>
+      <View style={{ height: hp('100%'), flex: 1, paddingLeft: 10, paddingRight:10, backgroundColor: '#f9f9f9' }}>
           {/* slider */}
           {/* <View style={{ height: 130, borderRadius: 10 }}>
             <Slider />
           </View> */}
         {/* category tag */}
-          {/* <View style={{ width: width, height: 40, marginTop: 10, marginBottom: 50 }}>
-            <Categories />
-          </View> */}
+          <View style={{ width: width, verticalAlign: 'center', textAlign:'center', marginTop: 10, marginBottom: 10}}>
+              <Categories />
+          </View>
           {/* express view */}
-          {/* <View style={{ height: 250, backgroundColor: '#fff' }}> 
+          {/* <View style={{ backgroundColor: '#fff' }}> 
             <ExpressView  />
           </View> */}
           {/* category products */}
-          {products.length>0 && products.map(item=><View key={item.id} style={{  height: 450, backgroundColor: '#fff' }}>
-              <View style={{ flex: 1, flexBasis: '10%' }}>
-                  <Text style={{ fontSize: 29 }}> { item.name } </Text>
+          {products.length>0 && products.map(item=><View key={item.id} >
+              <View style={{ flex: 1, flexBasis: '6%' }}>
+                  <Text style={{ fontSize: 22, fontFamily: 'Zocial' }}> { item.name } </Text>
               </View>
-              <View style={{ flexBasis: '90%' }}>
-                <View style={{ flexDirection: 'row', justifyContent:'space-between' }}>
-                    <View style={{ flexBasis: '50%' }}>
-                        <View style={{ width: '95%', height: 150, backgroundColor: 'lightblue'}}>
+              <View style={{ flexBasis: '94%' }}>
+                <View style={{ flexDirection: 'row', justifyContent:'space-between', marginBottom: 10 }}>
+                    <View style={AppStyle.productBox}>
+                        <View style={AppStyle.prductContainer}>
                           <Image
                             style={AppStyle.image}
                             source={{uri: 'https://images.unsplash.com/photo-1566740810093-a62a1b63a9ec?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80'}}
                           />
                           
                         </View>
-                        <Text style={{ color: '#000', fontSize: 16 }}>Product Name</Text>
+                        <Text style={ AppStyle.prductTitle }>Nikon Camera</Text>
                         <Text>$234</Text>
                     </View>
-                    <View style={{ flexBasis: '50%' }}>
-                        <View style={{ width: '95%', height: 150, backgroundColor: 'lightblue'}}>
+                    <View style={AppStyle.productBox}>
+                        <View style={AppStyle.prductContainer}>
                           <Image
                               style={AppStyle.image}
                               source={{uri: 'https://images.unsplash.com/photo-1587647482405-50089cb95927?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80'}}
                             />
                         </View>
-                        <Text style={{ color: '#000', fontSize: 16 }}>Product Name</Text>
+                        <Text style={ AppStyle.prductTitle }>IPOD</Text>
                         <Text>$234</Text>
                     </View>
                 </View>
                 <View style={{ flexDirection: 'row', justifyContent:'space-between' }}>
-                    <View style={{ flexBasis: '50%' }}>
-                        <View style={{ width: '95%', height: 150, backgroundColor: 'lightblue'}}>
+                    <View style={AppStyle.productBox}>
+                        <View style={AppStyle.prductContainer}>
                           <Image
                             style={AppStyle.image}
                             source={{uri: 'https://images.unsplash.com/photo-1593273757264-9ff6e8ba5ee7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=375&q=80'}}
                           />
                         </View>
-                        <Text style={{ color: '#000', fontSize: 16 }}>Product Name</Text>
+                        <Text style={ AppStyle.prductTitle }>iPhone</Text>
                         <Text>$234</Text>
                     </View>
-                    <View style={{ flexBasis: '50%' }}>
-                        <View style={{ width: '95%', height: 150, backgroundColor: 'lightblue'}}>
-                        <Image
-                            style={AppStyle.image}
-                            source={{uri: 'https://images.unsplash.com/photo-1484704849700-f032a568e944?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80'}}
-                          />
+                    <View style={AppStyle.productBox}>
+                        <View style={AppStyle.prductContainer}>
+                          <Image
+                              style={AppStyle.image}
+                              source={{uri: 'https://images.unsplash.com/photo-1484704849700-f032a568e944?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80'}}
+                            />
                         </View>
-                        <Text style={{ color: '#000', fontSize: 16 }}>Product Name</Text>
+                        <Text style={ AppStyle.prductTitle }>Headphone</Text>
                         <Text>$234</Text>
                     </View>
                 </View>
               </View>
           </View>)}
-          { products.length == 0 &&<View style={{height: 600, justifyContent: 'center', alignItems: 'center' }}>
-              <Text>Loading......</Text>
-              <Button
-                onPress={()=> { setInit() }}
-                title="Load Data"
-                color="#eee"
-                accessibilityLabel="Learn more about this purple button"
-            />
+          { products.length == 0 &&<View style={{height: hp('80%'), justifyContent: 'center', alignItems: 'center' }}>
+                  <ActivityIndicator  size="large" color="#000000" />
           </View>}
     </View>
   </ScrollView>

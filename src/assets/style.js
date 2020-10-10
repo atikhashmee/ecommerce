@@ -16,6 +16,12 @@ import {
     DebugInstructions,
     ReloadInstructions,
   } from 'react-native/Libraries/NewAppScreen';
+
+  import {
+    widthPercentageToDP as wp,
+    heightPercentageToDP as hp,
+  } from 'react-native-responsive-screen';
+
   const { width, height } = Dimensions.get('window');
   const AppStyle = StyleSheet.create({
     flexCenter: {
@@ -93,6 +99,42 @@ import {
         width: '100%',
         height: '100%',
         borderRadius: 10
-      }
+      },
+      // product style
+      productBox: {
+        flexBasis: '48%',
+        backgroundColor:"#fff",
+        padding: 5,
+        borderRadius: 10,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.8,
+        shadowRadius: 2,
+        elevation: 1,
+      },
+      prductContainer: {
+        width: '95%', 
+        height: 150, 
+        backgroundColor: 'lightblue',
+        overflow: 'hidden',
+        borderRadius: 10
+      },
+      prductTitle: {
+        color: '#000', 
+        fontSize: 19, 
+        fontWeight: '400',
+        fontFamily: 'Oswald-Regular',
+      },
+      //category box style
+      categoryEachBox: {
+        flexBasis: '15%',
+        marginRight: 10
+      },
+      categoryIconHolder: {
+        backgroundColor: '#eee',
+        padding: 20, 
+        borderRadius: wp('50%'),
+        textAlign: 'center'
+      },
   });
 export default AppStyle;
