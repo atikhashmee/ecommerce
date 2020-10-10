@@ -1,5 +1,6 @@
 import React from 'react';
 import { Text, Pressable } from 'react-native';
+import { color } from 'react-native-reanimated';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 
 export function TopSearchBar() {
@@ -13,16 +14,16 @@ export function TopSearchBar() {
           flex: 1,
           borderRadius: 20,
           flexDirection: 'row',
-          backgroundColor: '#eee',
+          backgroundColor: '#f8f8f8',
           padding: 10
         }}
       >
         <Icon
           name="search"
           size={20}
-          color="#000"
+          color="#222222"
           style={{ marginLeft: 5 }} />
-        <Text>What would you like to buy?</Text>
+        <Text style={{ color: '#222222', marginLeft: 2 }}>What would you like to buy?</Text>
       </Pressable>
     </>
   );

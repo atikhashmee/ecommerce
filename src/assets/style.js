@@ -98,13 +98,22 @@ import {
       image: {
         width: '100%',
         height: '100%',
-        borderRadius: 10
+        borderRadius: 10,
+        resizeMode: 'cover'
+      },
+      // product category
+      productCategory: {
+        fontSize: 22, 
+        fontWeight: '400',
+        fontFamily: 'Oswald-Regular',
       },
       // product style
       productBox: {
         flexBasis: '48%',
         backgroundColor:"#fff",
-        padding: 5,
+        paddingRight: 5,
+        paddingLeft: 5,
+        paddingTop: 5,
         borderRadius: 10,
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 2 },
@@ -121,7 +130,7 @@ import {
       },
       prductTitle: {
         color: '#000', 
-        fontSize: 19, 
+        fontSize: 17, 
         fontWeight: '400',
         fontFamily: 'Oswald-Regular',
       },
@@ -134,6 +143,14 @@ import {
         backgroundColor: '#eee',
         padding: 20,
         textAlign: 'center'
+      },
+      //add to cart button
+      cartButton: {
+        flexBasis: '50%', 
+        borderColor: '#eee',
+        borderTopWidth: 1,
+        padding: 10,
+        alignItems: 'center',
       },
   });
 export default AppStyle;

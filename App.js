@@ -10,7 +10,7 @@ import {
   Dimensions,
   ActivityIndicator,
   Button,
-  ScrollView,
+  ScrollView, Pressable
 } from 'react-native';
 import { createDrawerNavigator, DrawerItem,  DrawerContentScrollView, DrawerItemList} from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
@@ -49,7 +49,6 @@ function Home(){
   let {products, setInit} = React.useContext(AppContext);
  useEffect( ()=>{
       setInit();
-      console.log('products loads', products.length);
  }, [])
   return  <ScrollView>
       <View style={{ height: '100%', flex: 1, paddingLeft: 10, paddingRight:10, backgroundColor: '#f9f9f9' }}>
@@ -68,52 +67,45 @@ function Home(){
           {/* category products */}
           {products.length>0 && products.map(item=><View key={item.id} >
               <View style={{ flex: 1, flexBasis: '6%', paddingBottom: 10, paddingTop: 10 }}>
-                  <Text style={{ fontSize: 22, fontFamily: 'Zocial' }}> { item.name }</Text>
+                  <Text style={ AppStyle.productCategory }> { item.name }</Text>
               </View>
               <View style={{ flexBasis: '94%' }}>
-                <View style={{ flexDirection: 'row', justifyContent:'space-between', marginBottom: 10 }}>
-                    <View style={AppStyle.productBox}>
+                <View style={{ flexDirection: 'row', justifyContent:'space-between', marginBottom: 10, alignItems: 'flex-start', flexWrap: 'wrap' }}>
+                    {item.elements.length> 0 && item.elements.map(p=><View key={p.id} style={{...AppStyle.productBox, marginBottom: 10}}>
                         <View style={AppStyle.prductContainer}>
-                          <Image
-                            style={AppStyle.image}
-                            source={{uri: 'https://images.unsplash.com/photo-1566740810093-a62a1b63a9ec?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80'}}
-                          />
+                        {/* feature_category_image_url */}
+                        {item.frontEndTag =='category'?<Image style={AppStyle.image} source={{uri: p.feature_category_image_url}} />
+                          :<Image style={AppStyle.image} source={{uri: p.feature_image_url}} /> }
                         </View>
-                        <Text style={ AppStyle.prductTitle }>Nikon Camera</Text>
-                        <Text>$234</Text>
-                    </View>
-                    <View style={AppStyle.productBox}>
-                        <View style={AppStyle.prductContainer}>
-                          <Image
-                              style={AppStyle.image}
-                              source={{uri: 'https://images.unsplash.com/photo-1587647482405-50089cb95927?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80'}}
-                            />
+                        { item.frontEndTag !=='category'?
+                        <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-between'}}>
+                            <View>
+                              <Text style={ AppStyle.prductTitle }>{p.name}</Text> 
+                             <View style={{ flexDirection: 'row' }}>
+                                <Text>${p.price}</Text>
+                                {p.old_price !== '' && <Text style={{ textDecorationLine: 'line-through', marginLeft: 10 }}>${p.old_price}</Text>}
+                              </View>
+                            </View>
+                        </View>:
+                        <View >
+                          <Text style={ AppStyle.prductTitle }>{p.category_name}</Text> 
+                    </View>}
+                        { item.frontEndTag !=='category'?
+                        <View style={{ alignItems: 'center',  flexDirection: 'row'}}>
+                          <Pressable onPress={()=>alert('added to cart')} style={AppStyle.cartButton}> 
+                              <IonIcon name="cart-outline"  color="#000"  size={20} />
+                          </Pressable>
+                          <Pressable onPress={()=>alert('saved')} style={{...AppStyle.cartButton, borderLeftWidth: 1}}>
+                              <IonIcon name="heart-outline" color="#000" size={20}  />
+                          </Pressable>
                         </View>
-                        <Text style={ AppStyle.prductTitle }>IPOD</Text>
-                        <Text>$234</Text>
-                    </View>
-                </View>
-                <View style={{ flexDirection: 'row', justifyContent:'space-between' }}>
-                    <View style={AppStyle.productBox}>
-                        <View style={AppStyle.prductContainer}>
-                          <Image
-                            style={AppStyle.image}
-                            source={{uri: 'https://images.unsplash.com/photo-1593273757264-9ff6e8ba5ee7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=375&q=80'}}
-                          />
-                        </View>
-                        <Text style={ AppStyle.prductTitle }>iPhone</Text>
-                        <Text>$234</Text>
-                    </View>
-                    <View style={AppStyle.productBox}>
-                        <View style={AppStyle.prductContainer}>
-                          <Image
-                              style={AppStyle.image}
-                              source={{uri: 'https://images.unsplash.com/photo-1484704849700-f032a568e944?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80'}}
-                            />
-                        </View>
-                        <Text style={ AppStyle.prductTitle }>Headphone</Text>
-                        <Text>$234</Text>
-                    </View>
+                        :
+                        <View>
+                          <Pressable onPress={()=>alert('saved')} style={AppStyle.cartButton}>
+                              <Text> See Products </Text>
+                          </Pressable>
+                        </View>}
+                    </View>)}
                 </View>
               </View>
           </View>)}
@@ -164,30 +156,30 @@ function  Dashboard(props) {
             },
             headerLeft: () => (
               <TouchableOpacity
-                style={{marginLeft: 10}}
+                style={{marginLeft: 15}}
                 onPress={() => props.navigation.toggleDrawer()}>
                 <View
                   style={{
-                    backgroundColor: '#000',
-                    width: 30,
-                    height: 3,
+                    backgroundColor: '#080808',
+                    width: wp('6%'),
+                    height: 2,
                     borderRadius: 20
                   }}
                 />
                 <View
                   style={{
-                    backgroundColor: '#000',
-                    width: 30,
-                    height: 3,
+                    backgroundColor: '#080808',
+                    width: wp('6%'),
+                    height: 2,
                     marginTop: 5,
                     borderRadius: 20
                   }}
                 />
                 <View
                   style={{
-                    backgroundColor: '#000',
-                    width: 30,
-                    height: 3,
+                    backgroundColor: '#080808',
+                    width: wp('6%'),
+                    height: 2,
                     marginTop: 5,
                     borderRadius: 20
                   }}
@@ -347,9 +339,18 @@ const DrawerHolder = () => {
   useEffect(()=>{
     if (loadData!==null) {
       setStoreInfo(loadData.data.store_details);
-      setProducts(loadData.data.section_details);
+      setProducts(loadData.data.section_details.map(item=>{
+          if (item.key === 'feature_categories_visibility') {
+              item.frontEndTag = 'category';
+          }
+          else
+          {
+            item.frontEndTag = 'product';
+          }
+          return item;
+      }));
     }
-  }, [loadData, products, storeInfo]);
+  }, [loadData]);
   const appContextVal = React.useMemo(() => {
     return {
       setInit: async()=>{
