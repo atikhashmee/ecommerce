@@ -8,6 +8,7 @@ import {
   StatusBar,
   TouchableHighlight,
   Dimensions,
+  Button,
   ScrollView,
 } from 'react-native';
 import { createDrawerNavigator, DrawerItem,  DrawerContentScrollView, DrawerItemList} from '@react-navigation/drawer';
@@ -43,7 +44,7 @@ function Home(){
   let {products, setInit} = React.useContext(AppContext);
  useEffect( ()=>{
       setInit();
-      console.log(products, 'aaaaaa');
+      //console.log(products, 'aaaaaa');
  }, [])
   return  <ScrollView>
       <View style={{ height: '100%', flex: 1, paddingLeft: 10, paddingRight:10, backgroundColor: '#fff' }}>
@@ -114,6 +115,12 @@ function Home(){
           </View>)}
           { products.length == 0 &&<View style={{height: 600, justifyContent: 'center', alignItems: 'center' }}>
               <Text>Loading......</Text>
+              <Button
+                onPress={()=> { setInit() }}
+                title="Load Data"
+                color="#eee"
+                accessibilityLabel="Learn more about this purple button"
+            />
           </View>}
     </View>
   </ScrollView>
@@ -338,16 +345,20 @@ function CustomDrawerContent(props) {
 const DrawerHolder = () => {
   let [products, setProducts] = useState([]);
   let [storeInfo, setStoreInfo] = useState(null);
+  let [loadData, setLoadData] = useState(null);
   useEffect(()=>{
-      console.log('App init');
-  }, []);
+    if (loadData!==null) {
+      setStoreInfo(loadData.data.store_details);
+      setProducts(loadData.data.section_details);
+    }
+  }, [loadData, products, storeInfo]);
   const appContextVal = React.useMemo(() => {
     return {
-      setInit: ()=>{
+      setInit: async()=>{
         let formD = new FormData;
         formD.append('api_token', defaultArr.api_token);
         formD.append('store_id', defaultArr.store_id);
-        fetch(baseUrl + 'home-content', {
+        await fetch(baseUrl + 'home-content', {
           method: 'POST',
           body: formD,
         })
@@ -358,8 +369,7 @@ const DrawerHolder = () => {
          return res.json()
         })
         .then(res=>{
-          setStoreInfo(res.data.store_details);
-          setProducts(res.data.section_details);
+          setLoadData(res);
         })
         .catch(err=>{
           console.log(err);
@@ -368,7 +378,7 @@ const DrawerHolder = () => {
       products,
       storeInfo,
     };
-  }, [products]);
+  }, [loadData, storeInfo]);
   return (
     <AppContext.Provider value={appContextVal}>
         <Drawer.Navigator
