@@ -4,6 +4,7 @@ import {TopSearchBar} from '../components/TopSearchBar';
 import {createStackNavigator} from '@react-navigation/stack';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import Home from '../screens/Home';
+import AllCategory from '../screens/AllCategory';
 import {
     widthPercentageToDP as wp,
     heightPercentageToDP as hp,
@@ -100,6 +101,29 @@ function  Dashboard(props) {
                   style={{marginRight: 10}}
                 />
               ),
+            }}
+          />
+          <Authenticate.Screen
+            name="allcategory"
+            component={AllCategory}
+            options={{
+              title: 'Categories',
+              headerTintColor: '#fff',
+              headerStyle: {
+                backgroundColor: '#5270E8',
+                elevation: 0,
+              },
+              headerTitleStyle: {
+                fontFamily: 'Montserrat-Light',
+                fontWeight: 'bold',
+                position: 'absolute',
+                left: screenWidth / 4,
+                top: -15,
+                color: '#f8f8f8',
+              },
+              headerBackImage: () => {
+                return <IonIcon name="ios-arrow-back" color="#fff" size={30} />;
+              },
             }}
           />
           <Authenticate.Screen

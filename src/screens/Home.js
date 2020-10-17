@@ -5,6 +5,7 @@ import Categories from '../dashboard/Categories';
 import ExpressView from '../dashboard/ExpressView';
 import {AppContext} from '../utils/GlobalContext';
 import AppStyle from '../assets/style';
+import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 
 import {
@@ -37,7 +38,24 @@ function Home({navigation}){
             accessibilityLabel="Learn more about this purple button"
           />
             <View style={{ width: width, verticalAlign: 'center', textAlign:'center', marginTop: 10, marginBottom: 10}}>
-                <Categories />
+              <View style={{ flex: 1, flexDirection: 'row'}}>
+                <Pressable style={AppStyle.categoryEachBox}
+                  onPress={()=>{
+                    navigation.navigate('allcategory', {
+                      user: 'jane',
+                    });
+                  }}>
+                    <View style={AppStyle.categoryIconHolder}>
+                        <IonIcon name="list" size={20} style={{ textAlign: 'center' }} color="#000" />
+                    </View>
+                    <View style={{ textAlign:'center', verticalAlign: 'center', paddingLeft: 10, paddingRight: 5 }}>
+                        <Text style={{ textAlign:'center'}}>All</Text>
+                    </View>
+                </Pressable>
+                <View>
+                  <Categories  />
+                </View>
+              </View>
             </View>
             {/* express view */}
             {/* <View style={{ backgroundColor: '#fff' }}> 

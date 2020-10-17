@@ -21,6 +21,70 @@ const DrawerHolder = () => {
     let [products, setProducts] = useState([]);
     let [storeInfo, setStoreInfo] = useState(null);
     let [loadData, setLoadData] = useState(null);
+    let [categories, setCategories] = useState([
+      {
+        id: 1,
+        name: 'category 1',
+        subs: [
+          {
+            id: 1,
+            name: 'C item 1',
+            isOpened: false,
+            items: [
+              {
+                id: 1, 
+                name: 'item--1'
+              },
+              {
+                id: 2, 
+                name: 'item--2'
+              },
+              {
+                id: 3, 
+                name: 'item--3'
+              },
+            ]
+          }
+        ]
+      },
+      {
+        id: 2,
+        name: 'category 2',
+        subs: [
+          {
+            id: 1,
+            name: 'C item 2',
+            isOpened: false,
+            items: [
+              {
+                id: 1, 
+                name: 'item--1'
+              },
+              {
+                id: 2, 
+                name: 'item--2'
+              },
+              {
+                id: 3, 
+                name: 'item--3'
+              },
+            ]
+          }
+        ]
+      },
+      {
+        id: 3,
+        name: 'category 3',
+        subs: [
+          {
+            id: 1,
+            name: 'C item 3',
+            isOpened: false,
+            items: []
+          }
+        ]
+      }
+    ]);
     useEffect(()=>{
       if (loadData!==null) {
         setStoreInfo(loadData.data.store_details);
@@ -61,8 +125,25 @@ const DrawerHolder = () => {
         },
         products,
         storeInfo,
+        categories,
+        categoryToggleItem (category_id, subCategory_id)
+        {
+          let modifyCate = [...categories];
+          modifyCate.forEach(category => {
+            if (category.id === category_id) {
+                if (category.subs.length>0) {
+                  category.subs.forEach(subs => {
+                    if (subs.id === subCategory_id) {
+                        subs.isOpened = !subs.isOpened;
+                    }
+                  })
+                }
+            }
+          });
+          setCategories([...modifyCate]);
+        }
       };
-    }, [loadData, storeInfo]);
+    }, [loadData, storeInfo, categories]);
     return (
       <AppContext.Provider value={appContextVal}>
           <Drawer.Navigator
