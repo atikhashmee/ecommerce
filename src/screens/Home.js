@@ -27,16 +27,6 @@ function Home({navigation}){
               <Slider />
             </View> */}
           {/* category tag */}
-          <Button
-            onPress={()=>{
-              navigation.navigate('anotther_screen', {
-                 user: 'jane',
-              });
-            }}
-            title="Learn More"
-            color="#841584"
-            accessibilityLabel="Learn more about this purple button"
-          />
             <View style={{ width: width, verticalAlign: 'center', textAlign:'center', marginTop: 10, marginBottom: 10}}>
               <View style={{ flex: 1, flexDirection: 'row'}}>
                 <Pressable style={AppStyle.categoryEachBox}

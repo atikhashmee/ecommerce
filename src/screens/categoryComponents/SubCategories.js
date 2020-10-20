@@ -26,19 +26,19 @@ const SubCategories = ({subCategories, currentCatId}) => {
     return <ScrollView showsVerticalScrollIndicator={false} style={ {backgroundColor: '#f8f8f8'}}>
             <View style={{ flex: 1 }}>
                 { subCategories.length> 0 && subCategories.map((item, index) => {
-                    return <><View key={index} style={{ flex: 1, flexDirection: 'row', height: heightPercentageToDP('7%'), alignItems: 'center', paddingTop: 2, paddingBottom: 2, paddingLeft: 2, marginLeft: 10, borderBottomColor: '#d3d3d3', borderBottomWidth: 1 }}>
+                    return <View key={(item.id).toString()}><View  style={{ flex: 1, flexDirection: 'row', height: heightPercentageToDP('7%'), alignItems: 'center', paddingTop: 2, paddingBottom: 2, paddingLeft: 2, marginLeft: 10, borderBottomColor: '#d3d3d3', borderBottomWidth: 1 }}>
                         <View style={{ flexBasis: '80%' }}>
-                            <Text>{item.name}</Text>
+                            <Text>{item.category_name}</Text>
                         </View>
                         {item.items.length>0 && <Pressable 
                         onPress={()=>{loadSubItems(item.id)}} style={{ flexBasis: '20%', borderLeftColor: '#d3d3d3', borderLeftWidth: 1 }}>
                             <IonIcon name={!item.isOpened ? "chevron-down-outline" : "chevron-up-outline"}  size={20} style={{ textAlign: 'center' }} color="#000"/>
                         </Pressable>}
                     </View>
-                    {item.isOpened && <View key={index + 1} style={{ flex: 1, flexDirection: 'row', flexWrap: 'wrap', justifyContent: "space-around", alignItems: 'flex-end'}}>
+                    {item.isOpened && <View style={{ flex: 1, flexDirection: 'row', flexWrap: 'wrap', justifyContent: "space-around", alignItems: 'flex-end'}}>
                         <CategoryItem subCategoryArr={subCategoryArr} />
                     </View>}
-                </>}) }
+                </View>}) }
             </View>       
         </ScrollView>;
 }

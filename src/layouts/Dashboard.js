@@ -108,10 +108,10 @@ function  Dashboard(props) {
             component={AllCategory}
             options={{
               title: 'Categories',
-              headerTintColor: '#fff',
+              headerTintColor: '#000',
               headerStyle: {
-                backgroundColor: '#5270E8',
-                elevation: 0,
+                backgroundColor: '#fff',
+                elevation: 1,
               },
               headerTitleStyle: {
                 fontFamily: 'Montserrat-Light',
@@ -119,10 +119,10 @@ function  Dashboard(props) {
                 position: 'absolute',
                 left: screenWidth / 4,
                 top: -15,
-                color: '#f8f8f8',
+                color: '#000',
               },
               headerBackImage: () => {
-                return <IonIcon name="ios-arrow-back" color="#fff" size={30} />;
+                return <IonIcon name="ios-arrow-back" color="#000" size={30} />;
               },
             }}
           />
