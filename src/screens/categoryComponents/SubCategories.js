@@ -23,6 +23,10 @@ const SubCategories = ({navigation, subCategories, currentCatId}) => {
     }
   }
 
+  function carsetFree(item_id) {
+    return item_id.replace('_', '');
+  }
+
   return (
     <ScrollView
       showsVerticalScrollIndicator={false}
@@ -49,7 +53,7 @@ const SubCategories = ({navigation, subCategories, currentCatId}) => {
                     <Pressable
                       onPress={() => {
                         navigation.navigate('products', {
-                          category_id: item.id,
+                          category_id: carsetFree(item.id),
                         });
                       }}>
                       <Text>{item.category_name}</Text>

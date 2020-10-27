@@ -1,11 +1,14 @@
-import React, {useEffect, useState} from 'react';
-import {View, Text, Image, Pressable, ScrollView} from 'react-native';
+import React, {useEffect, useState, useContext} from 'react';
+import {View, Text, Image, Pressable, ScrollView, ActivityIndicator} from 'react-native';
 import AppStyle from '../assets/style';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import Product from '../components/Product';
+import {AppContext} from '../utils/GlobalContext';
 
 const Products = (props) => {
+  
+  let {loadProducts} = useContext(AppContext);
   let [item, setItems] = useState({
     elements: [
       {
@@ -34,15 +37,25 @@ const Products = (props) => {
       },
     ],
   });
+
+  let [products, setProducts] = useState([]);
+
   useEffect(() => {
-    console.log(props.route.params);
+    let route_params = props.route.params;
+    if ('category_id' in route_params) {
+      loadProducts(route_params.category_id).then(res=>res.json())
+      .then(res=> {
+        setProducts([...res.data.products]);
+      })
+    }
+   
   }, []);
   return (
     <ScrollView>
       <View style={{flex: 1, backgroundColor: '#f4f4f4'}}>
-        <View style={{flexBasis: '6%'}}>
+        {/* <View style={{flexBasis: '6%'}}>
           <Text>Hello world</Text>
-        </View>
+        </View> */}
         <View
           style={{
             flexBasis: '94%',
@@ -57,11 +70,21 @@ const Products = (props) => {
               alignItems: 'flex-start',
               flexWrap: 'wrap',
             }}>
-            {item.elements.length > 0 &&
-              item.elements.map((p) => (
-                <Product product={p} />
+            {products.length > 0 &&
+              products.map((p, index) => (
+                <Product product={p} key={index} />
               ))}
           </View>
+          {products.length == 0 && (
+          <View
+            style={{
+              height: hp('80%'),
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <ActivityIndicator size="large" color="#000000" />
+          </View>
+        )}
         </View>
       </View>
     </ScrollView>

@@ -47,13 +47,18 @@ const DrawerHolder = () => {
     if (categories.length > 0) {
       categories.forEach((ct) => {
         if (ct.items.length > 0) {
+          ct.items.unshift({
+            id: ct.id+'_',
+            category_name: 'See All products',
+            isOpened : false,
+            items: [],
+          });
           ct.items.forEach((subs) => {
             subs.isOpened = false;
           });
         }
       });
     }
-    console.log('loaded');
   }, [categories]);
   const appContextVal = React.useMemo(() => {
     return {
@@ -99,6 +104,16 @@ const DrawerHolder = () => {
             console.log(err);
           });
       },
+      loadProducts: async (category_id) => {
+        let formD = new FormData();
+        formD.append('api_token', defaultArr.api_token);
+        formD.append('store_id', defaultArr.store_id);
+        formD.append('category_id', category_id);
+        return await fetch(baseUrl + 'get-category-products', {
+          method: 'POST',
+          body: formD,
+        });
+      }, 
       products,
       storeInfo,
       categories,
