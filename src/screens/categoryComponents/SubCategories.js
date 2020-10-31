@@ -56,7 +56,7 @@ const SubCategories = ({navigation, subCategories, currentCatId}) => {
                           category_id: carsetFree(item.id),
                         });
                       }}>
-                      <Text>{item.category_name}</Text>
+                      <Text style={{ fontFamily: 'Oswald-Regular' }}>{item.category_name}</Text>
                     </Pressable>
                   </View>
                   {item.items.length > 0 && (

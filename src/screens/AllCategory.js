@@ -67,7 +67,7 @@ const AllCategory = ({navigation}) => {
                     />
                   </View>
                   <View style={{alignItems: 'center'}}>
-                    <Text numberOfLines={1}>{item.category_name}</Text>
+                    <Text  style={{ fontFamily: 'Oswald-Regular' }} numberOfLines={1}>{item.category_name}</Text>
                   </View>
                 </Pressable>
               );

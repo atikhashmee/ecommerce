@@ -70,7 +70,7 @@ export default function HomePage() {
                   paddingLeft: 10,
                   paddingRight: 5,
                 }}>
-                <Text style={{textAlign: 'center'}}>All</Text>
+                <Text  style={{textAlign: 'center', fontFamily: 'Oswald-Regular'}}>All</Text>
               </View>
             </Pressable>
             <View>

@@ -33,8 +33,8 @@ export default function Categories({navigation}) {
                 paddingLeft: 10,
                 paddingRight: 5,
               }}>
-              <Text numberOfLines={1}>News</Text>
-              <Text numberOfLines={1}>feed</Text>
+              <Text style={{ fontFamily: 'Oswald-Regular', }} numberOfLines={1}>News</Text>
+              <Text style={{ fontFamily: 'Oswald-Regular', }} numberOfLines={1}>feed</Text>
             </View>
           </Pressable>
         </View>
@@ -60,8 +60,8 @@ export default function Categories({navigation}) {
                 paddingLeft: 10,
                 paddingRight: 5,
               }}>
-              <Text numberOfLines={1}>Gift</Text>
-              <Text numberOfLines={1}>Card</Text>
+              <Text  style={{ fontFamily: 'Oswald-Regular', }} numberOfLines={1}>Gift</Text>
+              <Text  style={{ fontFamily: 'Oswald-Regular', }} numberOfLines={1}>Card</Text>
             </View>
           </Pressable>
         </View>
@@ -87,7 +87,7 @@ export default function Categories({navigation}) {
                 paddingLeft: 10,
                 paddingRight: 5,
               }}>
-              <Text numberOfLines={1}>Campa..</Text>
+              <Text style={{ fontFamily: 'Oswald-Regular', }}  numberOfLines={1}>Campa..</Text>
             </View>
           </Pressable>
         </View>
@@ -114,7 +114,7 @@ export default function Categories({navigation}) {
                 paddingLeft: 10,
                 paddingRight: 5,
               }}>
-              <Text numberOfLines={1}>Categ..</Text>
+              <Text style={{ fontFamily: 'Oswald-Regular', }}  numberOfLines={1}>Categ..</Text>
             </View>
           </Pressable>
         </View>
@@ -140,7 +140,7 @@ export default function Categories({navigation}) {
                 paddingLeft: 10,
                 paddingRight: 5,
               }}>
-              <Text numberOfLines={1}>Orders</Text>
+              <Text style={{ fontFamily: 'Oswald-Regular', }}  numberOfLines={1}>Orders</Text>
             </View>
           </Pressable>
         </View>
@@ -166,7 +166,7 @@ export default function Categories({navigation}) {
                 paddingLeft: 10,
                 paddingRight: 5,
               }}>
-              <Text numberOfLines={1}>Orders</Text>
+              <Text  style={{ fontFamily: 'Oswald-Regular', }}  numberOfLines={1}>Orders</Text>
             </View>
           </Pressable>
         </View>
@@ -192,7 +192,7 @@ export default function Categories({navigation}) {
                 paddingLeft: 10,
                 paddingRight: 5,
               }}>
-              <Text numberOfLines={1}>Orders</Text>
+              <Text  style={{ fontFamily: 'Oswald-Regular', }}  numberOfLines={1}>Orders</Text>
             </View>
           </Pressable>
         </View>
@@ -218,7 +218,7 @@ export default function Categories({navigation}) {
                 paddingLeft: 10,
                 paddingRight: 5,
               }}>
-              <Text numberOfLines={1}>Orders</Text>
+              <Text style={{ fontFamily: 'Oswald-Regular', }}  numberOfLines={1}>Orders</Text>
             </View>
           </Pressable>
         </View>
