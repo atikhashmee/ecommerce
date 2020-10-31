@@ -24,7 +24,7 @@ const SubCategories = ({navigation, subCategories, currentCatId}) => {
   }
 
   function carsetFree(item_id) {
-    return item_id.replace('_', '');
+    return item_id.toString().includes('_')?item_id.toString().replace('_', ''):item_id;
   }
 
   return (

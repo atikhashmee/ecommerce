@@ -1,5 +1,5 @@
 import React, {PureComponent, useState, useEffect} from 'react';
-import {Button, TouchableOpacity, View, Dimensions, Text} from 'react-native';
+import {Button, TouchableOpacity, View, Dimensions, Text, StyleSheet} from 'react-native';
 import {TopSearchBar} from '../components/TopSearchBar';
 import {createStackNavigator} from '@react-navigation/stack';
 import IonIcon from 'react-native-vector-icons/Ionicons';
@@ -39,6 +39,8 @@ function AnotherScreen(props) {
     </View>
   );
 }
+
+
 
 function Dashboard(props) {
   return (
