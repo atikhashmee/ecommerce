@@ -3,9 +3,10 @@ import {View, Text, Image, Pressable} from 'react-native';
 import AppStyle from '../assets/style';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 
-const Product = ({product}) => {
+const Product = ({product, handleClick}) => {
   return (
-    <View key={product.id} style={{...AppStyle.productBox, marginBottom: 10}}>
+    <Pressable onPress={()=> {handleClick()}} 
+    key={product.id} style={{...AppStyle.productBox, marginBottom: 10}}>
       <View style={AppStyle.prductContainer}>
         {/* feature_category_image_url */}
         <Image
@@ -53,7 +54,7 @@ const Product = ({product}) => {
           <IonIcon name="heart-outline" color="#000" size={20} />
         </Pressable>
       </View>
-    </View>
+    </Pressable>
   );
 };
 

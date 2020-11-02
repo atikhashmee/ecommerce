@@ -13,9 +13,11 @@ import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import Product from '../components/Product';
 import {AppContext} from '../utils/GlobalContext';
 import ProductFilter from '../components/ProductFilter';
+import { useNavigation } from '@react-navigation/native';
 
 const Products = (props) => {
-  let {loadProducts} = useContext(AppContext);
+  let {loadProducts} = useContext(AppContext); 
+  const navigation = useNavigation();
   let [item, setItems] = useState({
     elements: [
       {
@@ -79,7 +81,9 @@ const Products = (props) => {
               flexWrap: 'wrap',
             }}>
             {products.length > 0 &&
-              products.map((p, index) => <Product product={p} key={index} />)}
+              products.map((p, index) => <Product product={p} key={index} handleClick={()=>{navigation.navigate('product_detail', {
+                product_id: p.id,
+              })}} />)}
           </View>
           {products.length == 0 && (
             <View
