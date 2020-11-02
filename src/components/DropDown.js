@@ -52,6 +52,7 @@ const styles = StyleSheet.create({
       listGroup: {
         position: 'absolute',
         zIndex: 99999999,
+        elevation: 99999999,
         width: wp('100%'),
         top: 30,
         right: 0,
