@@ -92,7 +92,7 @@ const Products = (props) => {
             </View>
           )}
         </View>
-      </ScrollView>
+      </ScrollView> 
     </View>
   );
 };
