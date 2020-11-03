@@ -5,6 +5,7 @@ import {
   Image,
   Pressable,
   ScrollView,
+  StyleSheet,
   ActivityIndicator,
 } from 'react-native';
 import AppStyle from '../assets/style';
@@ -13,10 +14,72 @@ import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import Product from '../components/Product';
 import {AppContext} from '../utils/GlobalContext';
 import ProductFilter from '../components/ProductFilter';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
+import {
+  Container,
+  Content,
+  Header,
+  Left,
+  Body,
+  Right,
+  Button,
+  Icon,
+  Title,
+  Grid,
+  Col,
+  Row,
+  Tabs,
+  Tab,
+  Badge,
+  TabHeading,
+} from 'native-base';
 
 const Products = (props) => {
-  let {loadProducts} = useContext(AppContext); 
+  const navigation = useNavigation();
+  return (
+    <Container>
+      <Header transparent hasTabs>
+        <Left>
+          <Button transparent onPress={() => navigation.goBack()}>
+            <Icon name="arrow-back" style={{color: '#000'}} />
+          </Button>
+        </Left>
+        <Body>
+          <Title style={{color: '#000'}}>Products</Title>
+        </Body>
+        <Right>
+          <Button transparent>
+            <Icon name="menu" />
+          </Button>
+        </Right>
+      </Header>
+      <Tabs tabBarPosition="bottom">
+        <Tab
+          heading={
+            <TabHeading>
+              <Icon name="list" />
+            </TabHeading>
+          }>
+          <ProductPage props={props} />
+        </Tab>
+        <Tab
+          heading={
+            <TabHeading>
+              <Icon name="cart" />
+              <Badge>
+                <Text>2</Text>
+              </Badge>
+            </TabHeading>
+          }>
+          <Tab2 />
+        </Tab>
+      </Tabs>
+    </Container>
+  );
+};
+export default Products;
+function ProductPage({props}) {
+  let {loadProducts} = useContext(AppContext);
   const navigation = useNavigation();
   let [item, setItems] = useState({
     elements: [
@@ -60,44 +123,84 @@ const Products = (props) => {
     }
   }, []);
   return (
-    <View style={{flex: 1, backgroundColor: '#f4f4f4', padding: 5}}>
-      <View style={{flexBasis: '6%', backgroundColor: '#fff'}}>
-        <ProductFilter />
-      </View>
-      <ScrollView>
-        <View
+    <Content style={{backgroundColor: '#f4f4f4'}}>
+      <Grid>
+        <Row
           style={{
-            flexBasis: '94%',
-            height: hp('100%'),
-            backgroundColor: '#f4f4f4',
-            marginTop: 10,
+            backgroundColor: '#fff',
+            height: '7%',
+            borderColor: '#eee',
+            borderWidth: 1,
+            alignItems: 'center',
+            marginBottom: 5,
           }}>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              marginBottom: 10,
-              alignItems: 'flex-start',
-              flexWrap: 'wrap',
-            }}>
-            {products.length > 0 &&
-              products.map((p, index) => <Product product={p} key={index} handleClick={()=>{navigation.navigate('product_detail', {
-                product_id: p.id,
-              })}} />)}
-          </View>
-          {products.length == 0 && (
-            <View
-              style={{
-                height: hp('80%'),
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}>
-              <ActivityIndicator size="large" color="#000000" />
-            </View>
-          )}
-        </View>
-      </ScrollView> 
+          <Col>
+            <ProductFilter />
+          </Col>
+        </Row>
+        <Row style={{height: '90%', borderColor: '#eee'}}>
+          <Col>
+            <ScrollView>
+              <View style={styles.productWrapperContainer}>
+                <View style={styles.productWrapper}>
+                  {products.length > 0 &&
+                    products.map((p, index) => (
+                      <Product
+                        product={p}
+                        key={index}
+                        handleClick={() => {
+                          navigation.navigate('product_detail', {
+                            product_id: p.id,
+                          });
+                        }}
+                      />
+                    ))}
+                </View>
+                {products.length == 0 && (
+                  <View
+                    style={{
+                      height: hp('80%'),
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}>
+                    <ActivityIndicator size="large" color="#000000" />
+                  </View>
+                )}
+              </View>
+            </ScrollView>
+          </Col>
+        </Row>
+      </Grid>
+    </Content>
+  );
+}
+function Tab2() {
+  return (
+    <View>
+      <Text>tab 2</Text>
     </View>
   );
-};
-export default Products;
+}
+function Tab3() {
+  return (
+    <View>
+      <Text>tab 3</Text>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  productWrapperContainer: {
+    flexBasis: '94%',
+    height: hp('100%'),
+    backgroundColor: '#f4f4f4',
+    marginTop: 10,
+  },
+  productWrapper: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 10,
+    alignItems: 'flex-start',
+    flexWrap: 'wrap',
+  },
+});

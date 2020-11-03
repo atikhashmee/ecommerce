@@ -139,6 +139,7 @@ function Dashboard(props) {
           component={Products}
           options={{
             title: 'Products',
+            headerShown: false,
             headerTintColor: '#000',
             headerStyle: {
               backgroundColor: '#fff',
@@ -162,6 +163,7 @@ function Dashboard(props) {
           component={ProductDetail}
           options={{
             title: 'Detail',
+            headerShown: false,
             headerTintColor: '#000',
             headerStyle: {
               backgroundColor: '#fff',

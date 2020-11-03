@@ -27,7 +27,6 @@ export default function ProductFilter({style}) {
 
 const styles = StyleSheet.create({
   filterBarContainer: {
-    height: '100%',
     flexDirection: 'row',
     alignItems: 'center',
   },
