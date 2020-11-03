@@ -33,9 +33,11 @@ import {
     Footer,
     FooterTab
   } from 'native-base';
+  import CartModal from '../components/CartModal';
 
 export default function ProductDetail(props) {
     console.log(props.route.params.product_id, 'props');
+    let [modalVisible, setmodalVisible] = useState(false);
     const navigation = useNavigation();
     let [variationImages, setvariationImages] = useState([
         'https://images.unsplash.com/photo-1533228100845-08145b01de14?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=378&q=80',
@@ -151,6 +153,8 @@ export default function ProductDetail(props) {
                     </Col>
                 </Row>
             </Grid>
+            
+        {modalVisible && <CartModal modalVisible={modalVisible} setmodalVisible={setmodalVisible} /> }
         </Content>
         <Footer>
             <FooterTab style={{ backgroundColor: '#fff' }}>
@@ -166,10 +170,12 @@ export default function ProductDetail(props) {
                         </Badge>
                     </Text>
                 </Button>
-                <Button style={{ backgroundColor: '#ED5838', height: 50, width: 50, borderRadius: 10}}>
+                <Button  onPress={()=>{setmodalVisible(!modalVisible)}}
+                style={{ backgroundColor: '#ED5838', height: 50, width: 50, borderRadius: 10}}>
                     <Text style={{ color: '#fff' }}>Buy Now</Text>
                 </Button>
-                <Button style={{ backgroundColor: '#DB1C2B', height: 50, width: 50, borderRadius: 10}}>
+                <Button   onPress={()=>{setmodalVisible(!modalVisible)}}
+                style={{ backgroundColor: '#DB1C2B', height: 50, width: 50, borderRadius: 10}}>
                     <Text style={{ color: '#fff' }}>Add to Cart</Text>
                 </Button>
             </FooterTab>
