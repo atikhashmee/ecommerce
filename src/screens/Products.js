@@ -32,6 +32,8 @@ import {
   Tab,
   Badge,
   TabHeading,
+  Footer,
+  FooterTab,
 } from 'native-base';
 
 const Products = (props) => {
@@ -53,7 +55,26 @@ const Products = (props) => {
           </Button>
         </Right>
       </Header>
-      <Tabs tabBarPosition="bottom">
+      <Content>
+            <ProductPage props={props} />
+      </Content>
+      <Footer>
+          <FooterTab>
+            <Button>
+              <Text>Apps</Text>
+            </Button>
+            <Button>
+              <Text>Camera</Text>
+            </Button>
+            <Button active>
+              <Text>Navigate</Text>
+            </Button>
+            <Button>
+              <Text>Contact</Text>
+            </Button>
+          </FooterTab>
+        </Footer>
+      {/* <Tabs tabBarPosition="bottom">
         <Tab
           heading={
             <TabHeading>
@@ -73,7 +94,7 @@ const Products = (props) => {
           }>
           <Tab2 />
         </Tab>
-      </Tabs>
+      </Tabs> */}
     </Container>
   );
 };
