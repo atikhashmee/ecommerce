@@ -59,19 +59,27 @@ const Products = (props) => {
             <ProductPage props={props} />
       </Content>
       <Footer>
-          <FooterTab>
-            <Button>
-              <Text>Apps</Text>
+          <FooterTab style={{ backgroundColor: '#fff' }}>
+            <Button style={{ width: 30 }}>
+                <Icon name='basket-outline' type="Ionicons" style={{ color: '#000' }} />
+                <Text>Store</Text>
+            </Button>
+            <Button style={{ width: 30 }}>
+                <Icon name='heart-outline' type="Ionicons" style={{ color: '#000' }} />
+                <Text>Wishlists</Text>
             </Button>
             <Button>
-              <Text>Camera</Text>
+              <Text>
+                <Icon name='cart-outline' style={{ color: '#000' }} />
+                <Badge info> 
+                    <Text style={{ color: '#fff' }}>2</Text>
+                </Badge>
+              </Text>
             </Button>
-            <Button active>
-              <Text>Navigate</Text>
-            </Button>
-            <Button>
-              <Text>Contact</Text>
-            </Button>
+            <Button   onPress={()=>{}}
+                style={{ backgroundColor: '#DB1C2B', height: 50, width: 50, borderRadius: 10}}>
+                    <Text style={{ color: '#fff' }}>Checkout</Text>
+                </Button>
           </FooterTab>
         </Footer>
       {/* <Tabs tabBarPosition="bottom">

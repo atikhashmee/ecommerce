@@ -2,6 +2,7 @@ import React, {PureComponent, useState, useEffect} from 'react';
 import {AppContext} from '../utils/GlobalContext';
 import {Button} from 'react-native';
 import AppStyle from '../assets/style';
+import {LocalStorage} from '../utils/LocalStorage';
 import {
   createDrawerNavigator,
   DrawerItem,
@@ -27,6 +28,7 @@ const DrawerHolder = () => {
   let [storeInfo, setStoreInfo] = useState(null);
   let [loadData, setLoadData] = useState(null);
   let [categories, setCategories] = useState([]);
+  let [cartProducts, setCartProducts] = useState([]);
   useEffect(() => {
     if (loadData !== null) {
       setStoreInfo(loadData.data.store_details);
@@ -60,6 +62,13 @@ const DrawerHolder = () => {
       });
     }
   }, [categories]);
+
+  useEffect(()=>{
+    LocalStorage.get('cart_items').then(res=> {
+      console.log(res, 'cart_itsms');
+    })
+  }, [cartProducts])
+
   const appContextVal = React.useMemo(() => {
     return {
       setInit: async () => {
@@ -132,6 +141,24 @@ const DrawerHolder = () => {
         });
         setCategories([...modifyCate]);
       },
+      addToCart (product) {
+        let productItems = [...cartProducts];
+        let is_there = false;
+        if (productItems.length>0) {
+          productItems.forEach(item => {
+            if (item.id === product.id) {
+              is_there = true;
+            }
+          })
+        }
+        if (is_there) {
+          productItems.push(product);
+        }
+        setCartProducts([...productItems]);
+        LocalStorage.put('cart_items', JSON.stringify(cartProducts)).then(res=> {
+          console.log(res, 'saved');
+        });
+      }
     };
   }, [loadData, storeInfo, categories]);
   return (
