@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {View, Text, Image, Pressable} from 'react-native';
 import AppStyle from '../assets/style';
 import IonIcon from 'react-native-vector-icons/Ionicons';
+import {AppContext} from '../utils/GlobalContext';
 
 const Product = ({product, handleClick}) => {
+  let {addToCart} = useContext(AppContext);
   return (
     <Pressable onPress={()=> {handleClick()}} 
     key={product.id} style={{...AppStyle.productBox, marginBottom: 10}}>
@@ -11,7 +13,7 @@ const Product = ({product, handleClick}) => {
         {/* feature_category_image_url */}
         <Image
           style={AppStyle.image}
-          source={{uri: product.feature_category_image_url}}
+          source={{uri: product.feature_image}}
         />
       </View>
       <View
@@ -41,12 +43,12 @@ const Product = ({product, handleClick}) => {
           flexDirection: 'row',
         }}>
         <Pressable
-          onPress={() => alert('added to cart')}
+          onPress={() => addToCart(product)}
           style={AppStyle.cartButton}>
           <IonIcon name="cart-outline" color="#000" size={20} />
         </Pressable>
         <Pressable
-          onPress={() => alert('saved')}
+          onPress={() => {'saved'}}
           style={{
             ...AppStyle.cartButton,
             borderLeftWidth: 1,

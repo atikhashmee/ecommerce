@@ -13,6 +13,7 @@ import {heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-nati
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import { Rating, AirbnbRating } from 'react-native-elements';
 import {useNavigation} from '@react-navigation/native';
+import {AppContext} from '../utils/GlobalContext';
 import {
     Container,
     Content,
@@ -38,6 +39,7 @@ import {
 export default function ProductDetail(props) {
     console.log(props.route.params.product_id, 'props');
     let [modalVisible, setmodalVisible] = useState(false);
+    let {cartProducts, addToCart} = useContext(AppContext);
     const navigation = useNavigation();
     let [variationImages, setvariationImages] = useState([
         'https://images.unsplash.com/photo-1533228100845-08145b01de14?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=378&q=80',
@@ -166,7 +168,7 @@ export default function ProductDetail(props) {
                     <Text>
                         <Icon name='cart-outline' style={{ color: '#000' }} />
                         <Badge info> 
-                            <Text style={{ color: '#fff' }}>2</Text>
+                            <Text style={{ color: '#fff' }}>{cartProducts.length}</Text>
                         </Badge>
                     </Text>
                 </Button>

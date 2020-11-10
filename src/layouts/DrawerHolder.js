@@ -65,7 +65,7 @@ const DrawerHolder = () => {
 
   useEffect(()=>{
     LocalStorage.get('cart_items').then(res=> {
-      console.log(res, 'cart_itsms');
+      setCartProducts(JSON.parse(res));
     })
   }, [cartProducts])
 
@@ -122,7 +122,8 @@ const DrawerHolder = () => {
           method: 'POST',
           body: formD,
         });
-      }, 
+      },
+      cartProducts,
       products,
       storeInfo,
       categories,
@@ -144,23 +145,44 @@ const DrawerHolder = () => {
       addToCart (product) {
         let productItems = [...cartProducts];
         let is_there = false;
-        if (productItems.length>0) {
-          productItems.forEach(item => {
+        if (cartProducts.length>0) {
+          cartProducts.forEach(item => {
             if (item.id === product.id) {
               is_there = true;
             }
           })
         }
-        if (is_there) {
+        
+        if (!is_there) {
           productItems.push(product);
+          setCartProducts(cartProducts=>[...cartProducts, product]);
         }
-        setCartProducts([...productItems]);
-        LocalStorage.put('cart_items', JSON.stringify(cartProducts)).then(res=> {
+        LocalStorage.put('cart_items', JSON.stringify(productItems)).then(res=> {
           console.log(res, 'saved');
         });
-      }
+      },
+      removeFromCart (product) {
+        let productItems = [...cartProducts];
+        let is_there = false;
+        if (cartProducts.length>0) {
+          cartProducts.forEach(item => {
+            if (item.id === product.id) {
+              is_there = true;
+            }
+          })
+        }
+        
+        if (is_there) {
+          productItems.splice(productItems.indexOf(product), 1);
+          setCartProducts([...productItems]);
+        }
+        console.log(productItems, productItems.length, 'lllll');
+        LocalStorage.put('cart_items', JSON.stringify(productItems)).then(res=> {
+          console.log(res, 'saved');
+        });
+      },
     };
-  }, [loadData, storeInfo, categories]);
+  }, [loadData, storeInfo, categories, cartProducts]);
   return (
     <AppContext.Provider value={appContextVal}>
       <Drawer.Navigator

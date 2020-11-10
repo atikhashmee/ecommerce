@@ -5,6 +5,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import Home from '../screens/Home';
 import ProductDetail from '../screens/ProductDetail';
+import Checkout from '../screens/Checkout';
 import AllCategory from '../screens/AllCategory';
 import {
   widthPercentageToDP as wp,
@@ -161,6 +162,30 @@ function Dashboard(props) {
         <Authenticate.Screen
           name="product_detail"
           component={ProductDetail}
+          options={{
+            title: 'Detail',
+            headerShown: false,
+            headerTintColor: '#000',
+            headerStyle: {
+              backgroundColor: '#fff',
+              elevation: 1,
+            },
+            headerTitleStyle: {
+              fontFamily: 'Montserrat-Light',
+              fontWeight: 'bold',
+              position: 'absolute',
+              left: screenWidth / 4,
+              top: -15,
+              color: '#000',
+            },
+            headerBackImage: () => {
+              return <IonIcon name="ios-arrow-back" color="#000" size={30} />;
+            },
+          }}
+        />
+        <Authenticate.Screen
+          name="checkout"
+          component={Checkout}
           options={{
             title: 'Detail',
             headerShown: false,

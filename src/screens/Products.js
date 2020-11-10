@@ -38,6 +38,7 @@ import {
 
 const Products = (props) => {
   const navigation = useNavigation();
+  let {cartProducts} = useContext(AppContext);
   return (
     <Container>
       <Header transparent hasTabs>
@@ -68,15 +69,15 @@ const Products = (props) => {
                 <Icon name='heart-outline' type="Ionicons" style={{ color: '#000' }} />
                 <Text>Wishlists</Text>
             </Button>
-            <Button>
+            <Button onPress={()=>{}}>
               <Text>
                 <Icon name='cart-outline' style={{ color: '#000' }} />
                 <Badge info> 
-                    <Text style={{ color: '#fff' }}>2</Text>
+                  <Text style={{ color: '#fff' }}>{cartProducts.length}</Text>
                 </Badge>
               </Text>
             </Button>
-            <Button   onPress={()=>{}}
+            <Button   onPress={()=>{navigation.navigate('checkout')}}
                 style={{ backgroundColor: '#DB1C2B', height: 50, width: 50, borderRadius: 10}}>
                     <Text style={{ color: '#fff' }}>Checkout</Text>
                 </Button>
