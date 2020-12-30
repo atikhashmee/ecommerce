@@ -73,7 +73,7 @@ const Products = (props) => {
               <Text>
                 <Icon name='cart-outline' style={{ color: '#000' }} />
                 <Badge info> 
-                  <Text style={{ color: '#fff' }}>{cartProducts.length}</Text>
+                  <Text style={{ color: '#fff' }}>{cartProducts?cartProducts.length:0}</Text>
                 </Badge>
               </Text>
             </Button>

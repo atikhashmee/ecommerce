@@ -12,7 +12,7 @@ import {
 import CustomDrawerContent from './CustomDrawerContent';
 import Dashboard from './Dashboard';
 
-const baseUrl = 'http://mpoints.xyz/api/';
+const baseUrl = 'http://192.168.0.101/idea-ecom2/public/api/';
 const defaultArr = {
   store_id: 1,
   api_token: '2y12QoRuPscrVSVZcPCREXSO9gcY8u0FQXP8EBmfMWnltjsoqyWhaNMO',

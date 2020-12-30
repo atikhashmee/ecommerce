@@ -8,12 +8,7 @@ import {
   StyleSheet,
   ActivityIndicator,
 } from 'react-native';
-import AppStyle from '../assets/style';
-import IonIcon from 'react-native-vector-icons/Ionicons';
 import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
-import Product from '../components/Product';
-import {AppContext} from '../utils/GlobalContext';
-import ProductFilter from '../components/ProductFilter';
 import {useNavigation} from '@react-navigation/native';
 import {
   Container,
@@ -34,25 +29,13 @@ import {
   TabHeading,
   List, 
   ListItem, 
-  Thumbnail,Item,Input,
+  Thumbnail,
   Footer,
   FooterTab,
 } from 'native-base';
-import { parse } from '@babel/core';
 
 const Checkout = (props) => {
   const navigation = useNavigation();
-  let {cartProducts, removeFromCart} = useContext(AppContext);
-  let [totalPrice, setTotalPrice] = useState(0);
-  useEffect(()=> {
-        if (cartProducts.length>0) {
-            let price = 0;
-            cartProducts.forEach(item=>{
-                price += parseFloat(item.price);
-            });
-            setTotalPrice(price);
-        }
-  }, [totalPrice])
   return (
     <Container>
       <Header transparent hasTabs>
@@ -71,25 +54,7 @@ const Checkout = (props) => {
         </Right>
       </Header>
       <Content>
-        <List>
-            {cartProducts.length> 0 && cartProducts.map((item, key) => <ListItem key={key} thumbnail>
-                <Left>
-                    <Thumbnail square source={{ uri: item.feature_image }} />
-                </Left>
-                <Body>
-                    <Text>{item.name}</Text>
-                    <Text note numberOfLines={1}>{item.price}</Text>
-                </Body>
-                <Right style={{ flex: 1, flexDirection: 'row' }}>
-                <Item regular style={{ flexBasis: '50%' }}>
-                    <Input value='20' />
-                </Item>
-                    <Button transparent  onPress={()=>{removeFromCart(item)}}>
-                    <Icon name='close-outline' type="Ionicons" style={{ color: '#000' }} />
-                    </Button>
-                </Right>
-            </ListItem>)}
-        </List>
+          <Text>Hello world</Text>
       </Content>
       <Footer>
           <FooterTab style={{ backgroundColor: '#fff' }}>
@@ -98,9 +63,9 @@ const Checkout = (props) => {
                 <Text>Store</Text>
             </Button>
             <Button>
-                <Text>${totalPrice}</Text>
+                <Text>$12</Text>
             </Button>
-            <Button   onPress={()=>{removeFromCart(item)}}
+            <Button 
                 style={{ backgroundColor: '#DB1C2B', height: 50, width: 50, borderRadius: 10}}>
                     <Text style={{ color: '#fff' }}>Place Order</Text>
                 </Button>
