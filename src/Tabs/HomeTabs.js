@@ -4,6 +4,7 @@ import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
 import HomePage from '../tabComponents/HomePage';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import Account from '../tabComponents/Account';
 
 const CartView = () => (
   <View style={[styles.scene, {backgroundColor: '#ff4081'}]} />
@@ -12,6 +13,8 @@ const CartView = () => (
 const WishLists = () => (
   <View style={[styles.scene, {backgroundColor: '#673ab7'}]} />
 );
+
+
 
 const initialLayout = {width: Dimensions.get('window').width};
 
@@ -26,12 +29,14 @@ export default function HomeTabs({navigation}) {
       color: '#020202',
     },
     {key: 'cart', title: 'Cart', icon: 'md-cart-outline', color: '#020202'},
+    {key: 'Account', title: 'Account', icon: 'person-outline', color: '#020202'},
   ]);
 
   const renderScene = SceneMap({
     home: HomePage,
     cart: CartView,
     wishlist: WishLists,
+    Account: Account,
   });
 
   return (

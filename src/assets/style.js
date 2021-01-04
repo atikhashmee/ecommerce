@@ -139,6 +139,11 @@ import {
         flexBasis: '15%',
         marginRight: 10
       },
+      categoryCard: {
+        textAlign: 'center', 
+        alignItems: 'center', 
+        padding: 0
+      },
       categoryIconHolder: {
         backgroundColor: '#eee',
         padding: 20,

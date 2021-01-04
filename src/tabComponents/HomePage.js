@@ -20,6 +20,7 @@ import ExpressView from '../dashboard/ExpressView';
 import {AppContext} from '../utils/GlobalContext';
 const {width, height} = Dimensions.get('window');
 import { useNavigation } from '@react-navigation/native';
+import CategoryCardItem from '../dashboard/components/CategoryCardItem'
 
 export default function HomePage() {
   let {products} = React.useContext(AppContext);
@@ -48,31 +49,7 @@ export default function HomePage() {
             marginBottom: 10,
           }}>
           <View style={{flex: 1, flexDirection: 'row'}}>
-            <Pressable
-              style={AppStyle.categoryEachBox}
-              onPress={() => {
-                navigation.navigate('allcategory', {
-                  user: 'jane',
-                });
-              }}>
-              <View style={AppStyle.categoryIconHolder}>
-                <IonIcon
-                  name="list"
-                  size={20}
-                  style={{textAlign: 'center'}}
-                  color="#000"
-                />
-              </View>
-              <View
-                style={{
-                  textAlign: 'center',
-                  verticalAlign: 'center',
-                  paddingLeft: 10,
-                  paddingRight: 5,
-                }}>
-                <Text  style={{textAlign: 'center', fontFamily: 'Oswald-Regular'}}>All</Text>
-              </View>
-            </Pressable>
+            <CategoryCardItem name={'All'} routeName={'allcategory'} id={null} iconName={'format-list-bulleted'} />
             <View>
               <Categories navigation={navigation} />
             </View>
