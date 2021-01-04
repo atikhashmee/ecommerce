@@ -5,7 +5,6 @@ import Login  from '../components/page/Login'
 export default function Account() {
     return (<>
         <Login />
-        <View style={[styles.scene, {backgroundColor: 'blue'}]} />
     </>);
 }
 

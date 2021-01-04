@@ -8,6 +8,10 @@ export default function Login (props) {
     const [secureTxtEntry, setSecureTxtEntry] = React.useState(true);
     return (
             <View style={styles.container}>
+                {/* logo section */}
+                <View style={styles.logo_section}>
+                    <Title>Idea House Shop</Title>
+                </View>
                 <View style={styles.formContainer}>
                     <TextInput  
                     mode={'outlined'} 
@@ -16,7 +20,7 @@ export default function Login (props) {
                     onChangeText={text => setText(text)} 
                     placeholder={'Email or Mobile Number'}
                     />
-                    <View style={{ position: 'relative' }}>
+                    <View style={{ position: 'relative', marginTop: 10 }}>
                     <TextInput  
                     mode={'outlined'}
                     secureTextEntry={secureTxtEntry}  
@@ -34,26 +38,27 @@ export default function Login (props) {
                         </TouchableOpacity>
                     </View>
                     <Title style={{ textAlign:'right' }}>Forgot your Password?</Title>
-                    <Button icon="camera" mode="contained" onPress={() => console.log('Pressed')}>
-                        Press me
+                    <Button icon="lock" mode="contained" onPress={() => console.log('Pressed')}>
+                        Login
                     </Button>
                 </View>
-                
+                {/* sign up section */}
+                <View style={styles.footerSection}>
+                    <Title>Don't have account? Create one</Title>
+                </View>
             </View>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
-        flex: 4,
+        flex: 1,
         width: '100%',
-        borderColor: 'red', 
-        borderWidth: 1,
+        alignContent: 'center',
+        justifyContent: 'space-between',
+        backgroundColor: '#fff',
     },
-    formContainer: { 
-        flexBasis:'50%', 
-        borderColor: 'red', 
-        borderWidth: 1,
+    formContainer: {
         paddingHorizontal: 20,
     }
 });
