@@ -1,8 +1,10 @@
 import React from 'react';
 import {TouchableHighlight, Text, StyleSheet} from 'react-native';
-export default props => {
+export default (props) => {
   return (
-    <TouchableHighlight style={{...props.style, ...button.holder}} onPress={props.handleClick}>
+    <TouchableHighlight
+      style={{...props.style, ...button.holder}}
+      onPress={props.handleClick}>
       <Text style={button.buttonText}>{props.children}</Text>
     </TouchableHighlight>
   );
