@@ -60,5 +60,16 @@ const styles = StyleSheet.create({
     },
     formContainer: {
         paddingHorizontal: 20,
+        flexGrow: 1,
+        justifyContent: 'center',
+    },
+    footerSection: {
+        textAlign: 'center',
+        alignItems: 'center',
+    },
+    logo_section: {
+        flexBasis: '25%',
+        alignItems: 'center',
+        justifyContent: 'center',
     }
 });
