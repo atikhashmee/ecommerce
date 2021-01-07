@@ -15,6 +15,7 @@ import {
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
 import IonIcon from 'react-native-vector-icons/Ionicons';
+import Feather from 'react-native-vector-icons/Feather';
 import {Rating, AirbnbRating} from 'react-native-elements';
 import {useNavigation} from '@react-navigation/native';
 import {
@@ -38,17 +39,35 @@ import {
   FooterTab,
 } from 'native-base';
 
-export default function TouchSpin() {
+export default function TouchSpin({updateCount, initialCount}) {
+  const [counter, setCounter] = React.useState(initialCount??1);
+  React.useEffect(()=> {
+    updateCount(counter);
+  }, [counter]);
+  function increament() {
+    setCounter(counter + 1);
+  }
+  function decremeant() {
+    if (counter > 1) {
+      setCounter(counter - 1);
+    }
+  }
   return (
     <View style={styles.spinContainer}>
-      <Pressable style={styles.item} onPress={() => {}}>
-        <Text style={{color: '#000'}}>-</Text>
+      <Pressable
+        style={styles.item}
+        onPress={() => {
+          decremeant();
+        }}>
+        <Feather name="minus" color="#000" size={18} />
       </Pressable>
-      <Text style={{...styles.item, alignSelf: 'center', paddingVertical: 4}}>
-        20
-      </Text>
-      <Pressable style={styles.item} onPress={() => {}}>
-        <Text style={{color: '#000'}}>+</Text>
+      <Text style={{marginHorizontal: 10, fontSize: 18}}>{counter}</Text>
+      <Pressable
+        style={styles.item}
+        onPress={() => {
+          increament();
+        }}>
+        <Feather name="plus" color="#000" size={18} />
       </Pressable>
     </View>
   );
@@ -56,17 +75,16 @@ export default function TouchSpin() {
 
 const styles = StyleSheet.create({
   spinContainer: {
-    flex: 1,
-    width: '100%',
-    height: '100%',
+    width: '50%',
+    padding: 2,
     flexDirection: 'row',
   },
   item: {
-    paddingHorizontal: 20,
-    borderWidth: 1,
-    borderColor: '#d3d3d3',
     alignItems: 'center',
     justifyContent: 'center',
     textAlign: 'center',
+    backgroundColor: '#d3d3d3',
+    borderRadius: 300,
+    padding: 3,
   },
 });
