@@ -182,7 +182,7 @@ export default function CartView() {
 
   return (
     <View style={[styles.scene, {backgroundColor: '#ffff'}]}>
-      <ScrollView style={{ backgroundColor: '#d4d4d4' }}>
+      <ScrollView style={{ backgroundColor: '#dcdcdc' }}>
         {cartArr.length > 0 &&
           cartArr.map((item, index) => {
             return (
@@ -207,8 +207,6 @@ export default function CartView() {
       </ScrollView>
       <View
         style={{
-          position: 'absolute',
-          bottom: 0,
           width: '100%',
           borderTopLeftRadius: 30,
           borderTopRightRadius: 30,
@@ -279,7 +277,7 @@ const styles = StyleSheet.create({
 
   },
   imageBox: {
-    padding: 20,
+    padding: 15,
     flexBasis: '20%',
     borderWidth: 1,
     borderColor: '#d3d3d3',
@@ -293,8 +291,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-around',
-    maxHeight: 150,
-    height: 150,
+    maxHeight: 100,
+    height: 100,
+    // borderWidth: 1,
+    // borderColor: 'red',
   },
   contentArea: {
     flexBasis: '60%',

@@ -6,11 +6,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Account from '../tabComponents/Account';
 import CartView from '../tabComponents/CartView';
-
-
-const WishLists = () => (
-  <View style={[styles.scene, {backgroundColor: '#673ab7'}]} />
-);
+import WishLists from '../tabComponents/WishLists';
 
 const initialLayout = {width: Dimensions.get('window').width};
 export default function HomeTabs({navigation}) {
