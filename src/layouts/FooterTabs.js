@@ -14,8 +14,19 @@ import {
   Button,
 } from 'native-base';
 import {useNavigation} from '@react-navigation/native';
+import AuthModal from '../auth/AuthModal';
 export default function FooterTabs() {
   const navigation = useNavigation();
+  const [isAuthenticated, setAuthenticated] = React.useState(false);
+  const [isModalOpen, setIsModalOpen] = React.useState(false);
+  React.useEffect(() => {});
+  function checkAuthenticate() {
+    if (isAuthenticated) {
+      navigation.navigate('account');
+    } else {
+      setIsModalOpen(true);
+    }
+  }
   return (
     <Footer>
       <FooterTab>
@@ -41,7 +52,9 @@ export default function FooterTabs() {
           </View>
           <Text style={styles.tabTextStyle}>WishList</Text>
         </Button>
-        <Button style={styles.tabHeading} onPress={() => {
+        <Button
+          style={styles.tabHeading}
+          onPress={() => {
             navigation.navigate('cart_view');
           }}>
           <View>
@@ -56,13 +69,17 @@ export default function FooterTabs() {
           </View>
           <Text style={styles.tabTextStyle}>Cart</Text>
         </Button>
-        <Button style={styles.tabHeading} onPress={() => {
-            navigation.navigate('account');
+        <Button
+          style={styles.tabHeading}
+          onPress={() => {
+            checkAuthenticate();
           }}>
           <Icon name="user" style={styles.iconStyle} type="Feather" />
           <Text style={styles.tabTextStyle}>Account</Text>
         </Button>
       </FooterTab>
+      {isModalOpen &&  <AuthModal modalVisible={isModalOpen} setModalVisible={setIsModalOpen} />}
+     
     </Footer>
   );
 }

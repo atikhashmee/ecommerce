@@ -1,5 +1,11 @@
 import React, {PureComponent} from 'react';
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Pressable,
+  TouchableOpacity,
+} from 'react-native';
 import {
   TextInput,
   Provider as PaperProvider,
@@ -47,6 +53,7 @@ export default function Login(props) {
         <Title style={{textAlign: 'right'}}>Forgot your Password?</Title>
         <Button
           icon="lock"
+          style={{padding: 10, backgroundColor: 'black'}}
           mode="contained"
           onPress={() => console.log('Pressed')}>
           Login
@@ -54,7 +61,15 @@ export default function Login(props) {
       </View>
       {/* sign up section */}
       <View style={styles.footerSection}>
-        <Title>Don't have account? Create one</Title>
+        <Title>
+          Don't have account?{' '}
+          <Pressable
+            onPress={() => {
+              props.swithLoginSignUp('signup');
+            }}>
+            <Text style={{color: '#a85032', fontSize: 18}}>Sign Up</Text>
+          </Pressable>
+        </Title>
       </View>
     </View>
   );

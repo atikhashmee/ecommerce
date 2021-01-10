@@ -16,7 +16,7 @@ import {
 } from 'react-native-paper';
 import Feather from 'react-native-vector-icons/Feather';
 
-export default function SignUp() {
+export default function SignUp(props) {
   const [text, setText] = React.useState('');
   const [secureTxtEntry, setSecureTxtEntry] = React.useState(true);
   const [checked, setChecked] = React.useState(false);
@@ -105,7 +105,7 @@ export default function SignUp() {
             Already have an account?
             <Pressable
               onPress={() => {
-                alert('hello world');
+                props.swithLoginSignUp('login');
               }}>
               <Text style={{color: '#a85032', fontSize: 18}}>Sign In</Text>
             </Pressable>
