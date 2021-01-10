@@ -16,6 +16,7 @@ import AccountPage from '../screens/AccountPage';
 import WishLists from '../tabComponents/WishLists';
 import CartView from '../tabComponents/CartView';
 import Account from '../tabComponents/Account';
+import SignUp from '../components/page/SignUp';
 
 const Authenticate = createStackNavigator();
 const screenWidth = Math.round(Dimensions.get('window').width);
@@ -165,7 +166,7 @@ function Dashboard(props) {
         />
         <Authenticate.Screen
           name="account"
-          component={AccountPage}
+          component={SignUp}
           options={{
             title: 'Account',
             headerShown: true,
