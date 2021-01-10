@@ -86,29 +86,13 @@ export default function WishLists() {
       price: 150,
     },
     {
-      id: 2,
-      name: 'Product Name 3',
-      time: '2 days ago',
-      image:
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR5cjupfd1pDuktX3dP1hp8_l1nXsLAFN1OGQ&usqp=CAU',
-      price: 5550,
-    },
-    {
       id: 3,
       name: 'Product Name 3',
       time: '2 days ago',
       image:
         'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR5cjupfd1pDuktX3dP1hp8_l1nXsLAFN1OGQ&usqp=CAU',
       price: 5550,
-    },
-    {
-      id: 4,
-      name: 'Product Name 3',
-      time: '2 days ago',
-      image:
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR5cjupfd1pDuktX3dP1hp8_l1nXsLAFN1OGQ&usqp=CAU',
-      price: 5550,
-    },
+    }
   ]);
   function removeItem(item) {
     let removableItems = [...wishListsItems];

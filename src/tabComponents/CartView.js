@@ -3,7 +3,8 @@ import {View, Text, Modal, Image, StyleSheet, ScrollView} from 'react-native';
 import {List, Title, Button, Checkbox} from 'react-native-paper';
 import TouchSpin from '../components/TouchSpin';
 import FooterTabs from '../layouts/FooterTabs';
-import {Container, Content} from 'native-base';
+import {Container, Header, Left, Body, Right, Icon, Content} from 'native-base';
+import { useNavigation } from '@react-navigation/native';
 
 function CartItem({product, category, updateCartArr}) {
   const [checked, setChecked] = React.useState(false);
@@ -64,6 +65,7 @@ function CartItem({product, category, updateCartArr}) {
 export default function CartView() {
   const [modalVisible, setModalVisible] = React.useState(true);
   const [totalCartPrice, setTotalCartPrice] = React.useState(0);
+  const navigation = useNavigation();
   const [checked, setChecked] = React.useState(false);
   const [cartArr, setCartArr] = React.useState([
     {
@@ -184,6 +186,23 @@ export default function CartView() {
 
   return (
     <Container>
+      <Header style={{ backgroundColor: '#fff' }}>
+        <Left>
+          <Button transparent onPress={()=>{
+            navigation.navigate('home');
+          }}>
+            <Icon name="arrow-back" />
+          </Button>
+        </Left>
+        <Body>
+          <Title>Shopping Cart</Title>
+        </Body>
+        <Right>
+          <Button transparent>
+            <Icon name="trash-2" type="Feather" />
+          </Button>
+        </Right>
+      </Header>
       <Content>
         {cartArr.length > 0 &&
           cartArr.map((item, index) => {

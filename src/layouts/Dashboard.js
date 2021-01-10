@@ -15,6 +15,7 @@ import Products from '../screens/Products';
 import AccountPage from '../screens/AccountPage';
 import WishLists from '../tabComponents/WishLists';
 import CartView from '../tabComponents/CartView';
+import Account from '../tabComponents/Account';
 
 const Authenticate = createStackNavigator();
 const screenWidth = Math.round(Dimensions.get('window').width);
@@ -262,17 +263,42 @@ function Dashboard(props) {
           name="cart_view"
           component={CartView}
           options={{
+            headerShown: false,
             title: 'Shopping Cart',
             headerTintColor: '#fff',
             headerStyle: {
               backgroundColor: '#fff',
-              elevation: 0,
+              elevation: 5,
             },
             headerTitleStyle: {
               fontFamily: 'Montserrat-Light',
               fontWeight: 'bold',
               position: 'absolute',
-              left: screenWidth / 5,
+              left: 0,
+              top: -15,
+              color: '#000',
+            },
+            headerBackImage: () => {
+              return <IonIcon name="ios-arrow-back" color="#000" size={30} />;
+            },
+          }}
+        />
+        <Authenticate.Screen
+          name="account_page"
+          component={Account}
+          options={{
+            headerShown: false,
+            title: 'Account',
+            headerTintColor: '#fff',
+            headerStyle: {
+              backgroundColor: '#fff',
+              elevation: 5,
+            },
+            headerTitleStyle: {
+              fontFamily: 'Montserrat-Light',
+              fontWeight: 'bold',
+              position: 'absolute',
+              left: 0,
               top: -15,
               color: '#000',
             },

@@ -56,7 +56,9 @@ export default function FooterTabs() {
           </View>
           <Text style={styles.tabTextStyle}>Cart</Text>
         </Button>
-        <Button style={styles.tabHeading}>
+        <Button style={styles.tabHeading} onPress={() => {
+            navigation.navigate('account');
+          }}>
           <Icon name="user" style={styles.iconStyle} type="Feather" />
           <Text style={styles.tabTextStyle}>Account</Text>
         </Button>
