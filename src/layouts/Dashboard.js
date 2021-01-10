@@ -13,6 +13,8 @@ import {
 } from 'react-native-responsive-screen';
 import Products from '../screens/Products';
 import AccountPage from '../screens/AccountPage';
+import WishLists from '../tabComponents/WishLists';
+import CartView from '../tabComponents/CartView';
 
 const Authenticate = createStackNavigator();
 const screenWidth = Math.round(Dimensions.get('window').width);
@@ -232,37 +234,15 @@ function Dashboard(props) {
             },
           }}
         />
+      
         <Authenticate.Screen
-          name="Cases"
-          component={Cases}
+          name="wishLists"
+          component={WishLists}
           options={{
-            title: 'Cases',
+            title: 'Wish Lists',
             headerTintColor: '#fff',
             headerStyle: {
-              backgroundColor: '#5270E8',
-              elevation: 0,
-            },
-            headerTitleStyle: {
-              fontFamily: 'Montserrat-Light',
-              fontWeight: 'bold',
-              position: 'absolute',
-              left: screenWidth / 4,
-              top: -15,
-              color: '#f8f8f8',
-            },
-            headerBackImage: () => {
-              return <IonIcon name="ios-arrow-back" color="#fff" size={30} />;
-            },
-          }}
-        />
-        <Authenticate.Screen
-          name="create_case"
-          component={CreateCases}
-          options={{
-            title: 'New Case',
-            headerTintColor: '#fff',
-            headerStyle: {
-              backgroundColor: '#5270E8',
+              backgroundColor: '#fff',
               elevation: 0,
             },
             headerTitleStyle: {
@@ -271,13 +251,37 @@ function Dashboard(props) {
               position: 'absolute',
               left: screenWidth / 5,
               top: -15,
-              color: '#f8f8f8',
+              color: '#000',
             },
             headerBackImage: () => {
-              return <IonIcon name="ios-arrow-back" color="#fff" size={30} />;
+              return <IonIcon name="ios-arrow-back" color="#000" size={30} />;
             },
           }}
         />
+        <Authenticate.Screen
+          name="cart_view"
+          component={CartView}
+          options={{
+            title: 'Shopping Cart',
+            headerTintColor: '#fff',
+            headerStyle: {
+              backgroundColor: '#fff',
+              elevation: 0,
+            },
+            headerTitleStyle: {
+              fontFamily: 'Montserrat-Light',
+              fontWeight: 'bold',
+              position: 'absolute',
+              left: screenWidth / 5,
+              top: -15,
+              color: '#000',
+            },
+            headerBackImage: () => {
+              return <IonIcon name="ios-arrow-back" color="#000" size={30} />;
+            },
+          }}
+        />
+      
         <Authenticate.Screen
           name="anotther_screen"
           component={AnotherScreen}

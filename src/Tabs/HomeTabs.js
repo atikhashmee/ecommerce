@@ -2,14 +2,59 @@ import React from 'react';
 import {Text, View, Modal, StyleSheet, Dimensions} from 'react-native';
 import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
 import HomePage from '../tabComponents/HomePage';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Account from '../tabComponents/Account';
 import CartView from '../tabComponents/CartView';
 import WishLists from '../tabComponents/WishLists';
+import FooterTabs from '../layouts/FooterTabs';
+import {
+  Container,
+  TabHeading,
+  Icon,
+  Header,
+  Content,
+  Tab,
+  Tabs,
+  Badge,
+  FooterTab,
+  Footer,
+  Button,
+} from 'native-base';
+import {useNavigation} from '@react-navigation/native';
+import {Pressable} from 'react-native';
 
 const initialLayout = {width: Dimensions.get('window').width};
-export default function HomeTabs({navigation}) {
+
+function Tab1() {
+  return (
+    <View>
+      <Text>Tab 1</Text>
+    </View>
+  );
+}
+function Tab2() {
+  return (
+    <View>
+      <Text>Tab 2</Text>
+    </View>
+  );
+}
+function Tab3() {
+  return (
+    <View>
+      <Text>Tab 3</Text>
+    </View>
+  );
+}
+function Tab4() {
+  return (
+    <View>
+      <Text>Tab 4</Text>
+    </View>
+  );
+}
+export default function HomeTabs() {
+  const navigation = useNavigation();
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([
     {key: 'home', title: 'Home', icon: 'home-outline', color: '#020202'},
@@ -36,14 +81,12 @@ export default function HomeTabs({navigation}) {
   });
 
   return (
-    <TabView
-      renderTabBar={renderTabBar}
-      navigationState={{index, routes}}
-      renderScene={renderScene}
-      onIndexChange={setIndex}
-      initialLayout={initialLayout}
-      tabBarPosition="bottom"
-    />
+    <Container>
+      <Content> 
+        <HomePage />
+      </Content>
+      <FooterTabs />
+    </Container>
   );
 }
 
@@ -70,5 +113,74 @@ const renderTabBar = (props) => (
 const styles = StyleSheet.create({
   scene: {
     flex: 1,
-  },
+  }
 });
+// <TabView
+//   renderTabBar={renderTabBar}
+//   navigationState={{index, routes}}
+//   renderScene={renderScene}
+//   onIndexChange={setIndex}
+//   initialLayout={initialLayout}
+//   tabBarPosition="bottom"
+// />
+
+{
+  /* <Container>
+<Tabs style={{backgroundColor: '#fff'}} tabBarPosition={'bottom'}>
+  <Tab
+    heading={
+      <TabHeading style={styles.tabHeading}>
+        <Icon
+          name="home-outline"
+          style={styles.iconStyle}
+          type="Ionicons"
+        />
+        <Text style={styles.tabTextStyle}>Home</Text>
+      </TabHeading>
+    }>
+    <HomePage />
+  </Tab>
+  <Tab
+    heading={
+      <TabHeading style={styles.tabHeading}>
+        <View>
+          <Badge style={styles.badgeStyle} default>
+            <Text style={styles.badgeTextStyle}>2</Text>
+          </Badge>
+          <Icon name="heart" style={styles.iconStyle} type="Feather" />
+        </View>
+        <Text style={styles.tabTextStyle}>WishList</Text>
+      </TabHeading>
+    }>
+    <WishLists />
+  </Tab>
+  <Tab
+    heading={
+      <TabHeading style={styles.tabHeading}>
+        <View>
+          <Badge style={styles.badgeStyle} default>
+            <Text style={styles.badgeTextStyle}>2</Text>
+          </Badge>
+          <Icon
+            name="cart-outline"
+            style={styles.iconStyle}
+            type="Ionicons"
+          />
+        </View>
+        <Text style={styles.tabTextStyle}>Cart</Text>
+      </TabHeading>
+    }>
+    <CartView />
+  </Tab>
+  <Tab
+    heading={
+      <TabHeading style={styles.tabHeading}>
+        <Icon name="user" style={styles.iconStyle} type="Feather" />
+        <Text style={styles.tabTextStyle}>Account</Text>
+      </TabHeading>
+    }>
+    <Account />
+  </Tab>
+</Tabs>
+</Container> */
+}

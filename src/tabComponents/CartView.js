@@ -2,6 +2,8 @@ import React from 'react';
 import {View, Text, Modal, Image, StyleSheet, ScrollView} from 'react-native';
 import {List, Title, Button, Checkbox} from 'react-native-paper';
 import TouchSpin from '../components/TouchSpin';
+import FooterTabs from '../layouts/FooterTabs';
+import {Container, Content} from 'native-base';
 
 function CartItem({product, category, updateCartArr}) {
   const [checked, setChecked] = React.useState(false);
@@ -181,8 +183,8 @@ export default function CartView() {
   }, [cartArr]);
 
   return (
-    <View style={[styles.scene, {backgroundColor: '#ffff'}]}>
-      <ScrollView style={{ backgroundColor: '#dcdcdc' }}>
+    <Container>
+      <Content>
         {cartArr.length > 0 &&
           cartArr.map((item, index) => {
             return (
@@ -204,7 +206,7 @@ export default function CartView() {
               </View>
             );
           })}
-      </ScrollView>
+      </Content>
       <View
         style={{
           width: '100%',
@@ -219,7 +221,6 @@ export default function CartView() {
             height: 1,
             width: 1,
           },
-          elevation: 5,
           height: 70,
           backgroundColor: '#fff',
         }}>
@@ -253,7 +254,8 @@ export default function CartView() {
           </View>
         </View>
       </View>
-    </View>
+      <FooterTabs />
+    </Container>
   );
 }
 
@@ -274,7 +276,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#d3d3d3',
     borderRadius: 20,
-
   },
   imageBox: {
     padding: 15,
