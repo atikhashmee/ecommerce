@@ -19,8 +19,8 @@ import {Slider} from '../dashboard/Slider';
 import ExpressView from '../dashboard/ExpressView';
 import {AppContext} from '../utils/GlobalContext';
 const {width, height} = Dimensions.get('window');
-import { useNavigation } from '@react-navigation/native';
-import CategoryCardItem from '../dashboard/components/CategoryCardItem'
+import {useNavigation} from '@react-navigation/native';
+import CategoryCardItem from '../dashboard/components/CategoryCardItem';
 
 export default function HomePage() {
   let {products} = React.useContext(AppContext);
@@ -49,7 +49,12 @@ export default function HomePage() {
             marginBottom: 10,
           }}>
           <View style={{flex: 1, flexDirection: 'row'}}>
-            <CategoryCardItem name={'All'} routeName={'allcategory'} id={null} iconName={'format-list-bulleted'} />
+            <CategoryCardItem
+              name={'All'}
+              routeName={'allcategory'}
+              id={null}
+              iconName={'format-list-bulleted'}
+            />
             <View>
               <Categories navigation={navigation} />
             </View>
@@ -103,7 +108,6 @@ export default function HomePage() {
                         {item.frontEndTag !== 'category' ? (
                           <View
                             style={{
-                              flex: 1,
                               flexDirection: 'row',
                               justifyContent: 'space-between',
                             }}>
@@ -130,6 +134,7 @@ export default function HomePage() {
                             </Text>
                           </View>
                         )}
+
                         {item.frontEndTag !== 'category' ? (
                           <View
                             style={{

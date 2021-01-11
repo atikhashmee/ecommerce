@@ -59,7 +59,7 @@ export default function FooterTabs() {
           }}>
           <View>
             <Badge style={styles.badgeStyle} default>
-              <Text style={styles.badgeTextStyle}>2</Text>
+              <Text style={styles.badgeTextStyle}>102</Text>
             </Badge>
             <Icon
               name="cart-outline"
@@ -92,20 +92,22 @@ const styles = StyleSheet.create({
   },
   iconStyle: {
     color: '#000',
+    fontSize: 17,
   },
   badgeStyle: {
     position: 'absolute',
-    top: -10,
-    right: -5,
+    top: -5,
+    right: 0,
+    height: 20,
     zIndex: 10,
   },
   badgeTextStyle: {
     color: '#fff',
-    fontSize: 13,
+    fontSize: 10,
     borderRadius: 25,
   },
   tabTextStyle: {
     fontWeight: '600',
-    fontSize: 17,
+    fontSize: 15,
   },
 });

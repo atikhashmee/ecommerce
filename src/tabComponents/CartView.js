@@ -4,7 +4,7 @@ import {List, Title, Button, Checkbox} from 'react-native-paper';
 import TouchSpin from '../components/TouchSpin';
 import FooterTabs from '../layouts/FooterTabs';
 import {Container, Header, Left, Body, Right, Icon, Content} from 'native-base';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 
 function CartItem({product, category, updateCartArr}) {
   const [checked, setChecked] = React.useState(false);
@@ -186,11 +186,13 @@ export default function CartView() {
 
   return (
     <Container>
-      <Header style={{ backgroundColor: '#fff' }}>
+      <Header style={{backgroundColor: '#fff'}}>
         <Left>
-          <Button transparent onPress={()=>{
-            navigation.navigate('home');
-          }}>
+          <Button
+            transparent
+            onPress={() => {
+              navigation.navigate('home');
+            }}>
             <Icon name="arrow-back" />
           </Button>
         </Left>
