@@ -40,9 +40,9 @@ export default function SignUp(props) {
             animation="fadeInDownBig"
           />
         </View>
-        <Text style={[styles.iconColor, {textAlign: 'center', fontSize: 18}]}>
+        {/* <Text style={[styles.iconColor, {textAlign: 'center', fontSize: 18}]}>
           Sign Up
-        </Text>
+        </Text> */}
         <View style={styles.formContainer}>
           <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
             <View style={{flexBasis: '48%'}}>
@@ -143,7 +143,7 @@ export default function SignUp(props) {
             <FAB
               style={styles.authRoundButton}
               small
-              icon="arrow-right"
+              label="SIGN UP"
               onPress={() => {
                 alert('hllworld');
               }}
@@ -191,7 +191,7 @@ export default function SignUp(props) {
         {/* sign up section */}
         <View style={styles.footerSection}>
           <View style={{flexDirection: 'row'}}>
-            <Title>Don't have account?</Title>
+            <Title>Already Have an account?</Title>
             <Pressable
               onPress={() => {
                 props.swithLoginSignUp('login');
@@ -221,7 +221,6 @@ const styles = StyleSheet.create({
   },
   formContainer: {
     paddingHorizontal: 20,
-    flexGrow: 1,
     justifyContent: 'center',
   },
   footerSection: {
@@ -229,7 +228,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   logo_section: {
-    flexBasis: '10%',
+    flexBasis: '15%',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -257,9 +256,6 @@ const styles = StyleSheet.create({
     color: '#81368f',
   },
   authRoundButton: {
-    position: 'relative',
-    right: 0,
-    bottom: 0,
     backgroundColor: '#81368f',
   },
   socialIconHolder: {
