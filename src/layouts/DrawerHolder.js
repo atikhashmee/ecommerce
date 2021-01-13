@@ -29,6 +29,12 @@ const DrawerHolder = () => {
   let [loadData, setLoadData] = useState(null);
   let [categories, setCategories] = useState([]);
   let [cartProducts, setCartProducts] = useState([]);
+  let [auth, setAuth] = useState({
+    user: null,
+    isLoggedin: false,
+    auth_token: null,
+  })
+
   useEffect(() => {
     if (loadData !== null) {
       setStoreInfo(loadData.data.store_details);
@@ -68,6 +74,10 @@ const DrawerHolder = () => {
       setCartProducts(JSON.parse(res));
     })
   }, [cartProducts])
+
+  useEffect(()=>{
+      console.log(auth, 'auth is populated');
+  }, [auth]);
 
   const appContextVal = React.useMemo(() => {
     return {
@@ -127,6 +137,7 @@ const DrawerHolder = () => {
       products,
       storeInfo,
       categories,
+      auth,
       categoryToggleItem(category_id, subCategory_id) {
         let modifyCate = [...categories];
         modifyCate.forEach((category) => {
@@ -181,6 +192,15 @@ const DrawerHolder = () => {
           console.log(res, 'saved');
         });
       },
+      modifyAuth(user, isLoggedin, auth_token) {
+        console.log('function is called');
+        setAuth({
+          user: user,
+          isLoggedin: isLoggedin,
+          auth_token: auth_token
+        });
+      },
+
     };
   }, [loadData, storeInfo, categories, cartProducts]);
   return (

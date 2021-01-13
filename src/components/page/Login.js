@@ -47,7 +47,7 @@ export default function Login(props) {
           <TextInput
             mode={'flat'}
             placeholder="Email"
-            placeholderTextColor={styles.iconColor}
+            placeholderTextColor='#81368f'
             value={text}
             style={styles.textInputStyle}
             onChangeText={(text) => setText(text)}
@@ -61,7 +61,7 @@ export default function Login(props) {
             mode={'flat'}
             secureTextEntry={secureTxtEntry}
             placeholder="Password"
-            placeholderTextColor={styles.iconColor}
+            placeholderTextColor="#81368f"
             value={text}
             style={styles.textInputStyle}
             onChangeText={(text) => setText(text)}

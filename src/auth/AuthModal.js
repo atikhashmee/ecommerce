@@ -25,33 +25,44 @@ export default function AuthModal({modalVisible, setModalVisible}) {
       setSignUp(true);
     }
   }
+  function updateModalVisibility(value) {
+    setModalVisible(value);
+  }
   return (
-    <View>
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => {
-          alert('Modal has been closed.');
-        }}>
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <View style={styles.modalHeader}>
-              <Pressable
-                onPress={() => {
-                  setModalVisible(!modalVisible);
-                }}>
-                <Icon name="x" type="Feather" />
-              </Pressable>
-            </View>
-            <View style={styles.modalContent}>
-              {isLogin && <Login swithLoginSignUp={swithLoginSignUp} />}
-              {isSignUp && <SignUp swithLoginSignUp={swithLoginSignUp} />}
-            </View>
+    <Modal
+      animationType="slide"
+      transparent={true}
+      visible={modalVisible}
+      onRequestClose={() => {
+        alert('Modal has been closed.');
+      }}>
+      <View style={styles.centeredView}>
+        <View style={styles.modalView}>
+          <View style={styles.modalHeader}>
+            <Pressable
+              onPress={() => {
+                setModalVisible(!modalVisible);
+              }}>
+              <Icon name="x" type="Feather" />
+            </Pressable>
+          </View>
+          <View style={styles.modalContent}>
+            {isLogin && (
+              <Login
+                swithLoginSignUp={swithLoginSignUp}
+                updateModalVisibility={updateModalVisibility}
+              />
+            )}
+            {isSignUp && (
+              <SignUp
+                swithLoginSignUp={swithLoginSignUp}
+                updateModalVisibility={updateModalVisibility}
+              />
+            )}
           </View>
         </View>
-      </Modal>
-    </View>
+      </View>
+    </Modal>
   );
 }
 
@@ -65,8 +76,6 @@ const styles = StyleSheet.create({
     width: Dimensions.get('screen').width,
     height: Dimensions.get('screen').height,
     backgroundColor: 'white',
-    borderRadius: 20,
-    padding: 10,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -79,8 +88,11 @@ const styles = StyleSheet.create({
   },
   modalHeader: {
     flexBasis: '10%',
+    minHeight: '10%',
   },
   modalContent: {
     flexBasis: '90%',
+    minHeight: '90%',
+    flexWrap: 'wrap',
   },
 });
