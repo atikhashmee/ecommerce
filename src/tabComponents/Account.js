@@ -13,27 +13,44 @@ import {
 import Login from '../components/page/Login';
 import AccountPage from '../screens/AccountPage';
 import FooterTabs from '../layouts/FooterTabs';
-import {Container, Button, Header, Left, Title, Body, Right, Icon, Content} from 'native-base';
+import {
+  Container,
+  Button,
+  Header,
+  Left,
+  Title,
+  Body,
+  Right,
+  Icon,
+  Content,
+} from 'native-base';
+import {AppContext} from '../utils/GlobalContext';
 
 export default function Account() {
   const navigation = useNavigation();
+  let {logout} = React.useContext(AppContext);
   // React.useEffect(() => {
   //   navigation.navigate('account');
   // }, []);
   return (
     <Container>
-      <Header style={{backgroundColor: '#fff'}}>
+      <Header style={{backgroundColor: '#fff', color: '#000'}}>
         <Left>
           <Button transparent>
-            <Icon name="arrow-back" />
+            <Icon name="arrow-back" style={{color: '#000'}} />
           </Button>
         </Left>
         <Body>
-          <Title>Shopping Cart</Title>
+          <Title style={{color: '#000'}}>Account</Title>
         </Body>
         <Right>
-          <Button transparent>
-            <Icon name="trash-2" type="Feather" />
+          <Button
+            transparent
+            onPress={() => {
+              logout();
+              navigation.navigate('home');
+            }}>
+            <Icon name="log-out" style={{color: '#000'}} type="Feather" />
           </Button>
         </Right>
       </Header>

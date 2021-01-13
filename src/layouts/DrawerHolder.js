@@ -33,7 +33,7 @@ const DrawerHolder = () => {
     user: null,
     isLoggedin: false,
     auth_token: null,
-  })
+  });
 
   useEffect(() => {
     if (loadData !== null) {
@@ -56,9 +56,9 @@ const DrawerHolder = () => {
       categories.forEach((ct) => {
         if (ct.items.length > 0) {
           ct.items.unshift({
-            id: ct.id+'_',
+            id: ct.id + '_',
             category_name: 'See All products',
-            isOpened : false,
+            isOpened: false,
             items: [],
           });
           ct.items.forEach((subs) => {
@@ -69,14 +69,22 @@ const DrawerHolder = () => {
     }
   }, [categories]);
 
-  useEffect(()=>{
-    LocalStorage.get('cart_items').then(res=> {
+  useEffect(() => {
+    LocalStorage.get('cart_items').then((res) => {
       setCartProducts(JSON.parse(res));
-    })
-  }, [cartProducts])
+    });
+  }, [cartProducts]);
 
-  useEffect(()=>{
-      console.log(auth, 'auth is populated');
+  useEffect(() => {
+    if (auth.user !== null) {
+      LocalStorage.put('auth', JSON.stringify(auth)).then((res) => {
+        console.log(auth, res, 'auth is populated');
+      });
+    } else {
+      LocalStorage.get('auth').then((res) => {
+        setAuth(JSON.parse(res));
+      });
+    }
   }, [auth]);
 
   const appContextVal = React.useMemo(() => {
@@ -153,54 +161,63 @@ const DrawerHolder = () => {
         });
         setCategories([...modifyCate]);
       },
-      addToCart (product) {
+      addToCart(product) {
         let productItems = [...cartProducts];
         let is_there = false;
-        if (cartProducts.length>0) {
-          cartProducts.forEach(item => {
+        if (cartProducts.length > 0) {
+          cartProducts.forEach((item) => {
             if (item.id === product.id) {
               is_there = true;
             }
-          })
+          });
         }
-        
+
         if (!is_there) {
           productItems.push(product);
-          setCartProducts(cartProducts=>[...cartProducts, product]);
+          setCartProducts((cartProducts) => [...cartProducts, product]);
         }
-        LocalStorage.put('cart_items', JSON.stringify(productItems)).then(res=> {
-          console.log(res, 'saved');
-        });
+        LocalStorage.put('cart_items', JSON.stringify(productItems)).then(
+          (res) => {
+            console.log(res, 'saved');
+          },
+        );
       },
-      removeFromCart (product) {
+      removeFromCart(product) {
         let productItems = [...cartProducts];
         let is_there = false;
-        if (cartProducts.length>0) {
-          cartProducts.forEach(item => {
+        if (cartProducts.length > 0) {
+          cartProducts.forEach((item) => {
             if (item.id === product.id) {
               is_there = true;
             }
-          })
+          });
         }
-        
+
         if (is_there) {
           productItems.splice(productItems.indexOf(product), 1);
           setCartProducts([...productItems]);
         }
         console.log(productItems, productItems.length, 'lllll');
-        LocalStorage.put('cart_items', JSON.stringify(productItems)).then(res=> {
-          console.log(res, 'saved');
-        });
+        LocalStorage.put('cart_items', JSON.stringify(productItems)).then(
+          (res) => {
+            console.log(res, 'saved');
+          },
+        );
       },
       modifyAuth(user, isLoggedin, auth_token) {
         console.log('function is called');
         setAuth({
           user: user,
           isLoggedin: isLoggedin,
-          auth_token: auth_token
+          auth_token: auth_token,
         });
       },
-
+      logout() {
+        let auth_obj = {...auth};
+        auth_obj.user = null;
+        auth.auth_token = null;
+        setAuth(auth_obj);
+      },
     };
   }, [loadData, storeInfo, categories, cartProducts]);
   return (

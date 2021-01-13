@@ -166,10 +166,10 @@ function Dashboard(props) {
         />
         <Authenticate.Screen
           name="account"
-          component={SignUp}
+          component={Account}
           options={{
             title: 'Account',
-            headerShown: true,
+            headerShown: false,
             headerTintColor: '#000',
             headerStyle: {
               backgroundColor: '#fff',

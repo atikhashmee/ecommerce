@@ -15,13 +15,14 @@ import {
 } from 'native-base';
 import {useNavigation} from '@react-navigation/native';
 import AuthModal from '../auth/AuthModal';
+import {AppContext} from '../utils/GlobalContext';
 export default function FooterTabs() {
   const navigation = useNavigation();
   const [isAuthenticated, setAuthenticated] = React.useState(false);
   const [isModalOpen, setIsModalOpen] = React.useState(false);
-  React.useEffect(() => {});
+  const {auth} = React.useContext(AppContext);
   function checkAuthenticate() {
-    if (isAuthenticated) {
+    if (auth.user !== null && auth.auth_token !== null) {
       navigation.navigate('account');
     } else {
       setIsModalOpen(true);
