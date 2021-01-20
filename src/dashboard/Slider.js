@@ -2,8 +2,10 @@ import React from 'react';
 import {View, Text, Image} from 'react-native';
 import Swiper from 'react-native-swiper';
 import AppStyle from '../assets/style';
+import {AppContext} from '../utils/GlobalContext';
 
 export function Slider() {
+  let {sliders} = React.useContext(AppContext);
   return (
     <Swiper
       style={AppStyle.wrapper}
@@ -23,40 +25,19 @@ export function Slider() {
         bottom: 10,
       }}
       loop={true}>
-      <View style={AppStyle.slide}>
-        <View
-          style={{
-            ...AppStyle.slide,
-            flex: 1,
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
-          <Text style={{color: '#000', fontSize: 29}}>
-            New Platform | design
-          </Text>
-        </View>
-      </View>
-      <View style={AppStyle.slide}>
-        <Image
-          style={AppStyle.image}
-          source={{
-            uri:
-              'https://image.shutterstock.com/image-photo/beautiful-autumn-scene-hintersee-lake-260nw-747646759.jpg',
-          }}
-          resizeMode="cover"
-        />
-      </View>
-      <View
-        style={{
-          ...AppStyle.slide,
-          flex: 1,
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}>
-        <Text style={{color: '#000', fontSize: 29}}>
-          Hello Evaly App design
-        </Text>
-      </View>
+      {sliders.map((item, k) => {
+        return (
+          <View key={k} style={AppStyle.slide}>
+            <Image
+              style={AppStyle.image}
+              source={{
+                uri: item,
+              }}
+              resizeMode="cover"
+            />
+          </View>
+        );
+      })}
     </Swiper>
   );
 }

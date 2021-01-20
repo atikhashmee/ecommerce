@@ -37,9 +37,9 @@ export default function HomePage() {
           backgroundColor: '#f9f9f9',
         }}>
         {/* slider */}
-        {/* <View style={{ height: 130, borderRadius: 10 }}>
-              <Slider />
-            </View> */}
+        <View style={{height: 130, borderRadius: 10}}>
+          <Slider />
+        </View>
         {/* category tag */}
         <View
           style={{
@@ -88,9 +88,9 @@ export default function HomePage() {
                     flexWrap: 'wrap',
                   }}>
                   {item.elements.length > 0 &&
-                    item.elements.map((p) => (
+                    item.elements.map((p, k) => (
                       <View
-                        key={p.id}
+                        key={p.id + k}
                         style={{...AppStyle.productBox, marginBottom: 10}}>
                         <View style={AppStyle.prductContainer}>
                           {/* feature_category_image_url */}

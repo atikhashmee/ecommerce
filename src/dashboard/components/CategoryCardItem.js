@@ -21,7 +21,7 @@ export default function CategoryCardItem(props) {
         style={AppStyle.categoryCard}>
         <Card.Title left={LeftContent} />
       </Card>
-      <Title style={{textAlign: 'center'}}>{props.name}</Title>
+      <Title style={{textAlign: 'center', fontFamily: 'UniNeue-Light'}}>{props.name}</Title>
     </View>
   );
 }

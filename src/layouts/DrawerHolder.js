@@ -29,6 +29,7 @@ const DrawerHolder = () => {
   let [loadData, setLoadData] = useState(null);
   let [categories, setCategories] = useState([]);
   let [cartProducts, setCartProducts] = useState([]);
+  let [sliders, setSliders] = useState([]);
   let [auth, setAuth] = useState({
     user: null,
     isLoggedin: false,
@@ -48,6 +49,14 @@ const DrawerHolder = () => {
           return item;
         }),
       );
+
+      let sliders_items = [];
+      loadData.data.section_details.forEach(item=>{
+        if (item.key === 'slider_images') {
+          sliders_items = item.elements;
+        }
+      });
+      setSliders(sliders_items);
     }
   }, [loadData]);
 
@@ -138,6 +147,7 @@ const DrawerHolder = () => {
       cartProducts,
       products,
       storeInfo,
+      sliders,
       categories,
       auth,
       categoryToggleItem(category_id, subCategory_id) {
