@@ -1,11 +1,10 @@
 import React from 'react';
 import {
   View,
-  Text,
   Modal,
-  TouchableHighlight,
   StyleSheet,
   Dimensions,
+  ActivityIndicator,
   Pressable,
 } from 'react-native';
 import {Icon} from 'native-base';
@@ -15,6 +14,7 @@ import SignUp from '../components/page/SignUp';
 export default function AuthModal({modalVisible, setModalVisible}) {
   const [isLogin, setIsLogin] = React.useState(true);
   const [isSignUp, setSignUp] = React.useState(false);
+  const [loaderVisible, setLoadVisible] = React.useState(true);
   function swithLoginSignUp(pageTag) {
     console.log(pageTag, pageTag == 'login', 'pressed');
     if (pageTag == 'login') {

@@ -76,16 +76,10 @@ const DrawerHolder = () => {
   }, [cartProducts]);
 
   useEffect(() => {
-    if (auth.user !== null) {
-      LocalStorage.put('auth', JSON.stringify(auth)).then((res) => {
-        console.log(auth, res, 'auth is populated');
-      });
-    } else {
-      LocalStorage.get('auth').then((res) => {
-        setAuth(JSON.parse(res));
-      });
-    }
-  }, [auth]);
+    LocalStorage.get('auth').then((res) => {
+      setAuth(JSON.parse(res));
+    });
+  }, []);
 
   const appContextVal = React.useMemo(() => {
     return {
@@ -204,22 +198,32 @@ const DrawerHolder = () => {
           },
         );
       },
-      modifyAuth(user, isLoggedin, auth_token) {
-        console.log('function is called');
-        setAuth({
-          user: user,
-          isLoggedin: isLoggedin,
-          auth_token: auth_token,
-        });
+      modifyAuth: async (user, isLoggedin, auth_token) => {
+        let auth_obj = {...auth};
+        auth_obj.user = user;
+        auth_obj.isLoggedin = isLoggedin;
+        auth_obj.auth_token = auth_token;
+        return await LocalStorage.put('auth', JSON.stringify(auth_obj)).then(
+          (res) => {
+            console.log(auth_obj, 'login auth obj');
+            setAuth(auth_obj);
+          },
+        );
       },
-      logout() {
+      logout: async () => {
         let auth_obj = {...auth};
         auth_obj.user = null;
-        auth.auth_token = null;
-        setAuth(auth_obj);
+        auth_obj.isLoggedin = false;
+        auth_obj.auth_token = null;
+        return await LocalStorage.put('auth', JSON.stringify(auth_obj)).then(
+          (d) => {
+            console.log(auth_obj, 'logout auth obj');
+            setAuth(auth_obj);
+          },
+        );
       },
     };
-  }, [loadData, storeInfo, categories, cartProducts]);
+  }, [auth, loadData, storeInfo, categories, cartProducts]);
   return (
     <AppContext.Provider value={appContextVal}>
       <Drawer.Navigator

@@ -7,6 +7,7 @@ import {
   TextInput,
   ScrollView,
   TouchableOpacity,
+  ActivityIndicator,
 } from 'react-native';
 import {
   Provider as PaperProvider,
@@ -17,12 +18,105 @@ import {
 import * as Animatable from 'react-native-animatable';
 import Feather from 'react-native-vector-icons/Feather';
 import {Icon, Content, Container} from 'native-base';
+import {user_login} from '../../api.json';
+import {useNavigation} from '@react-navigation/native';
+import {AppContext} from '../../utils/GlobalContext';
+import Alert from '../Alert';
+import {baseUrl, store_id as my_store_id} from '../../env.json';
+import {Dimensions} from 'react-native';
 
 export default function Login(props) {
-  const [text, setText] = React.useState('');
+  const [loading, setloading] = React.useState(false);
   const [secureTxtEntry, setSecureTxtEntry] = React.useState(true);
+  const [loginData, setLoginData] = React.useState({
+    phone_number: '',
+    email: '',
+    password: '',
+  });
+
+  const {auth, modifyAuth} = React.useContext(AppContext);
+  const navigation = useNavigation();
+  const [validation, setValidation] = React.useState({
+    messageBags: [],
+    email: false,
+    phone_number: false,
+    password: false,
+    fails: function () {
+      if (!this.email) return true;
+      if (!this.phone_number) return true;
+      if (!this.password) return true;
+      return false;
+    },
+  });
+
+  function handleForm(objProperty, value) {
+    setLoginData({...loginData, [objProperty]: value});
+  }
+  function loginAction() {
+    setloading(true);
+    let validationObj = {...validation};
+    // if (loginData.email.trim() === '') {
+    //   validationObj.messageBags.push('Email is required');
+    //   validationObj.email = true;
+    // } else {
+    //   validationObj.email = false;
+    // }
+
+    if (loginData.phone_number.trim() === '') {
+      validationObj.messageBags.push('Phone Number is required');
+      validationObj.phone_number = true;
+    } else {
+      validationObj.phone_number = false;
+    }
+
+    if (loginData.password.trim() === '') {
+      validationObj.messageBags.push('Password is required');
+      validationObj.password = true;
+    } else {
+      validationObj.password = false;
+    }
+
+    setValidation(validationObj);
+    if (validation.fails()) {
+      //alert('validation errors');
+    }
+
+    let formD = new FormData();
+    formD.append('phone_number', loginData.phone_number);
+    // formD.append('email', loginData.email);
+    formD.append('password', loginData.password);
+    formD.append('store_id', my_store_id);
+    fetch(baseUrl + user_login, {
+      method: 'POST',
+      body: formD,
+    })
+      .then((res) => {
+        if (!res.ok) {
+          throw res;
+        }
+        return res.json();
+      })
+      .then((res) => {
+        setloading(false);
+        if (res.status) {
+          modifyAuth(res.data, true, res.token).then((item) => {
+            navigation.navigate('home');
+            props.updateModalVisibility(false);
+          });
+        }
+      })
+      .catch((err) => {
+        console.log(err, 'error');
+      });
+  }
   return (
     <View style={styles.container}>
+      {loading && (
+        <View style={styles.loaderContainer}>
+          <ActivityIndicator size={40} color="#fff" />
+        </View>
+      )}
+
       {/* logo section */}
       <View style={styles.logo_section}>
         {/* <Title>Idea House Shop</Title> */}
@@ -38,7 +132,9 @@ export default function Login(props) {
           animation="fadeInDownBig"
         />
       </View>
-      <Text style={[styles.iconColor, {textAlign: 'center', fontSize: 18}]}>Login</Text>
+      <Text style={[styles.iconColor, {textAlign: 'center', fontSize: 18}]}>
+        Login
+      </Text>
       <View style={styles.formContainer}>
         <View style={styles.authFormGroup}>
           <View style={styles.appenedIcon}>
@@ -47,11 +143,14 @@ export default function Login(props) {
           <TextInput
             mode={'flat'}
             placeholder="Email"
-            placeholderTextColor='#81368f'
-            value={text}
+            placeholderTextColor="#81368f"
+            value={loginData.phone_number}
             style={styles.textInputStyle}
-            onChangeText={(text) => setText(text)}
+            onChangeText={(text) => handleForm('phone_number', text)}
           />
+          {validation.phone_number && (
+            <Icon name="information-circle" style={styles.errorIcon} />
+          )}
         </View>
         <View style={[styles.authFormGroup, {marginTop: 10}]}>
           <View style={styles.appenedIcon}>
@@ -62,9 +161,9 @@ export default function Login(props) {
             secureTextEntry={secureTxtEntry}
             placeholder="Password"
             placeholderTextColor="#81368f"
-            value={text}
+            value={loginData.password}
             style={styles.textInputStyle}
-            onChangeText={(text) => setText(text)}
+            onChangeText={(text) => handleForm('password', text)}
           />
           <TouchableOpacity
             style={[
@@ -72,13 +171,18 @@ export default function Login(props) {
               styles.iconColor,
               {right: 20, left: null},
             ]}
-            onPress={setSecureTxtEntry}>
+            onPress={() => {
+              setSecureTxtEntry(!secureTxtEntry);
+            }}>
             {secureTxtEntry ? (
               <Feather name="eye-off" style={styles.iconColor} size={20} />
             ) : (
               <Feather name="eye" style={styles.iconColor} size={20} />
             )}
           </TouchableOpacity>
+          {validation.password && (
+            <Icon name="information-circle" style={styles.errorIcon} />
+          )}
         </View>
         <View
           style={{
@@ -96,7 +200,7 @@ export default function Login(props) {
             small
             icon="arrow-right"
             onPress={() => {
-              alert('hllworld');
+              loginAction();
             }}
           />
         </View>
@@ -157,6 +261,10 @@ export default function Login(props) {
           </Pressable>
         </View>
       </View>
+      {validation.messageBags.length > 0 &&
+        validation.messageBags.map((item, index) => {
+          return <Alert key={index} msg={item} displayValue={index * 40} />;
+        })}
     </View>
   );
 }
@@ -168,6 +276,14 @@ const styles = StyleSheet.create({
     alignContent: 'center',
     justifyContent: 'space-between',
     backgroundColor: '#fff',
+    position: 'relative',
+  },
+  loaderContainer: {
+    position: 'absolute',
+    top: Dimensions.get('screen').height / 3.5,
+    left: Dimensions.get('screen').width / 2.5,
+    backgroundColor: '#a9a9a9',
+    zIndex: 500,
   },
   formContainer: {
     paddingHorizontal: 20,
@@ -220,5 +336,8 @@ const styles = StyleSheet.create({
   socialIcon: {
     color: '#fff',
     fontSize: 15,
+  },
+  errorIcon: {
+    color: 'red',
   },
 });

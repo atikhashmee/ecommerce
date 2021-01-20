@@ -1,27 +1,17 @@
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
-import {
-  Container,
-  TabHeading,
-  Icon,
-  Header,
-  Content,
-  Tab,
-  Tabs,
-  Badge,
-  FooterTab,
-  Footer,
-  Button,
-} from 'native-base';
+import {Icon, Badge, FooterTab, Footer, Button} from 'native-base';
 import {useNavigation} from '@react-navigation/native';
 import AuthModal from '../auth/AuthModal';
 import {AppContext} from '../utils/GlobalContext';
 export default function FooterTabs() {
   const navigation = useNavigation();
-  const [isAuthenticated, setAuthenticated] = React.useState(false);
+  const [] = React.useState(false);
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const {auth} = React.useContext(AppContext);
   function checkAuthenticate() {
+    let d_auth = {...auth};
+    console.log(auth, auth.user !== null, auth.auth_token !== null, 'ssssss');
     if (auth.user !== null && auth.auth_token !== null) {
       navigation.navigate('account');
     } else {
@@ -79,8 +69,12 @@ export default function FooterTabs() {
           <Text style={styles.tabTextStyle}>Account</Text>
         </Button>
       </FooterTab>
-      {isModalOpen &&  <AuthModal modalVisible={isModalOpen} setModalVisible={setIsModalOpen} />}
-     
+      {isModalOpen && (
+        <AuthModal
+          modalVisible={isModalOpen}
+          setModalVisible={setIsModalOpen}
+        />
+      )}
     </Footer>
   );
 }

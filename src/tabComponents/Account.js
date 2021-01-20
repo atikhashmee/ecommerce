@@ -36,7 +36,11 @@ export default function Account() {
     <Container>
       <Header style={{backgroundColor: '#fff', color: '#000'}}>
         <Left>
-          <Button transparent>
+          <Button
+            onPress={() => {
+              navigation.navigate('home');
+            }}
+            transparent>
             <Icon name="arrow-back" style={{color: '#000'}} />
           </Button>
         </Left>
@@ -47,8 +51,9 @@ export default function Account() {
           <Button
             transparent
             onPress={() => {
-              logout();
-              navigation.navigate('home');
+              logout().then(it=>{
+                navigation.navigate('home');
+              })
             }}>
             <Icon name="log-out" style={{color: '#000'}} type="Feather" />
           </Button>

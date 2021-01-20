@@ -1,7 +1,6 @@
 import React from 'react';
 import {
   View,
-  ScrollView,
   Text,
   StyleSheet,
   Pressable,
@@ -9,9 +8,8 @@ import {
   TextInput,
   Platform,
 } from 'react-native';
-import {Container, Icon, Content} from 'native-base';
+import {Icon} from 'native-base';
 import {
-  Provider as PaperProvider,
   Checkbox,
   Title,
   FAB,
@@ -27,7 +25,7 @@ import Alert from '../../components/Alert';
 export default function SignUp(props) {
   const [secureTxtEntry, setSecureTxtEntry] = React.useState(true);
   const [checked, setChecked] = React.useState(false);
-  const {auth, modifyAuth} = React.useContext(AppContext);
+  const {modifyAuth} = React.useContext(AppContext);
   const navigation = useNavigation();
 
   const [formData, setFormData] = React.useState({
