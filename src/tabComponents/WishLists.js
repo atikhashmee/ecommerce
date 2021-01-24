@@ -38,19 +38,23 @@ function WishListItem({prop_item, removeItem}) {
         />
       </View>
       <View style={styles.wishListContent}>
-        <View style={styles.title}>
-          <Title>{prop_item.name}</Title>
+        <View style={styles.title_container}>
+          <Title style={styles.title}>{prop_item.name}</Title>
         </View>
-        <View style={styles.price}>
-          <Text style={{color: '#000', backgroundColor: '#fff', fontSize: 16}}>
-            ${prop_item.price}
-          </Text>
+        <View style={styles.price_container}>
+          <Text style={styles.priceText}>${prop_item.price}</Text>
         </View>
         <View style={styles.actionBar}>
           <View style={styles.timeSection}>
+            <Feather name={'clock'} size={20} color="#000" />
             <Text
-              style={{color: '#000', backgroundColor: '#fff', fontSize: 16}}>
-              <Feather name={'clock'} size={20} color="#000" /> {prop_item.time}
+              style={{
+                color: '#000',
+                marginLeft: 5,
+                backgroundColor: '#fff',
+                fontSize: 16,
+              }}>
+              {prop_item.time}
             </Text>
           </View>
           <View style={styles.deleteAction}>
@@ -58,7 +62,13 @@ function WishListItem({prop_item, removeItem}) {
               onPress={() => {
                 removeItem(prop_item);
               }}>
-              <Feather name={'trash-2'} size={20} color="#000" />
+              <Icon
+                name={'trash-outline'}
+                type="Ionicons"
+                style={{
+                  fontSize: 22,
+                }}
+              />
             </Pressable>
           </View>
         </View>
@@ -71,7 +81,7 @@ export default function WishLists() {
   const [wishListsItems, setWishLitsItems] = React.useState([
     {
       id: 1,
-      name: 'Product Name 1',
+      name: 'Product Name 1 Product Name 1 Product Name 1 Product Name 1',
       time: '3 minuets ago',
       image:
         'https://images.pexels.com/photos/607812/pexels-photo-607812.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
@@ -92,7 +102,23 @@ export default function WishLists() {
       image:
         'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR5cjupfd1pDuktX3dP1hp8_l1nXsLAFN1OGQ&usqp=CAU',
       price: 5550,
-    }
+    },
+    {
+      id: 4,
+      name: 'Product Name 4',
+      time: '1 days ago',
+      image:
+        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR5cjupfd1pDuktX3dP1hp8_l1nXsLAFN1OGQ&usqp=CAU',
+      price: 5550,
+    },
+    {
+      id: 5,
+      name: 'Product Name 5',
+      time: '1 Minuet ago',
+      image:
+        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR5cjupfd1pDuktX3dP1hp8_l1nXsLAFN1OGQ&usqp=CAU',
+      price: 5550,
+    },
   ]);
   function removeItem(item) {
     let removableItems = [...wishListsItems];
@@ -101,29 +127,41 @@ export default function WishLists() {
   }
   return (
     <Container>
-      <Content>
-        <ScrollView>
-          {wishListsItems.length > 0 &&
-            wishListsItems.map((item, ind) => {
-              return (
-                <WishListItem
-                  prop_item={item}
-                  key={ind}
-                  removeItem={removeItem}
-                />
-              );
-            })}
-        </ScrollView>
-      </Content>
+      {wishListsItems.length > 0 && (
+        <Content style={styles.contentStyle}>
+          {wishListsItems.map((item, ind) => {
+            return (
+              <WishListItem
+                prop_item={item}
+                key={ind}
+                removeItem={removeItem}
+              />
+            );
+          })}
+        </Content>
+      )}
+      {wishListsItems.length == 0 && (
+        <View style={styles.emptyBoxMessage}>
+          <Image
+            style={{width: 50, height: 50}}
+            source={{
+              uri:
+                'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSYNXiS_opVY9M5xFzDfsdyviAl_9jMliQ2wA&usqp=CAU',
+            }}
+          />
+          <Text style={{fontSize: 20}}>
+            You have not added anything to wishLists
+          </Text>
+        </View>
+      )}
       <FooterTabs />
     </Container>
   );
 }
 
 const styles = StyleSheet.create({
-  scene: {
-    flex: 1,
-    padding: 5,
+  contentStyle: {
+    padding: 10,
   },
   wishListsItem: {
     flex: 1,
@@ -131,32 +169,64 @@ const styles = StyleSheet.create({
     maxHeight: 120,
     height: 120,
     backgroundColor: '#fff',
-    marginBottom: 5,
-  },
-  imageBox: {
-    padding: 5,
-    flexBasis: '20%',
     borderWidth: 1,
     borderColor: '#d3d3d3',
+    borderRadius: 20,
+    marginBottom: 15,
+    elevation: 3,
+  },
+  imageBox: {
+    padding: 20,
+    flexBasis: '35%',
     alignItems: 'center',
   },
   tinyLogo: {
     width: '100%',
     height: '100%',
+    resizeMode: 'center',
   },
   wishListContent: {
-    flexBasis: '75%',
+    flexBasis: '60%',
     marginLeft: 10,
     paddingVertical: 10,
-    justifyContent: 'space-between',
+    justifyContent: 'space-around',
   },
   actionBar: {
     width: '100%',
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'baseline',
+    fontFamily: 'UniNeue-Light',
   },
   deleteAction: {
-    marginRight: 30,
+    marginRight: 0,
+  },
+  title_container: {
+    color: '#000',
+  },
+  price_container: {
+    color: '#000',
+    // fontFamily: 'UniNeue-Light',
+  },
+  title: {
+    fontSize: 18,
+    lineHeight: 17,
+    fontFamily: 'Assistant-VariableFont_wght',
+  },
+  priceText: {
+    color: '#000',
+    backgroundColor: '#fff',
+    fontSize: 16,
+    fontFamily: 'Assistant-VariableFont_wght',
+  },
+  timeSection: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  emptyBoxMessage: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });

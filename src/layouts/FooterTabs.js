@@ -94,7 +94,6 @@ const styles = StyleSheet.create({
   tabHeading: {
     flexDirection: 'column',
     backgroundColor: '#fff',
-    padding: 15,
   },
   iconStyle: {
     color: '#000',
@@ -119,7 +118,6 @@ const styles = StyleSheet.create({
   },
   middleIconContainer: {
     position: 'relative',
-    padding: 0,
     width: '100%',
     height: '100%',
     zIndex: 300,
@@ -133,7 +131,7 @@ const styles = StyleSheet.create({
     height: 65,
     width: 65,
     top: -20, 
-    right: -10,
+    right: -2,
     borderRadius: 50,
     textAlign: 'center',
     alignItems: 'center',

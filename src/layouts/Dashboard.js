@@ -241,7 +241,7 @@ function Dashboard(props) {
           name="wishLists"
           component={WishLists}
           options={{
-            title: 'Wish Lists',
+            title: 'Wishlists',
             headerTintColor: '#fff',
             headerStyle: {
               backgroundColor: '#fff',
@@ -251,7 +251,6 @@ function Dashboard(props) {
               fontFamily: 'Montserrat-Light',
               fontWeight: 'bold',
               position: 'absolute',
-              left: screenWidth / 5,
               top: -15,
               color: '#000',
             },
