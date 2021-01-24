@@ -4,6 +4,7 @@ import AppStyle from '../assets/style';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import {AppContext} from '../utils/GlobalContext';
 import {useNavigation} from '@react-navigation/native';
+import {StyleSheet} from 'react-native';
 
 const Product = ({product, handleClick, itemType = null}) => {
   let {addToCart} = useContext(AppContext);
@@ -39,15 +40,18 @@ const Product = ({product, handleClick, itemType = null}) => {
             justifyContent: 'space-between',
           }}>
           <View>
-            <Text style={AppStyle.prductTitle}>{product.name}</Text>
+            <Text numberOfLines={1} style={AppStyle.prductTitle}>{product.name}</Text>
             <View style={{flexDirection: 'row'}}>
-              <Text>${product.price}</Text>
+              <Text style={styles.priceTitle}>${product.price}</Text>
               {product.old_price !== '' && (
                 <Text
-                  style={{
-                    textDecorationLine: 'line-through',
-                    marginLeft: 10,
-                  }}>
+                  style={[
+                    styles.priceTitle,
+                    {
+                      textDecorationLine: 'line-through',
+                      marginLeft: 10,
+                    },
+                  ]}>
                   ${product.old_price}
                 </Text>
               )}
@@ -56,7 +60,7 @@ const Product = ({product, handleClick, itemType = null}) => {
         </View>
       ) : (
         <View>
-          <Text style={AppStyle.prductTitle}>{product.category_name}</Text>
+          <Text numberOfLines={1} style={AppStyle.prductTitle}>{product.category_name}</Text>
         </View>
       )}
       {cardItemType === 'product' ? (
@@ -97,3 +101,9 @@ const Product = ({product, handleClick, itemType = null}) => {
 };
 
 export default Product;
+
+const styles = StyleSheet.create({
+  priceTitle: {
+    fontFamily: 'UniNeue-Light',
+  },
+});

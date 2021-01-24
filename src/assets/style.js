@@ -111,8 +111,6 @@ const AppStyle = StyleSheet.create({
   productBox: {
     flexBasis: '48%',
     backgroundColor: '#fff',
-    paddingRight: 5,
-    paddingLeft: 5,
     paddingTop: 5,
     borderRadius: 10,
     shadowColor: '#000',
@@ -122,7 +120,7 @@ const AppStyle = StyleSheet.create({
     elevation: 1,
   },
   prductContainer: {
-    width: '95%',
+    width: '100%',
     height: 150,
     backgroundColor: 'lightblue',
     overflow: 'hidden',
@@ -132,7 +130,8 @@ const AppStyle = StyleSheet.create({
     color: '#000',
     fontSize: 17,
     fontWeight: '400',
-    fontFamily: 'Oswald-Regular',
+    // fontFamily: 'Oswald-Regular',
+    fontFamily: 'UniNeue-Light',
   },
   //category box style
   categoryEachBox: {
