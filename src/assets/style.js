@@ -103,15 +103,15 @@ const AppStyle = StyleSheet.create({
   },
   // product category
   productCategory: {
-    fontSize: 22,
-    fontWeight: '400',
-    fontFamily: 'Oswald-Regular',
+    fontSize: 18,
+    fontWeight: '900',
+    // fontFamily: 'Oswald-Regular',
+    fontFamily: 'UniNeue-Light',
   },
   // product style
   productBox: {
     flexBasis: '48%',
     backgroundColor: '#fff',
-    paddingTop: 5,
     borderRadius: 10,
     shadowColor: '#000',
     shadowOffset: {width: 0, height: 2},

@@ -106,5 +106,6 @@ const styles = StyleSheet.create({
   tabTextStyle: {
     fontWeight: '600',
     fontSize: 15,
+    fontFamily: 'UniNeue-Light',
   },
 });

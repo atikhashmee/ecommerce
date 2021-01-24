@@ -38,9 +38,12 @@ const Product = ({product, handleClick, itemType = null}) => {
           style={{
             flexDirection: 'row',
             justifyContent: 'space-between',
+            padding: 10,
           }}>
           <View>
-            <Text numberOfLines={1} style={AppStyle.prductTitle}>{product.name}</Text>
+            <Text numberOfLines={1} style={AppStyle.prductTitle}>
+              {product.name}
+            </Text>
             <View style={{flexDirection: 'row'}}>
               <Text style={styles.priceTitle}>${product.price}</Text>
               {product.old_price !== '' && (
@@ -59,8 +62,13 @@ const Product = ({product, handleClick, itemType = null}) => {
           </View>
         </View>
       ) : (
-        <View>
-          <Text numberOfLines={1} style={AppStyle.prductTitle}>{product.category_name}</Text>
+        <View
+          style={{
+            padding: 10,
+          }}>
+          <Text numberOfLines={1} style={AppStyle.prductTitle}>
+            {product.category_name}
+          </Text>
         </View>
       )}
       {cardItemType === 'product' ? (
@@ -92,7 +100,7 @@ const Product = ({product, handleClick, itemType = null}) => {
               handleClick();
             }}
             style={AppStyle.cartButton}>
-            <Text> See Products </Text>
+            <Text style={styles.priceTitle}> See Products </Text>
           </Pressable>
         </View>
       )}
