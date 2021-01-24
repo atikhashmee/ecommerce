@@ -57,32 +57,50 @@ const Products = (props) => {
         </Right>
       </Header>
       <Content>
-            <ProductPage props={props} />
+        <ProductPage props={props} />
       </Content>
       <Footer>
-          <FooterTab style={{ backgroundColor: '#fff' }}>
-            <Button style={{ width: 30 }}>
-                <Icon name='basket-outline' type="Ionicons" style={{ color: '#000' }} />
-                <Text>Store</Text>
-            </Button>
-            <Button style={{ width: 30 }}>
-                <Icon name='heart-outline' type="Ionicons" style={{ color: '#000' }} />
-                <Text>Wishlists</Text>
-            </Button>
-            <Button onPress={()=>{}}>
-              <Text>
-                <Icon name='cart-outline' style={{ color: '#000' }} />
-                <Badge info> 
-                  <Text style={{ color: '#fff' }}>{cartProducts?cartProducts.length:0}</Text>
-                </Badge>
-              </Text>
-            </Button>
-            <Button   onPress={()=>{navigation.navigate('checkout')}}
-                style={{ backgroundColor: '#DB1C2B', height: 50, width: 50, borderRadius: 10}}>
-                    <Text style={{ color: '#fff' }}>Checkout</Text>
-                </Button>
-          </FooterTab>
-        </Footer>
+        <FooterTab style={{backgroundColor: '#fff'}}>
+          <Button style={{width: 30}}>
+            <Icon
+              name="basket-outline"
+              type="Ionicons"
+              style={{color: '#000'}}
+            />
+            <Text>Store</Text>
+          </Button>
+          <Button style={{width: 30}}>
+            <Icon
+              name="heart-outline"
+              type="Ionicons"
+              style={{color: '#000'}}
+            />
+            <Text>Wishlists</Text>
+          </Button>
+          <Button onPress={() => {}}>
+            <Text>
+              <Icon name="cart-outline" style={{color: '#000'}} />
+              <Badge info>
+                <Text style={{color: '#fff'}}>
+                  {cartProducts ? cartProducts.length : 0}
+                </Text>
+              </Badge>
+            </Text>
+          </Button>
+          <Button
+            onPress={() => {
+              navigation.navigate('checkout');
+            }}
+            style={{
+              backgroundColor: '#DB1C2B',
+              height: 50,
+              width: 50,
+              borderRadius: 10,
+            }}>
+            <Text style={{color: '#fff'}}>Checkout</Text>
+          </Button>
+        </FooterTab>
+      </Footer>
       {/* <Tabs tabBarPosition="bottom">
         <Tab
           heading={
@@ -111,35 +129,6 @@ export default Products;
 function ProductPage({props}) {
   let {loadProducts} = useContext(AppContext);
   const navigation = useNavigation();
-  let [item, setItems] = useState({
-    elements: [
-      {
-        id: 1,
-        name: 'Accer BD 80',
-        feature_category_image_url:
-          'https://images.pexels.com/photos/2047905/pexels-photo-2047905.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
-        price: '1230',
-        old_price: '',
-      },
-      {
-        id: 2,
-        name: 'Lenovo BD 80',
-        feature_category_image_url:
-          'https://images.pexels.com/photos/2148217/pexels-photo-2148217.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
-        price: '1520',
-        old_price: '1520',
-      },
-      {
-        id: 3,
-        name: 'HP BD 80',
-        feature_category_image_url:
-          'https://images.pexels.com/photos/2148217/pexels-photo-2148217.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
-        price: '1520',
-        old_price: '1520',
-      },
-    ],
-  });
-
   let [products, setProducts] = useState([]);
 
   useEffect(() => {
@@ -177,6 +166,7 @@ function ProductPage({props}) {
                     products.map((p, index) => (
                       <Product
                         product={p}
+                        itemType="product"
                         key={index}
                         handleClick={() => {
                           navigation.navigate('product_detail', {

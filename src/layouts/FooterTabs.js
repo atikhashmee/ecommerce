@@ -10,10 +10,12 @@ export default function FooterTabs() {
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const {auth} = React.useContext(AppContext);
   function checkAuthenticate() {
-    let d_auth = {...auth};
-    console.log(auth, auth.user !== null, auth.auth_token !== null, 'ssssss');
-    if (auth.user !== null && auth.auth_token !== null) {
-      navigation.navigate('account');
+    if (auth !== null) {
+      if (auth.user !== null && auth.auth_token !== null) {
+        navigation.navigate('account');
+      } else {
+        setIsModalOpen(true);
+      }
     } else {
       setIsModalOpen(true);
     }

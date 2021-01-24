@@ -7,6 +7,7 @@ import {
   Pressable,
   Image,
   ActivityIndicator,
+  StyleSheet,
   Dimensions,
 } from 'react-native';
 import IonIcon from 'react-native-vector-icons/Ionicons';
@@ -22,10 +23,17 @@ import {AppContext} from '../utils/GlobalContext';
 const {width, height} = Dimensions.get('window');
 import {useNavigation} from '@react-navigation/native';
 import CategoryCardItem from '../dashboard/components/CategoryCardItem';
+import CategoryItemEach from '../dashboard/components/CategoryItemEach';
+import Product from '../components/Product';
 
 export default function HomePage() {
-  let {products} = React.useContext(AppContext);
   const navigation = useNavigation();
+  let {products, homePageData} = React.useContext(AppContext);
+  let [featuredCategory, setFeaturedCategory] = React.useState([]);
+  React.useEffect(() => {
+    setFeaturedCategory(homePageData.featured_category);
+    console.log(products, 'df');
+  }, [homePageData]);
   return (
     <ScrollView>
       <View
@@ -41,7 +49,19 @@ export default function HomePage() {
           <Slider />
         </View>
         {/* category tag */}
-        <View
+        <View style={styles.categoryContainer}>
+          <HomePageTitle />
+          <ScrollView
+            horizontal={true}
+            style={{width: '100%'}}
+            showsHorizontalScrollIndicator={false}>
+            {featuredCategory.length > 0 &&
+              featuredCategory.map((item, key) => {
+                return <CategoryItemEach key={key} category={item} />;
+              })}
+          </ScrollView>
+        </View>
+        {/* <View
           style={{
             width: width,
             verticalAlign: 'center',
@@ -60,11 +80,11 @@ export default function HomePage() {
               <Categories navigation={navigation} />
             </View>
           </View>
-        </View>
+        </View> */}
         {/* express view */}
-        {/* <View style={{ backgroundColor: '#fff' }}>
-              <ExpressView  />
-            </View> */}
+        {/* <View style={{backgroundColor: '#fff'}}>
+          <ExpressView />
+        </View> */}
         {/* category products */}
         {products.length > 0 &&
           products.map((item) => (
@@ -88,97 +108,29 @@ export default function HomePage() {
                     flexWrap: 'wrap',
                   }}>
                   {item.elements.length > 0 &&
-                    item.elements.map((p, k) => (
-                      <View
-                        key={p.id + k}
-                        style={{...AppStyle.productBox, marginBottom: 10}}>
-                        <View style={AppStyle.prductContainer}>
-                          {/* feature_category_image_url */}
-                          {item.frontEndTag == 'category' ? (
-                            <Image
-                              style={AppStyle.image}
-                              source={{uri: p.feature_category_image_url}}
-                            />
-                          ) : (
-                            <Image
-                              style={AppStyle.image}
-                              source={{uri: p.feature_image_url}}
-                            />
-                          )}
-                        </View>
-                        {item.frontEndTag !== 'category' ? (
-                          <View
-                            style={{
-                              flexDirection: 'row',
-                              justifyContent: 'space-between',
-                            }}>
-                            <View>
-                              <Text style={AppStyle.prductTitle}>{p.name}</Text>
-                              <View style={{flexDirection: 'row'}}>
-                                <Text>${p.price}</Text>
-                                {p.old_price !== '' && (
-                                  <Text
-                                    style={{
-                                      textDecorationLine: 'line-through',
-                                      marginLeft: 10,
-                                    }}>
-                                    ${p.old_price}
-                                  </Text>
-                                )}
-                              </View>
-                            </View>
-                          </View>
-                        ) : (
-                          <View>
-                            <Text style={AppStyle.prductTitle}>
-                              {p.category_name}
-                            </Text>
-                          </View>
-                        )}
-
-                        {item.frontEndTag !== 'category' ? (
-                          <View
-                            style={{
-                              alignItems: 'center',
-                              flexDirection: 'row',
-                            }}>
-                            <Pressable
-                              onPress={() => alert('added to cart')}
-                              style={AppStyle.cartButton}>
-                              <IonIcon
-                                name="cart-outline"
-                                color="#000"
-                                size={20}
-                              />
-                            </Pressable>
-                            <Pressable
-                              onPress={() => alert('saved')}
-                              style={{
-                                ...AppStyle.cartButton,
-                                borderLeftWidth: 1,
-                              }}>
-                              <IonIcon
-                                name="heart-outline"
-                                color="#000"
-                                size={20}
-                              />
-                            </Pressable>
-                          </View>
-                        ) : (
-                          <View>
-                            <Pressable
-                              onPress={() => {
-                                navigation.navigate('products', {
-                                  category_id: item.id,
-                                });
-                              }}
-                              style={AppStyle.cartButton}>
-                              <Text> See Products </Text>
-                            </Pressable>
-                          </View>
-                        )}
-                      </View>
-                    ))}
+                    item.elements.map((p, k) =>
+                      item.frontEndTag == 'category' ? (
+                        <Product
+                          product={p}
+                          handleClick={() => {
+                            navigation.navigate('products', {
+                              category_id: item.id,
+                            });
+                          }}
+                          itemType={'category'}
+                        />
+                      ) : (
+                        <Product
+                          product={p}
+                          handleClick={() => {
+                            navigation.navigate('product_detail', {
+                              product_id: p.id,
+                            });
+                          }}
+                          itemType={'product'}
+                        />
+                      ),
+                    )}
                 </View>
               </View>
             </View>
@@ -197,3 +149,46 @@ export default function HomePage() {
     </ScrollView>
   );
 }
+
+function HomePageTitle() {
+  const navigation = useNavigation();
+  return (
+    <View style={styles.homePageTitleContainer}>
+      <Pressable
+        onPress={() => {
+          alert('clicked');
+        }}>
+        <Text style={styles.homePageTitleLeftText}>Categories for you</Text>
+      </Pressable>
+      <Pressable
+        onPress={() => {
+          navigation.navigate('allcategory', {
+            category_id: 0,
+          });
+        }}>
+        <Text style={styles.homePageTitleRightText}>Show All</Text>
+      </Pressable>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  categoryContainer: {
+    width: '100%',
+  },
+  homePageTitleContainer: {
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    flexDirection: 'row',
+    width: '100%',
+    paddingVertical: 5,
+  },
+  homePageTitleLeftText: {
+    fontSize: 18,
+    fontFamily: 'UniNeue-Light',
+  },
+  homePageTitleRightText: {
+    fontSize: 12,
+    fontFamily: 'UniNeue-Light',
+  },
+});

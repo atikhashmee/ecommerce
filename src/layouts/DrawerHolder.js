@@ -30,6 +30,10 @@ const DrawerHolder = () => {
   let [categories, setCategories] = useState([]);
   let [cartProducts, setCartProducts] = useState([]);
   let [sliders, setSliders] = useState([]);
+  let [homePageData, setHomePageData] = useState({
+    products_lists: products,
+    featured_category: [],
+  });
   let [auth, setAuth] = useState({
     user: null,
     isLoggedin: false,
@@ -39,8 +43,11 @@ const DrawerHolder = () => {
   useEffect(() => {
     if (loadData !== null) {
       setStoreInfo(loadData.data.store_details);
+      let filteredCategory = loadData.data.section_details.filter(
+        (item) => item.key !== 'slider_images',
+      );
       setProducts(
-        loadData.data.section_details.map((item) => {
+        filteredCategory.map((item) => {
           if (item.key === 'feature_categories_visibility') {
             item.frontEndTag = 'category';
           } else {
@@ -51,12 +58,17 @@ const DrawerHolder = () => {
       );
 
       let sliders_items = [];
-      loadData.data.section_details.forEach(item=>{
+      let featuredCategories = [];
+      loadData.data.section_details.forEach((item) => {
         if (item.key === 'slider_images') {
           sliders_items = item.elements;
         }
+        if (item.key === 'feature_categories_visibility') {
+          featuredCategories = item.elements;
+        }
       });
       setSliders(sliders_items);
+      setHomePageData({...homePageData, featured_category: featuredCategories});
     }
   }, [loadData]);
 
@@ -150,6 +162,7 @@ const DrawerHolder = () => {
       sliders,
       categories,
       auth,
+      homePageData,
       categoryToggleItem(category_id, subCategory_id) {
         let modifyCate = [...categories];
         modifyCate.forEach((category) => {
@@ -166,25 +179,26 @@ const DrawerHolder = () => {
         setCategories([...modifyCate]);
       },
       addToCart(product) {
-        let productItems = [...cartProducts];
-        let is_there = false;
-        if (cartProducts.length > 0) {
-          cartProducts.forEach((item) => {
-            if (item.id === product.id) {
-              is_there = true;
-            }
-          });
-        }
+        alert('added');
+        // let productItems = [...cartProducts];
+        // let is_there = false;
+        // if (cartProducts.length > 0) {
+        //   cartProducts.forEach((item) => {
+        //     if (item.id === product.id) {
+        //       is_there = true;
+        //     }
+        //   });
+        // }
 
-        if (!is_there) {
-          productItems.push(product);
-          setCartProducts((cartProducts) => [...cartProducts, product]);
-        }
-        LocalStorage.put('cart_items', JSON.stringify(productItems)).then(
-          (res) => {
-            console.log(res, 'saved');
-          },
-        );
+        // if (!is_there) {
+        //   productItems.push(product);
+        //   setCartProducts((cartProducts) => [...cartProducts, product]);
+        // }
+        // LocalStorage.put('cart_items', JSON.stringify(productItems)).then(
+        //   (res) => {
+        //     console.log(res, 'saved');
+        //   },
+        // );
       },
       removeFromCart(product) {
         let productItems = [...cartProducts];
