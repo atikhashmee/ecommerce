@@ -44,7 +44,7 @@ const DrawerHolder = () => {
     if (loadData !== null) {
       setStoreInfo(loadData.data.store_details);
       let filteredCategory = loadData.data.section_details.filter(
-        (item) => item.key !== 'slider_images',
+        (item) => item.key !== 'slider_images' && item.elements.length !==0,
       );
       setProducts(
         filteredCategory.map((item) => {

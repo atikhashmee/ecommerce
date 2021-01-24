@@ -22,7 +22,7 @@ export default function FooterTabs() {
   }
   return (
     <Footer>
-      <FooterTab>
+      <FooterTab style={{ backgroundColor: '#fff' }}>
         <Button
           active
           style={styles.tabHeading}
@@ -44,6 +44,15 @@ export default function FooterTabs() {
             <Icon name="heart" style={styles.iconStyle} type="Feather" />
           </View>
           <Text style={styles.tabTextStyle}>WishList</Text>
+        </Button>
+        <Button
+          style={[styles.tabHeading, styles.middleIconContainer]}
+          onPress={() => {
+            navigation.navigate('cart_view');
+          }}>
+          <View style={styles.middleIcon}>
+            <Icon name="cart-outline" style={{color: '#fff', fontSize: 30}} type="Ionicons" />
+          </View>
         </Button>
         <Button
           style={styles.tabHeading}
@@ -107,5 +116,28 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     fontSize: 15,
     fontFamily: 'UniNeue-Light',
+  },
+  middleIconContainer: {
+    position: 'relative',
+    padding: 0,
+    width: '100%',
+    height: '100%',
+    zIndex: 300,
+  },
+  middleIcon: {
+    position: 'absolute',
+    backgroundColor: '#000',
+    zIndex: 300,
+    elevation: 5,
+    padding: 0,
+    height: 65,
+    width: 65,
+    top: -20, 
+    right: -10,
+    borderRadius: 50,
+    textAlign: 'center',
+    alignItems: 'center',
+    textAlignVertical: 'center',
+    justifyContent: 'center',
   },
 });
