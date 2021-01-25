@@ -52,6 +52,7 @@ function WishListItem({prop_item, removeItem}) {
                 color: '#000',
                 marginLeft: 5,
                 backgroundColor: '#fff',
+                fontFamily: 'UniNeue-Light',
                 fontSize: 16,
               }}>
               {prop_item.time}
@@ -171,7 +172,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderWidth: 1,
     borderColor: '#d3d3d3',
-    borderRadius: 20,
+    borderRadius: 10,
     marginBottom: 15,
     elevation: 3,
   },

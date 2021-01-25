@@ -245,7 +245,7 @@ function Dashboard(props) {
             headerTintColor: '#fff',
             headerStyle: {
               backgroundColor: '#fff',
-              elevation: 0,
+              elevation: 5,
             },
             headerTitleStyle: {
               fontFamily: 'Montserrat-Light',

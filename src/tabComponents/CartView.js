@@ -186,9 +186,18 @@ export default function CartView() {
 
   return (
     <Container>
-      <Header style={{backgroundColor: '#fff'}}>
-        <Left>
+      <Header
+        style={{
+          backgroundColor: '#fff',
+          elevation: 5,
+          marginBottom: 20,
+        }}>
+        <Left
+          style={{
+            marginLeft: -10,
+          }}>
           <Button
+            style={{marginLeft: -10}}
             transparent
             onPress={() => {
               navigation.navigate('home');
