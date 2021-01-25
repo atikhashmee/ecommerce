@@ -5,11 +5,14 @@ import IonIcon from 'react-native-vector-icons/Ionicons';
 import {AppContext} from '../utils/GlobalContext';
 import {useNavigation} from '@react-navigation/native';
 import {StyleSheet} from 'react-native';
+import {WishListsContext} from '../utils/WishListsContext';
 
 const Product = ({product, handleClick, itemType = null}) => {
   let {addToCart} = useContext(AppContext);
   let [cardItemType, setCardItemType] = React.useState(itemType);
   let [imageUrl, setImageUrl] = React.useState(null);
+  let {addToWishLists} = React.useContext(WishListsContext);
+
   const navigation = useNavigation();
   React.useEffect(() => {
     if (cardItemType !== null) {
@@ -84,7 +87,7 @@ const Product = ({product, handleClick, itemType = null}) => {
           </Pressable>
           <Pressable
             onPress={() => {
-              alert('saved');
+              addToWishLists(product.id);
             }}
             style={{
               ...AppStyle.cartButton,

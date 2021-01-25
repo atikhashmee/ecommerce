@@ -4,25 +4,22 @@ import {Icon, Badge, FooterTab, Footer, Button} from 'native-base';
 import {useNavigation} from '@react-navigation/native';
 import AuthModal from '../auth/AuthModal';
 import {AppContext} from '../utils/GlobalContext';
+import {WishListsContext} from '../utils/WishListsContext';
+
 export default function FooterTabs() {
   const navigation = useNavigation();
-  const [] = React.useState(false);
-  const [isModalOpen, setIsModalOpen] = React.useState(false);
-  const {auth} = React.useContext(AppContext);
+  const {getWishLists} = React.useContext(WishListsContext);
+  const {isLoggedin, isAuthModalOpen, setIsAuthModalOpen} = React.useContext(AppContext);
   function checkAuthenticate() {
-    if (auth !== null) {
-      if (auth.user !== null && auth.auth_token !== null) {
-        navigation.navigate('account');
-      } else {
-        setIsModalOpen(true);
-      }
+    if (isLoggedin()) {
+      navigation.navigate('account');
     } else {
-      setIsModalOpen(true);
+      setIsAuthModalOpen(true);
     }
   }
   return (
     <Footer>
-      <FooterTab style={{ backgroundColor: '#fff' }}>
+      <FooterTab style={{backgroundColor: '#fff'}}>
         <Button
           active
           style={styles.tabHeading}
@@ -51,7 +48,11 @@ export default function FooterTabs() {
             navigation.navigate('cart_view');
           }}>
           <View style={styles.middleIcon}>
-            <Icon name="cart-outline" style={{color: '#fff', fontSize: 30}} type="Ionicons" />
+            <Icon
+              name="cart-outline"
+              style={{color: '#fff', fontSize: 30}}
+              type="Ionicons"
+            />
           </View>
         </Button>
         <Button
@@ -80,10 +81,10 @@ export default function FooterTabs() {
           <Text style={styles.tabTextStyle}>Account</Text>
         </Button>
       </FooterTab>
-      {isModalOpen && (
+      {isAuthModalOpen && (
         <AuthModal
-          modalVisible={isModalOpen}
-          setModalVisible={setIsModalOpen}
+          modalVisible={isAuthModalOpen}
+          setModalVisible={setIsAuthModalOpen}
         />
       )}
     </Footer>
@@ -130,7 +131,7 @@ const styles = StyleSheet.create({
     padding: 0,
     height: 65,
     width: 65,
-    top: -20, 
+    top: -20,
     right: -2,
     borderRadius: 50,
     textAlign: 'center',

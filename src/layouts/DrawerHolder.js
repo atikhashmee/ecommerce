@@ -30,6 +30,7 @@ const DrawerHolder = () => {
   let [categories, setCategories] = useState([]);
   let [cartProducts, setCartProducts] = useState([]);
   let [sliders, setSliders] = useState([]);
+  const [isAuthModalOpen, setIsAuthModalOpen] = React.useState(false);
   let [homePageData, setHomePageData] = useState({
     products_lists: products,
     featured_category: [],
@@ -44,7 +45,7 @@ const DrawerHolder = () => {
     if (loadData !== null) {
       setStoreInfo(loadData.data.store_details);
       let filteredCategory = loadData.data.section_details.filter(
-        (item) => item.key !== 'slider_images' && item.elements.length !==0,
+        (item) => item.key !== 'slider_images' && item.elements.length !== 0,
       );
       setProducts(
         filteredCategory.map((item) => {
@@ -163,6 +164,8 @@ const DrawerHolder = () => {
       categories,
       auth,
       homePageData,
+      isAuthModalOpen,
+      setIsAuthModalOpen,
       categoryToggleItem(category_id, subCategory_id) {
         let modifyCate = [...categories];
         modifyCate.forEach((category) => {
@@ -246,8 +249,16 @@ const DrawerHolder = () => {
           },
         );
       },
+      isLoggedin() {
+        if (auth !== null) {
+          if (auth.user !== null && auth.auth_token !== null) {
+            return true;
+          }
+        }
+        return false; 
+      },
     };
-  }, [auth, loadData, storeInfo, categories, cartProducts]);
+  }, [auth, isAuthModalOpen, loadData, storeInfo, categories, cartProducts]);
   return (
     <AppContext.Provider value={appContextVal}>
       <Drawer.Navigator
