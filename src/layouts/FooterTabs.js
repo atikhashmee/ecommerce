@@ -4,12 +4,22 @@ import {Icon, Badge, FooterTab, Footer, Button} from 'native-base';
 import {useNavigation} from '@react-navigation/native';
 import AuthModal from '../auth/AuthModal';
 import {AppContext} from '../utils/GlobalContext';
-import {WishListsContext} from '../utils/WishListsContext';
+import {WishListsContextTwo} from '../utils/WishListsContextTwo';
 
 export default function FooterTabs() {
   const navigation = useNavigation();
-  const {getWishLists} = React.useContext(WishListsContext);
-  const {isLoggedin, isAuthModalOpen, setIsAuthModalOpen} = React.useContext(AppContext);
+  const [wishListsCount, setWishListCount] = React.useState(0);
+  const {
+    auth,
+    isLoggedin,
+    isAuthModalOpen,
+    setIsAuthModalOpen,
+  } = React.useContext(AppContext);
+  const {wishlists} = React.useContext(WishListsContextTwo);
+
+  React.useEffect(() => {
+    setWishListCount(wishlists.length);
+  }, []);
   function checkAuthenticate() {
     if (isLoggedin()) {
       navigation.navigate('account');
@@ -35,9 +45,11 @@ export default function FooterTabs() {
             navigation.navigate('wishLists');
           }}>
           <View>
-            <Badge style={styles.badgeStyle} default>
-              <Text style={styles.badgeTextStyle}>2</Text>
-            </Badge>
+            {wishListsCount > 0 && (
+              <Badge style={styles.badgeStyle} default>
+                <Text style={styles.badgeTextStyle}>{wishListsCount}</Text>
+              </Badge>
+            )}
             <Icon name="heart" style={styles.iconStyle} type="Feather" />
           </View>
           <Text style={styles.tabTextStyle}>WishList</Text>
@@ -62,7 +74,7 @@ export default function FooterTabs() {
           }}>
           <View>
             <Badge style={styles.badgeStyle} default>
-              <Text style={styles.badgeTextStyle}>102</Text>
+              <Text style={styles.badgeTextStyle}>20</Text>
             </Badge>
             <Icon
               name="cart-outline"

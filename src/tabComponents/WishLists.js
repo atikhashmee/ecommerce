@@ -1,30 +1,10 @@
-import React, {useState} from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  Image,
-  Dimensions,
-} from 'react-native';
+import React from 'react';
+import {View, Text, Pressable, StyleSheet, Image} from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 import {Title} from 'react-native-paper';
-import {TouchableHighlight} from 'react-native-gesture-handler';
-import {Pressable} from 'react-native';
 import FooterTabs from '../layouts/FooterTabs';
-import {
-  Container,
-  TabHeading,
-  Icon,
-  Header,
-  Content,
-  Tab,
-  Tabs,
-  Badge,
-  FooterTab,
-  Footer,
-  Button,
-} from 'native-base';
+import {Container, Icon, Content} from 'native-base';
+import {WishListsContextTwo} from '../utils/WishListsContextTwo';
 
 function WishListItem({prop_item, removeItem}) {
   return (
@@ -79,48 +59,24 @@ function WishListItem({prop_item, removeItem}) {
 }
 
 export default function WishLists() {
-  const [wishListsItems, setWishLitsItems] = React.useState([
-    {
-      id: 1,
-      name: 'Product Name 1 Product Name 1 Product Name 1 Product Name 1',
-      time: '3 minuets ago',
-      image:
-        'https://images.pexels.com/photos/607812/pexels-photo-607812.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
-      price: 1250,
-    },
-    {
-      id: 2,
-      name: 'Product Name 2',
-      time: '5 minuets ago',
-      image:
-        'https://cdn.pocket-lint.com/r/s/970x/assets/images/152137-laptops-review-apple-macbook-pro-2020-review-image1-qy49zfkn53-jpg.webp',
-      price: 150,
-    },
-    {
-      id: 3,
-      name: 'Product Name 3',
-      time: '2 days ago',
-      image:
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR5cjupfd1pDuktX3dP1hp8_l1nXsLAFN1OGQ&usqp=CAU',
-      price: 5550,
-    },
-    {
-      id: 4,
-      name: 'Product Name 4',
-      time: '1 days ago',
-      image:
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR5cjupfd1pDuktX3dP1hp8_l1nXsLAFN1OGQ&usqp=CAU',
-      price: 5550,
-    },
-    {
-      id: 5,
-      name: 'Product Name 5',
-      time: '1 Minuet ago',
-      image:
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR5cjupfd1pDuktX3dP1hp8_l1nXsLAFN1OGQ&usqp=CAU',
-      price: 5550,
-    },
-  ]);
+  const {wishlists} = React.useContext(WishListsContextTwo);
+  const [wishListsItems, setWishLitsItems] = React.useState([]);
+  React.useEffect(() => {
+    if (wishlists.length > 0) {
+      setWishLitsItems(
+        wishlists.map((item) => {
+          return {
+            id: item.id,
+            name: item.name,
+            time: item.formatted_date,
+            image: item.feature_image_url,
+            price: item.price,
+          };
+        }),
+      );
+    }
+  }, [wishlists]);
+
   function removeItem(item) {
     let removableItems = [...wishListsItems];
     removableItems.splice(removableItems.indexOf(item), 1);
@@ -184,7 +140,8 @@ const styles = StyleSheet.create({
   tinyLogo: {
     width: '100%',
     height: '100%',
-    resizeMode: 'center',
+    resizeMode: 'contain',
+    backgroundColor: 'lightblue',
   },
   wishListContent: {
     flexBasis: '60%',

@@ -4,6 +4,7 @@ import {View} from 'react-native';
 import {AppContext} from '../utils/GlobalContext';
 import HomeTabs from '../Tabs/HomeTabs';
 import {WishListsContext} from './../utils/WishListsContext';
+import {WishListsContextOne} from '../utils/WishListsContextOne';
 import {baseUrl} from '../env.json';
 import {store_wish_lists, get_wish_lists} from '../api.json';
 
@@ -16,7 +17,6 @@ function Home() {
 
   useEffect(() => {
     setInit();
-    WishListsContextObj.getWishLists();
   }, []);
   let WishListsContextObj = React.useMemo(() => {
     return {

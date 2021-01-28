@@ -1,5 +1,6 @@
 import React, {PureComponent, useState, useEffect} from 'react';
 import {AppContext} from '../utils/GlobalContext';
+import {WishListsContextOne} from '../utils/WishListsContextOne';
 import {Button} from 'react-native';
 import AppStyle from '../assets/style';
 import {LocalStorage} from '../utils/LocalStorage';
@@ -12,6 +13,8 @@ import {
 } from '@react-navigation/drawer';
 import CustomDrawerContent from './CustomDrawerContent';
 import Dashboard from './Dashboard';
+import {wishState, wishListsReducer} from '../store/WishLists';
+import WishListProvider from '../providers/WishListProvider';
 
 const defaultArr = {
   store_id: 1,
@@ -31,6 +34,7 @@ const DrawerHolder = () => {
   let [cartProducts, setCartProducts] = useState([]);
   let [sliders, setSliders] = useState([]);
   const [isAuthModalOpen, setIsAuthModalOpen] = React.useState(false);
+  const wishReducer = React.useReducer(wishListsReducer, wishState);
   let [homePageData, setHomePageData] = useState({
     products_lists: products,
     featured_category: [],
@@ -255,38 +259,42 @@ const DrawerHolder = () => {
             return true;
           }
         }
-        return false; 
+        return false;
       },
     };
   }, [auth, isAuthModalOpen, loadData, storeInfo, categories, cartProducts]);
   return (
     <AppContext.Provider value={appContextVal}>
-      <Drawer.Navigator
-        drawerType={'front'}
-        drawerStyle={{
-          width: 280,
-        }}
-        drawerContent={(props) => <CustomDrawerContent {...props} />}
-        drawerContentOptions={{
-          activeTintColor: '#535b6c',
-          itemStyle: AppStyle.drawerItem,
-          labelStyle: {fontSize: 17, fontWeight: 'bold'},
-        }}>
-        <Drawer.Screen
-          name="dashboard"
-          component={Dashboard}
-          options={{
-            title: 'Home',
-            // drawerIcon: () => (
-            //   <IonIcon name="md-home" size={30} color= '#ccc' />
-            // ),
-            style: {
-              borderWidth: 1,
-              borderColor: '#535b6c',
-            },
-          }}
-        />
-      </Drawer.Navigator>
+      <WishListsContextOne.Provider value={wishReducer}>
+        <WishListProvider>
+          <Drawer.Navigator
+            drawerType={'front'}
+            drawerStyle={{
+              width: 280,
+            }}
+            drawerContent={(props) => <CustomDrawerContent {...props} />}
+            drawerContentOptions={{
+              activeTintColor: '#535b6c',
+              itemStyle: AppStyle.drawerItem,
+              labelStyle: {fontSize: 17, fontWeight: 'bold'},
+            }}>
+            <Drawer.Screen
+              name="dashboard"
+              component={Dashboard}
+              options={{
+                title: 'Home',
+                // drawerIcon: () => (
+                //   <IonIcon name="md-home" size={30} color= '#ccc' />
+                // ),
+                style: {
+                  borderWidth: 1,
+                  borderColor: '#535b6c',
+                },
+              }}
+            />
+          </Drawer.Navigator>
+        </WishListProvider>
+      </WishListsContextOne.Provider>
     </AppContext.Provider>
   );
 };

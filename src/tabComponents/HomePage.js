@@ -32,7 +32,7 @@ export default function HomePage() {
   let [featuredCategory, setFeaturedCategory] = React.useState([]);
   React.useEffect(() => {
     setFeaturedCategory(homePageData.featured_category);
-    console.log(products, 'df');
+    // console.log(products, 'df');
   }, [homePageData]);
   return (
     <ScrollView>
