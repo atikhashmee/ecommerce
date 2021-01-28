@@ -5,7 +5,6 @@ import IonIcon from 'react-native-vector-icons/Ionicons';
 import {AppContext} from '../utils/GlobalContext';
 import {useNavigation} from '@react-navigation/native';
 import {StyleSheet} from 'react-native';
-import {WishListsContext} from '../utils/WishListsContext';
 import {WishListsContextTwo} from '../utils/WishListsContextTwo';
 
 const Product = ({product, handleClick, itemType = null}) => {
