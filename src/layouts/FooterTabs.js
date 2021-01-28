@@ -18,6 +18,7 @@ export default function FooterTabs() {
   const {wishlists} = React.useContext(WishListsContextTwo);
 
   React.useEffect(() => {
+    console.log(wishlists, 'ddddfdf');
     setWishListCount(wishlists.length);
   }, []);
   function checkAuthenticate() {

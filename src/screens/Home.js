@@ -21,7 +21,6 @@ function Home() {
   let WishListsContextObj = React.useMemo(() => {
     return {
       async addToWishLists(product_id) {
-        console.log(this, 'another this access');
         console.log(isLoggedin(), 'dd', auth);
         if (!isLoggedin()) {
           setIsAuthModalOpen(true);
