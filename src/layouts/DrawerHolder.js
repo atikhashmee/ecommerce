@@ -3,9 +3,7 @@ import {AppContext} from '../utils/GlobalContext';
 import AppStyle from '../assets/style';
 import {LocalStorage} from '../utils/LocalStorage';
 import {baseUrl} from '../env.json';
-import {
-  createDrawerNavigator,
-} from '@react-navigation/drawer';
+import {createDrawerNavigator} from '@react-navigation/drawer';
 import CustomDrawerContent from './CustomDrawerContent';
 import Dashboard from './Dashboard';
 import WishListProvider from '../providers/WishListProvider';
@@ -90,11 +88,13 @@ const DrawerHolder = () => {
     });
   }, [cartProducts]);
 
+ 
+
   useEffect(() => {
     LocalStorage.get('auth').then((res) => {
       setAuth(JSON.parse(res));
     });
-  }, []);
+  }, [auth]);
 
   const appContextVal = React.useMemo(() => {
     return {

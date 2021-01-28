@@ -6,13 +6,19 @@ import {get_wish_lists, delete_wish_lists, store_wish_lists} from '../api.json';
 import {AppContext} from '../utils/GlobalContext';
 
 export default function WishListProvider(props) {
-  const [wishlists, wishlistDispatch] = React.useReducer(wishlistReducer, []);
+  const [items, setItems] = React.useState([]);
+  const [wishlists, wishlistDispatch] = React.useReducer(
+    wishlistReducer,
+    items,
+  );
   const {auth, isLoggedin} = React.useContext(AppContext);
   React.useEffect(() => {
+    console.log('run');
     getAllWishLists();
   }, []);
 
   const getAllWishLists = () => {
+    console.log(isLoggedin(), auth, 'logged in');
     if (isLoggedin()) {
       var formdata = new FormData();
       formdata.append('user_id', auth.user.user_id);
@@ -28,7 +34,7 @@ export default function WishListProvider(props) {
         .then((response) => response.json())
         .then((result) => {
           if (result.status) {
-            console.log(result.data, 'api response');
+            console.log('run inside......');
             wishlistDispatch(fetchInitial(result.data));
           }
         })

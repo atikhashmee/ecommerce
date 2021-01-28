@@ -5,13 +5,10 @@ import {
   Text,
   ScrollView,
   Pressable,
-  Image,
   ActivityIndicator,
   StyleSheet,
   Dimensions,
 } from 'react-native';
-import IonIcon from 'react-native-vector-icons/Ionicons';
-import Categories from '../dashboard/Categories';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -111,6 +108,7 @@ export default function HomePage() {
                     item.elements.map((p, k) =>
                       item.frontEndTag == 'category' ? (
                         <Product
+                          key={k}
                           product={p}
                           handleClick={() => {
                             navigation.navigate('products', {
@@ -121,6 +119,7 @@ export default function HomePage() {
                         />
                       ) : (
                         <Product
+                          key={k}
                           product={p}
                           handleClick={() => {
                             navigation.navigate('product_detail', {
