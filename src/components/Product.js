@@ -6,12 +6,13 @@ import {AppContext} from '../utils/GlobalContext';
 import {useNavigation} from '@react-navigation/native';
 import {StyleSheet} from 'react-native';
 import {WishListsContext} from '../utils/WishListsContext';
+import {WishListsContextTwo} from '../utils/WishListsContextTwo';
 
 const Product = ({product, handleClick, itemType = null}) => {
   let {addToCart} = useContext(AppContext);
   let [cardItemType, setCardItemType] = React.useState(itemType);
   let [imageUrl, setImageUrl] = React.useState(null);
-  let {addToWishLists} = React.useContext(WishListsContext);
+  let {AddToWishLists} = React.useContext(WishListsContextTwo);
 
   const navigation = useNavigation();
   React.useEffect(() => {
@@ -87,7 +88,7 @@ const Product = ({product, handleClick, itemType = null}) => {
           </Pressable>
           <Pressable
             onPress={() => {
-              addToWishLists(product.id);
+              AddToWishLists(product.id);
             }}
             style={{
               ...AppStyle.cartButton,

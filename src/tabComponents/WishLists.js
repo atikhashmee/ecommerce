@@ -59,7 +59,7 @@ function WishListItem({prop_item, removeItem}) {
 }
 
 export default function WishLists() {
-  const {wishlists} = React.useContext(WishListsContextTwo);
+  const {wishlists, deleteWishItem} = React.useContext(WishListsContextTwo);
   const [wishListsItems, setWishLitsItems] = React.useState([]);
   React.useEffect(() => {
     if (wishlists.length > 0) {
@@ -67,6 +67,7 @@ export default function WishLists() {
         wishlists.map((item) => {
           return {
             id: item.id,
+            product_id: item.product_id,
             name: item.name,
             time: item.formatted_date,
             image: item.feature_image_url,
@@ -78,6 +79,7 @@ export default function WishLists() {
   }, [wishlists]);
 
   function removeItem(item) {
+    deleteWishItem(item.product_id);
     let removableItems = [...wishListsItems];
     removableItems.splice(removableItems.indexOf(item), 1);
     setWishLitsItems(removableItems);
