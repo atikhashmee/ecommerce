@@ -6,9 +6,11 @@ import {AppContext} from '../utils/GlobalContext';
 import {useNavigation} from '@react-navigation/native';
 import {StyleSheet} from 'react-native';
 import {WishListsContextTwo} from '../utils/WishListsContextTwo';
+import {CartContext} from '../utils/CartContext';
 
 const Product = ({product, handleClick, itemType = null}) => {
-  let {addToCart} = useContext(AppContext);
+  //let {addToCart} = useContext(AppContext);
+  let {addToCart} = useContext(CartContext);
   let [cardItemType, setCardItemType] = React.useState(itemType);
   let [imageUrl, setImageUrl] = React.useState(null);
   let {AddToWishLists} = React.useContext(WishListsContextTwo);

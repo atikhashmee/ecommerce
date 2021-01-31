@@ -1,5 +1,13 @@
 import React, {PureComponent, useState, useEffect} from 'react';
-import {Button, TouchableOpacity, View, Dimensions, Text, StyleSheet} from 'react-native';
+import {
+  Modal,
+  TouchableOpacity,
+  View,
+  Dimensions,
+  Text,
+  StyleSheet,
+  TouchableHighlight,
+} from 'react-native';
 import {TopSearchBar} from '../components/TopSearchBar';
 import {createStackNavigator} from '@react-navigation/stack';
 import IonIcon from 'react-native-vector-icons/Ionicons';
@@ -17,6 +25,8 @@ import WishLists from '../tabComponents/WishLists';
 import CartView from '../tabComponents/CartView';
 import Account from '../tabComponents/Account';
 import SignUp from '../components/page/SignUp';
+import HalfModal from '../components/HalfModal';
+import CartModal from '../components/CartModal';
 
 const Authenticate = createStackNavigator();
 const screenWidth = Math.round(Dimensions.get('window').width);
@@ -46,8 +56,6 @@ function AnotherScreen(props) {
     </View>
   );
 }
-
-
 
 function Dashboard(props) {
   return (
@@ -236,7 +244,7 @@ function Dashboard(props) {
             },
           }}
         />
-      
+
         <Authenticate.Screen
           name="wishLists"
           component={WishLists}
@@ -307,7 +315,7 @@ function Dashboard(props) {
             },
           }}
         />
-      
+
         <Authenticate.Screen
           name="anotther_screen"
           component={AnotherScreen}
@@ -332,6 +340,9 @@ function Dashboard(props) {
           }}
         />
       </Authenticate.Navigator>
+      <HalfModal headerVisible={false}>
+        <CartModal />
+      </HalfModal>
     </>
   );
 }

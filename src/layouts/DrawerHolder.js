@@ -7,6 +7,8 @@ import {createDrawerNavigator} from '@react-navigation/drawer';
 import CustomDrawerContent from './CustomDrawerContent';
 import Dashboard from './Dashboard';
 import WishListProvider from '../providers/WishListProvider';
+import CartProvider from '../providers/CartProvider';
+import AppUtilityProvder from '../providers/AppUtilityProvder';
 
 const defaultArr = {
   store_id: 1,
@@ -87,8 +89,6 @@ const DrawerHolder = () => {
       setCartProducts(JSON.parse(res));
     });
   }, [cartProducts]);
-
- 
 
   useEffect(() => {
     LocalStorage.get('auth').then((res) => {
@@ -253,36 +253,40 @@ const DrawerHolder = () => {
     };
   }, [auth, isAuthModalOpen, loadData, storeInfo, categories, cartProducts]);
   return (
-    <AppContext.Provider value={appContextVal}>
-      <WishListProvider>
-        <Drawer.Navigator
-          drawerType={'front'}
-          drawerStyle={{
-            width: 280,
-          }}
-          drawerContent={(props) => <CustomDrawerContent {...props} />}
-          drawerContentOptions={{
-            activeTintColor: '#535b6c',
-            itemStyle: AppStyle.drawerItem,
-            labelStyle: {fontSize: 17, fontWeight: 'bold'},
-          }}>
-          <Drawer.Screen
-            name="dashboard"
-            component={Dashboard}
-            options={{
-              title: 'Home',
-              // drawerIcon: () => (
-              //   <IonIcon name="md-home" size={30} color= '#ccc' />
-              // ),
-              style: {
-                borderWidth: 1,
-                borderColor: '#535b6c',
-              },
-            }}
-          />
-        </Drawer.Navigator>
-      </WishListProvider>
-    </AppContext.Provider>
+    <AppUtilityProvder>
+      <AppContext.Provider value={appContextVal}>
+        <CartProvider>
+          <WishListProvider>
+            <Drawer.Navigator
+              drawerType={'front'}
+              drawerStyle={{
+                width: 280,
+              }}
+              drawerContent={(props) => <CustomDrawerContent {...props} />}
+              drawerContentOptions={{
+                activeTintColor: '#535b6c',
+                itemStyle: AppStyle.drawerItem,
+                labelStyle: {fontSize: 17, fontWeight: 'bold'},
+              }}>
+              <Drawer.Screen
+                name="dashboard"
+                component={Dashboard}
+                options={{
+                  title: 'Home',
+                  // drawerIcon: () => (
+                  //   <IonIcon name="md-home" size={30} color= '#ccc' />
+                  // ),
+                  style: {
+                    borderWidth: 1,
+                    borderColor: '#535b6c',
+                  },
+                }}
+              />
+            </Drawer.Navigator>
+          </WishListProvider>
+        </CartProvider>
+      </AppContext.Provider>
+    </AppUtilityProvder>
   );
 };
 
