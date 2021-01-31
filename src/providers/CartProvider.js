@@ -4,20 +4,32 @@ import {baseUrl} from '../env.json';
 import {get_wish_lists, delete_wish_lists, store_wish_lists} from '../api.json';
 import {CartContext} from '../utils/CartContext';
 import {AppContext} from '../utils/GlobalContext';
+import {UtilityContext} from './AppUtilityProvder';
 
 export default function CartProvider(props) {
   const [items, setItems] = React.useState([]);
   const [cartItems, cartDispatch] = React.useReducer(cartReducer, items);
   const {auth, isLoggedin} = React.useContext(AppContext);
+  const {setHalfModalVisible} = React.useContext(UtilityContext);
+  const [currentCartItem, setCurrentCartItem] = React.useState(null);
 
   const addToCart = (product) => {
     if (isLoggedin()) {
+      setHalfModalVisible(true);
+      setCurrentCartItem(product);
       console.log(product.variants, 'add to product wokring');
     }
   };
 
   return (
-    <CartContext.Provider value={{cartItems, cartDispatch, addToCart}}>
+    <CartContext.Provider
+      value={{
+        cartItems,
+        cartDispatch,
+        addToCart,
+        currentCartItem,
+        setCurrentCartItem,
+      }}>
       {props.children}
     </CartContext.Provider>
   );
