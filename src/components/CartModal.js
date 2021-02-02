@@ -1,42 +1,8 @@
-import React, {useEffect, useState, useContext} from 'react';
-import {
-  View,
-  Text,
-  Image,
-  Pressable,
-  ScrollView,
-  ActivityIndicator,
-  StyleSheet,
-  Modal,
-} from 'react-native';
+import React from 'react';
+import {View, Text, Image, Pressable, StyleSheet} from 'react-native';
 import AppStyle from '../assets/style';
-import {
-  heightPercentageToDP as hp,
-  widthPercentageToDP as wp,
-} from 'react-native-responsive-screen';
-import IonIcon from 'react-native-vector-icons/Ionicons';
-import {Rating, AirbnbRating} from 'react-native-elements';
-import {useNavigation} from '@react-navigation/native';
-import {
-  Container,
-  Content,
-  Header,
-  Button,
-  Left,
-  Body,
-  Right,
-  Icon,
-  Title,
-  Grid,
-  Col,
-  Row,
-  Tabs,
-  Tab,
-  Badge,
-  TabHeading,
-  Footer,
-  FooterTab,
-} from 'native-base';
+import {Container, Content, Icon, Grid, Col, Row} from 'native-base';
+import {Button} from 'react-native-paper';
 import TouchSpin from './TouchSpin';
 import {UtilityContext} from '../providers/AppUtilityProvder';
 import {CartContext} from '../utils/CartContext';
@@ -45,7 +11,9 @@ export default function CartModal() {
   const {halfModalVisible, setHalfModalVisible} = React.useContext(
     UtilityContext,
   );
-  const {currentCartItem, setCurrentCartItem} = React.useContext(CartContext);
+  const {currentCartItem, addedToCart, setCurrentCartItem} = React.useContext(
+    CartContext,
+  );
   const [variantColor, setVariantColor] = React.useState([]);
   const [variantSize, setVariantSize] = React.useState([]);
   const [selectedColor, setSelectedColor] = React.useState('');
@@ -53,7 +21,23 @@ export default function CartModal() {
   const [variantPrice, setVariantPrice] = React.useState([]);
   const [productPrice, setProductPrice] = React.useState(0);
   const [displayImage, setDisplayImage] = React.useState(null);
+  const [calculatedPrice, setCalculatedPrice] = React.useState(0);
   const [selectedImageIndex, setSelectedImageIndex] = React.useState(null);
+  const [productQuantity, setProductQuantity] = React.useState(1);
+  const [selectedItem, setSelectedItem] = React.useState({
+    productId: null,
+    productName: '',
+    quantity: 0,
+    variantColor: '',
+    variantSize: '',
+    productPrice: 0,
+    originalPrice: 0,
+    productFeatureImageUrl: null,
+  });
+
+  const updateProcutQuantity = ($value) => {
+    setProductQuantity($value);
+  };
 
   const getVariantPrice = () => {
     if (selectedColor !== '' && selectedSize !== '') {
@@ -68,7 +52,31 @@ export default function CartModal() {
   };
 
   React.useEffect(() => {
+    setSelectedItem({
+      ...selectedItem,
+      productPrice: calculatedPrice,
+    });
+  }, [calculatedPrice]);
+
+  React.useEffect(() => {
+    setCalculatedPrice(productPrice * productQuantity);
+  }, [productQuantity]);
+
+  React.useEffect(() => {
+    setCalculatedPrice(productPrice * productQuantity);
+    setSelectedItem({
+      ...selectedItem,
+      originalPrice: productPrice,
+    });
+  }, [productPrice]);
+
+  React.useEffect(() => {
     getVariantPrice();
+    setSelectedItem({
+      ...selectedItem,
+      variantSize: selectedSize,
+      variantColor: selectedColor,
+    });
   }, [selectedColor, selectedSize]);
 
   React.useEffect(() => {
@@ -119,7 +127,13 @@ export default function CartModal() {
       setSelectedColor(colors[0]);
       setSelectedSize(sizes[0]);
       setDisplayImage(currentCartItem.feature_image_url);
-
+      setSelectedItem({
+        ...selectedItem,
+        productFeatureImageUrl: currentCartItem.feature_image_url,
+        productName: currentCartItem.name,
+        productId: currentCartItem.id,
+        productPrice: productPrice,
+      });
       setSelectedImageIndex(
         currentCartItem.extra_images.indexOf(currentCartItem.feature_image_url),
       );
@@ -138,7 +152,7 @@ export default function CartModal() {
                 <Image source={{uri: displayImage}} style={AppStyle.image} />
               </View>
               <View style={styles.nameColor}>
-                <Text style={{fontSize: 30}}>${productPrice}</Text>
+                <Text style={{fontSize: 30}}>${calculatedPrice}</Text>
                 <Text style={{fontSize: 20}}>{currentCartItem.name}</Text>
               </View>
             </Col>
@@ -193,7 +207,10 @@ export default function CartModal() {
               </Col>
               <Col>
                 <View style={{height: 30}}>
-                  <TouchSpin updateCount={() => {}} initialCount={1} />
+                  <TouchSpin
+                    updateCount={updateProcutQuantity}
+                    initialCount={productQuantity}
+                  />
                 </View>
               </Col>
             </Row>
@@ -254,11 +271,19 @@ export default function CartModal() {
               </Row>
             )}
           </Content>
-          <Button style={{width: '100%', justifyContent: 'center'}}>
+          <Button
+            icon="cart"
+            mode="contained"
+            onPress={() => {
+              addedToCart(selectedItem);
+            }}>
+            Add To Cart
+          </Button>
+          {/* <Button style={{width: '100%', justifyContent: 'center'}}>
             <Text style={{color: '#fff', textAlign: 'center'}}>
               Add To Cart
             </Text>
-          </Button>
+          </Button> */}
         </Grid>
       )}
 

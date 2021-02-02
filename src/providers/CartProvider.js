@@ -17,8 +17,17 @@ export default function CartProvider(props) {
     if (isLoggedin()) {
       setHalfModalVisible(true);
       setCurrentCartItem(product);
-      console.log(product.variants, 'add to product wokring');
+      //console.log(product.variants, 'add to product wokring');
     }
+  };
+
+  React.useEffect(()=>{
+    //console.log(cartItems, 'items updated');
+  }, [cartItems]);
+
+  const addedToCart = (product) => {
+    cartDispatch({type: 'ADD', data: product});
+    //console.log(cartItems, 'itemss cart');
   };
 
   return (
@@ -29,6 +38,7 @@ export default function CartProvider(props) {
         addToCart,
         currentCartItem,
         setCurrentCartItem,
+        addedToCart,
       }}>
       {props.children}
     </CartContext.Provider>

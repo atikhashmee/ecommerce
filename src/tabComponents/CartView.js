@@ -5,18 +5,19 @@ import TouchSpin from '../components/TouchSpin';
 import FooterTabs from '../layouts/FooterTabs';
 import {Container, Header, Left, Body, Right, Icon, Content} from 'native-base';
 import {useNavigation} from '@react-navigation/native';
+import {CartContext} from '../utils/CartContext';
 
-function CartItem({product, category, updateCartArr}) {
+function CartItem({product, updateCartArr}) {
   const [checked, setChecked] = React.useState(false);
   const [quantity, setQuantity] = React.useState(1);
   const [productPrice, setProductPrice] = React.useState(1250);
   function updateQuantity(quantity) {
-    updateCartArr(category, product.id, quantity, 'quantity');
+    updateCartArr(product.id, quantity, 'quantity');
   }
 
   function updateSelection() {
     setChecked(!checked);
-    updateCartArr(category, product.id, checked, 'check');
+    updateCartArr(product.id, checked, 'check');
   }
 
   return (
@@ -65,109 +66,20 @@ function CartItem({product, category, updateCartArr}) {
 export default function CartView() {
   const [modalVisible, setModalVisible] = React.useState(true);
   const [totalCartPrice, setTotalCartPrice] = React.useState(0);
+  const {cartItems} = React.useContext(CartContext);
+
   const navigation = useNavigation();
   const [checked, setChecked] = React.useState(false);
-  const [cartArr, setCartArr] = React.useState([
-    {
-      category_id: 1,
-      category_name: 'Category Name first',
-      category_products: [
-        {
-          id: 1,
-          name: 'product 1',
-          quantity: 1,
-          price: 123,
-          imageUrl:
-            'https://images.pexels.com/photos/607812/pexels-photo-607812.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
-          isChecked: true,
-          calculatedPrice: function () {
-            return this.isChecked ? this.price * this.quantity : 0;
-          },
-        },
-        {
-          id: 2,
-          name: 'product 2',
-          quantity: 1,
-          price: 233,
-          calculatedPrice: function () {
-            return this.isChecked ? this.price * this.quantity : 0;
-          },
-          imageUrl:
-            'https://images.pexels.com/photos/38568/apple-imac-ipad-workplace-38568.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
-          isChecked: true,
-        },
-        {
-          id: 3,
-          name: 'product 3',
-          quantity: 1,
-          price: 333,
-          calculatedPrice: function () {
-            return this.isChecked ? this.price * this.quantity : 0;
-          },
-          imageUrl:
-            'https://images.pexels.com/photos/38568/apple-imac-ipad-workplace-38568.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
-          isChecked: true,
-        },
-      ],
-    },
-    {
-      category_id: 2,
-      category_name: 'Category Name two',
-      category_products: [
-        {
-          id: 1,
-          name: 'product 1',
-          quantity: 1,
-          price: 123,
-          calculatedPrice: function () {
-            return this.isChecked ? this.price * this.quantity : 0;
-          },
-          imageUrl:
-            'https://images.pexels.com/photos/38568/apple-imac-ipad-workplace-38568.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
-          isChecked: true,
-        },
-        {
-          id: 2,
-          name: 'product 2',
-          quantity: 1,
-          price: 233,
-          calculatedPrice: function () {
-            return this.isChecked ? this.price * this.quantity : 0;
-          },
-          imageUrl:
-            'https://images.pexels.com/photos/38568/apple-imac-ipad-workplace-38568.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
-          isChecked: true,
-        },
-        {
-          id: 3,
-          name: 'product 3',
-          quantity: 1,
-          price: 333,
-          calculatedPrice: function () {
-            return this.isChecked ? this.price * this.quantity : 0;
-          },
-          imageUrl:
-            'https://images.pexels.com/photos/38568/apple-imac-ipad-workplace-38568.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
-          isChecked: true,
-        },
-      ],
-    },
-  ]);
+  const [cartArr, setCartArr] = React.useState([]);
 
-  function updateCartArr(cat_id, product_id, data, flag = '') {
+  function updateCartArr(product_id, data, flag = '') {
     let cartArrToUpdate = [...cartArr];
-    cartArrToUpdate.forEach((category) => {
-      if (category.id === cat_id) {
-        if (category.category_products.length > 0) {
-          category.category_products.forEach((product) => {
-            if (product.id === product_id) {
-              if (flag === 'quantity') {
-                product.quantity = data;
-              } else if (flag === 'check') {
-                product.isChecked = data;
-              }
-            }
-          });
+    cartArrToUpdate.forEach((product) => {
+      if (product.id === product_id) {
+        if (flag === 'quantity') {
+          product.quantity = data;
+        } else if (flag === 'check') {
+          product.isChecked = data;
         }
       }
     });
@@ -176,13 +88,31 @@ export default function CartView() {
 
   React.useEffect(() => {
     let totalPrice = 0;
-    cartArr.forEach((category) => {
-      category.category_products.forEach((product) => {
-        totalPrice += product.calculatedPrice();
-      });
+    cartArr.forEach((product) => {
+      totalPrice += product.calculatedPrice();
     });
     setTotalCartPrice(totalPrice);
   }, [cartArr]);
+
+  React.useEffect(() => {
+    if (cartItems.length > 0) {
+      setCartArr(
+        cartItems.map((item) => {
+          return {
+            id: item.productId,
+            name: item.productName,
+            quantity: item.quantity,
+            price: item.originalPrice,
+            imageUrl: item.productFeatureImageUrl,
+            isChecked: true,
+            calculatedPrice: function () {
+              return this.isChecked ? this.price * this.quantity : 0;
+            },
+          };
+        }),
+      );
+    }
+  }, []);
 
   return (
     <Container>
@@ -215,53 +145,21 @@ export default function CartView() {
         </Right>
       </Header>
       <Content>
-        {cartArr.length > 0 &&
-          cartArr.map((item, index) => {
-            return (
-              <View key={index} style={styles.itemContainer}>
-                <View>
-                  <Title>{item.category_name}</Title>
-                </View>
-                {item.category_products.length > 0 &&
-                  item.category_products.map((product, ind) => {
-                    return (
-                      <CartItem
-                        key={ind}
-                        product={product}
-                        category={item.id}
-                        updateCartArr={updateCartArr}
-                      />
-                    );
-                  })}
-              </View>
-            );
-          })}
+        <View style={styles.itemContainer}>
+          {cartArr.length > 0 &&
+            cartArr.map((item, index) => {
+              return (
+                <CartItem
+                  key={index}
+                  product={item}
+                  updateCartArr={updateCartArr}
+                />
+              );
+            })}
+        </View>
       </Content>
-      <View
-        style={{
-          width: '100%',
-          borderTopLeftRadius: 30,
-          borderTopRightRadius: 30,
-          borderTopWidth: 1,
-          borderTopColor: '#d3d3d3',
-          shadowColor: '#000000',
-          shadowOpacity: 0.8,
-          shadowRadius: 2,
-          shadowOffset: {
-            height: 1,
-            width: 1,
-          },
-          height: 70,
-          backgroundColor: '#fff',
-        }}>
-        <View
-          style={{
-            flex: 1,
-            flexDirection: 'row',
-            padding: 10,
-            paddingVertical: 10,
-            alignItems: 'center',
-          }}>
+      <View style={styles.cartViewPageFooterContainer}>
+        <View style={styles.cartViewPageFooterContent}>
           <View style={{flexBasis: '10%'}}>
             <Checkbox
               status={checked ? 'checked' : 'unchecked'}
@@ -349,6 +247,29 @@ const styles = StyleSheet.create({
     margin: 0,
     padding: 0,
     color: '#000',
+  },
+  cartViewPageFooterContainer: {
+    width: '100%',
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
+    borderTopWidth: 1,
+    borderTopColor: '#d3d3d3',
+    shadowColor: '#000000',
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
+    shadowOffset: {
+      height: 1,
+      width: 1,
+    },
+    height: 70,
+    backgroundColor: '#fff',
+  },
+  cartViewPageFooterContent: {
+    flex: 1,
+    flexDirection: 'row',
+    padding: 10,
+    paddingVertical: 10,
+    alignItems: 'center',
   },
 });
 
