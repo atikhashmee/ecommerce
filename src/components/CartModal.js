@@ -32,6 +32,7 @@ export default function CartModal() {
     variantSize: '',
     productPrice: 0,
     originalPrice: 0,
+    isChecked: true,
     productFeatureImageUrl: null,
   });
 
@@ -60,6 +61,10 @@ export default function CartModal() {
 
   React.useEffect(() => {
     setCalculatedPrice(productPrice * productQuantity);
+    setSelectedItem({
+      ...selectedItem,
+      quantity: productQuantity,
+    });
   }, [productQuantity]);
 
   React.useEffect(() => {
@@ -133,6 +138,7 @@ export default function CartModal() {
         productName: currentCartItem.name,
         productId: currentCartItem.id,
         productPrice: productPrice,
+        quantity: productQuantity,
       });
       setSelectedImageIndex(
         currentCartItem.extra_images.indexOf(currentCartItem.feature_image_url),

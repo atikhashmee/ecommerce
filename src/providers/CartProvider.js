@@ -5,6 +5,7 @@ import {get_wish_lists, delete_wish_lists, store_wish_lists} from '../api.json';
 import {CartContext} from '../utils/CartContext';
 import {AppContext} from '../utils/GlobalContext';
 import {UtilityContext} from './AppUtilityProvder';
+import {toggleSingle, toggleAll} from '../store/cartReducer';
 
 export default function CartProvider(props) {
   const [items, setItems] = React.useState([]);
@@ -26,6 +27,7 @@ export default function CartProvider(props) {
   }, [cartItems]);
 
   const addedToCart = (product) => {
+    //console.log('added to cart', product);
     cartDispatch({type: 'ADD', data: product});
     //console.log(cartItems, 'itemss cart');
   };
@@ -39,6 +41,8 @@ export default function CartProvider(props) {
         currentCartItem,
         setCurrentCartItem,
         addedToCart,
+        toggleSingle,
+        toggleAll,
       }}>
       {props.children}
     </CartContext.Provider>

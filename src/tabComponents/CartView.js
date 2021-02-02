@@ -8,15 +8,16 @@ import {useNavigation} from '@react-navigation/native';
 import {CartContext} from '../utils/CartContext';
 
 function CartItem({product, updateCartArr}) {
-  const [checked, setChecked] = React.useState(false);
+  const [checked, setChecked] = React.useState(product.isChecked);
   const [quantity, setQuantity] = React.useState(1);
   const [productPrice, setProductPrice] = React.useState(1250);
+  const {toggleSingle, cartDispatch} = React.useContext(CartContext);
   function updateQuantity(quantity) {
     updateCartArr(product.id, quantity, 'quantity');
   }
 
   function updateSelection() {
-    setChecked(!checked);
+    cartDispatch(toggleSingle(product.id));
     updateCartArr(product.id, checked, 'check');
   }
 
@@ -26,6 +27,7 @@ function CartItem({product, updateCartArr}) {
         <Checkbox
           status={product.isChecked ? 'checked' : 'unchecked'}
           onPress={() => {
+            setChecked(!checked);
             updateSelection();
           }}
         />
@@ -66,7 +68,7 @@ function CartItem({product, updateCartArr}) {
 export default function CartView() {
   const [modalVisible, setModalVisible] = React.useState(true);
   const [totalCartPrice, setTotalCartPrice] = React.useState(0);
-  const {cartItems} = React.useContext(CartContext);
+  const {cartItems, toggleAll, cartDispatch} = React.useContext(CartContext);
 
   const navigation = useNavigation();
   const [checked, setChecked] = React.useState(false);
@@ -80,21 +82,54 @@ export default function CartView() {
           product.quantity = data;
         } else if (flag === 'check') {
           product.isChecked = data;
+          console.log('called first time', product);
         }
       }
     });
     setCartArr([...cartArrToUpdate]);
   }
 
+  const toggleAllItems = () => {
+    cartArr.forEach((item) => {
+      item.isChecked = !item.isChecked;
+    });
+    selectedItemsCheckBox();
+    cartDispatch(toggleAll());
+  };
+
+  const deleteAllCartItems = () => {
+    cartArr.forEach((product) => {
+      if (product.isChecked) {
+        cartArr.splice(cartArr.indexOf(product), 1);
+      }
+    });
+  };
+
+  const selectedItemsCheckBox = () => {
+    let totalChekcedProducts = 0;
+    cartArr.forEach((product) => {
+      if (product.isChecked) {
+        totalChekcedProducts++;
+      }
+    });
+    if (totalChekcedProducts === cartArr.length) {
+      setChecked(true);
+    } else {
+      setChecked(false);
+    }
+  };
+
   React.useEffect(() => {
     let totalPrice = 0;
     cartArr.forEach((product) => {
       totalPrice += product.calculatedPrice();
     });
+    selectedItemsCheckBox();
     setTotalCartPrice(totalPrice);
   }, [cartArr]);
 
   React.useEffect(() => {
+    //console.log(cartItems, 'is items ddd');
     if (cartItems.length > 0) {
       setCartArr(
         cartItems.map((item) => {
@@ -104,7 +139,7 @@ export default function CartView() {
             quantity: item.quantity,
             price: item.originalPrice,
             imageUrl: item.productFeatureImageUrl,
-            isChecked: true,
+            isChecked: item.isChecked,
             calculatedPrice: function () {
               return this.isChecked ? this.price * this.quantity : 0;
             },
@@ -139,7 +174,11 @@ export default function CartView() {
           <Title>Shopping Cart</Title>
         </Body>
         <Right>
-          <Button transparent>
+          <Button
+            transparent
+            onPress={() => {
+              deleteAllCartItems();
+            }}>
             <Icon name="trash-2" type="Feather" />
           </Button>
         </Right>
@@ -164,7 +203,7 @@ export default function CartView() {
             <Checkbox
               status={checked ? 'checked' : 'unchecked'}
               onPress={() => {
-                setChecked(!checked);
+                toggleAllItems();
               }}
             />
           </View>
@@ -174,7 +213,7 @@ export default function CartView() {
           <View style={{flexBasis: '50%', alignItems: 'flex-end'}}>
             <Button
               style={{backgroundColor: 'blue'}}
-              icon="camera"
+              icon="cart"
               mode="contained"
               onPress={() => console.log('Pressed')}>
               Checkout
@@ -270,6 +309,7 @@ const styles = StyleSheet.create({
     padding: 10,
     paddingVertical: 10,
     alignItems: 'center',
+    justifyContent: 'space-around',
   },
 });
 
