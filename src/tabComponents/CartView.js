@@ -214,7 +214,9 @@ export default function CartView() {
               style={{backgroundColor: 'blue'}}
               icon="cart"
               mode="contained"
-              onPress={() => console.log('Pressed')}>
+              onPress={() => {
+                navigation.navigate('checkout')
+              }}>
               Checkout
             </Button>
           </View>
