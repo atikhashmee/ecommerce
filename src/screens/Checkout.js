@@ -1,5 +1,14 @@
 import React from 'react';
-import {View, Text, Image, Pressable, StyleSheet} from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  Modal,
+  TouchableOpacity,
+  Pressable,
+  StyleSheet,
+  Dimensions,
+} from 'react-native';
 import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import {useNavigation} from '@react-navigation/native';
 import {
@@ -14,10 +23,13 @@ import {
   Title,
   Col,
   Row,
+  Input,
+  Item,
 } from 'native-base';
 
 const Checkout = () => {
   const navigation = useNavigation();
+  const [modalVisible, setModalVisible] = React.useState(false);
   return (
     <Container>
       <Header transparent hasTabs>
@@ -109,13 +121,17 @@ const Checkout = () => {
                 <Text>01735623513</Text>
               </View>
               <View style={styles.editIcon}>
-                <Text style={styles.iconWrapper}>
+                <Pressable
+                  onPress={() => {
+                    setModalVisible(true);
+                  }}
+                  style={styles.iconWrapper}>
                   <Icon
                     name={'pencil-outline'}
                     style={{fontSize: 18}}
                     type={'Ionicons'}
                   />
-                </Text>
+                </Pressable>
               </View>
             </View>
           </View>
@@ -219,10 +235,74 @@ const Checkout = () => {
           </Col>
         </Row>
       </View>
+      <ModalView
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+      />
     </Container>
   );
 };
 export default Checkout;
+
+const ModalView = ({modalVisible, setModalVisible}) => {
+  return (
+    <Modal
+      animationType="slide"
+      transparent={true}
+      visible={modalVisible}
+      onRequestClose={() => {
+        setModalVisible(false);
+      }}>
+      <TouchableOpacity
+        activeOpacity={1}
+        onPressOut={() => {
+          setModalVisible(false);
+        }}
+        style={styles.centeredView}>
+        <View style={styles.modalView}>
+          <View style={styles.modalFlexContainer}>
+            <View
+              style={{
+                justifyContent: 'center',
+                alignItems: 'center',
+                marginBottom: 10,
+              }}>
+              <View
+                style={{
+                  width: 100,
+                  borderWidth: 2,
+                  borderColor: '#d3d3d3',
+                }}></View>
+            </View>
+            <MobileNumberUpdate />
+          </View>
+        </View>
+      </TouchableOpacity>
+    </Modal>
+  );
+};
+
+const MobileNumberUpdate = () => {
+  return (
+    <Container>
+      <Row>
+        <Col style={{justifyContent: 'space-around'}}>
+          <Text style={{fontSize: 22}}>Contact Number</Text>
+          <Item regular>
+            <Input placeholder="Contact Number" />
+          </Item>
+          <Item>
+            <Button style={styles.placeOrderButtonStyle}>
+              <Text style={styles.placeOrderButtonTextStyle}>
+                Save Contact Number
+              </Text>
+            </Button>
+          </Item>
+        </Col>
+      </Row>
+    </Container>
+  );
+};
 
 const styles = StyleSheet.create({
   productWrapperContainer: {
@@ -330,5 +410,37 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     width: 35,
     padding: 10,
+  },
+  centeredView: {
+    //modal styles
+    flex: 1,
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0,0,0,0.5)',
+  },
+  modalView: {
+    margin: 20,
+    width: Dimensions.get('screen').width,
+    height: Dimensions.get('screen').height - 500,
+    bottom: -16,
+    backgroundColor: 'white',
+    borderTopRightRadius: 20,
+    borderTopLeftRadius: 20,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.5,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  modalFlexContainer: {
+    width: '100%',
+    height: '100%',
+    flex: 1,
+    paddingVertical: 10,
+    paddingHorizontal: 10,
   },
 });

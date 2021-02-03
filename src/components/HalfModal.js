@@ -3,8 +3,6 @@ import {
   Modal,
   Dimensions,
   TouchableOpacity,
-  Text,
-  TouchableHighlight,
   View,
   StyleSheet,
 } from 'react-native';
@@ -13,7 +11,7 @@ import {Pressable} from 'react-native';
 import {UtilityContext} from '../providers/AppUtilityProvder';
 
 export default function HalfModal(props) {
-  const [modalVisible, setModalVisible] = React.useState(true);
+  const [] = React.useState(true);
   const {halfModalVisible, setHalfModalVisible} = React.useContext(UtilityContext);
   return (
     <Modal
