@@ -13,16 +13,44 @@ export default function CartProvider(props) {
   const {auth, isLoggedin} = React.useContext(AppContext);
   const {setHalfModalVisible} = React.useContext(UtilityContext);
   const [currentCartItem, setCurrentCartItem] = React.useState(null);
+  const [selectedItem, setSelectedItem] = React.useState({
+    productId: null,
+    productName: '',
+    quantity: 0,
+    variantColor: '',
+    variantSize: '',
+    productPrice: 0,
+    originalPrice: 0,
+    isChecked: true,
+    productFeatureImageUrl: null,
+    isVariant: true,
+  });
 
   const addToCart = (product) => {
-    if (isLoggedin()) {
+    let cartItem = {
+      productId: product.id,
+      productName: product.name,
+      quantity: 1,
+      productPrice: product.price || 0,
+      originalPrice: product.price || 0,
+      isChecked: true,
+      productFeatureImageUrl: product.feature_image_url,
+      isVariant: product.variants.length > 0,
+    };
+    setSelectedItem(cartItem);
+    console.log('no va', cartItem);
+    if (cartItem.isVariant) {
       setHalfModalVisible(true);
       setCurrentCartItem(product);
-      //console.log(product.variants, 'add to product wokring');
+    } else {
+      cartDispatch({type: 'ADD', data: cartItem});
     }
+    //if (isLoggedin()) {
+
+    //}
   };
 
-  React.useEffect(()=>{
+  React.useEffect(() => {
     //console.log(cartItems, 'items updated');
   }, [cartItems]);
 

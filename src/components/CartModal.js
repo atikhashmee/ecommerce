@@ -34,6 +34,7 @@ export default function CartModal() {
     originalPrice: 0,
     isChecked: true,
     productFeatureImageUrl: null,
+    isVariant: true,
   });
 
   const updateProcutQuantity = ($value) => {

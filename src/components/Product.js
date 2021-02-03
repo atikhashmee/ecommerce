@@ -2,20 +2,15 @@ import React, {useContext} from 'react';
 import {View, Text, Image, Pressable} from 'react-native';
 import AppStyle from '../assets/style';
 import IonIcon from 'react-native-vector-icons/Ionicons';
-import {AppContext} from '../utils/GlobalContext';
-import {useNavigation} from '@react-navigation/native';
 import {StyleSheet} from 'react-native';
 import {WishListsContextTwo} from '../utils/WishListsContextTwo';
 import {CartContext} from '../utils/CartContext';
 
 const Product = ({product, handleClick, itemType = null}) => {
-  //let {addToCart} = useContext(AppContext);
   let {addToCart} = useContext(CartContext);
   let [cardItemType, setCardItemType] = React.useState(itemType);
   let [imageUrl, setImageUrl] = React.useState(null);
   let {AddToWishLists} = React.useContext(WishListsContextTwo);
-
-  const navigation = useNavigation();
   React.useEffect(() => {
     if (cardItemType !== null) {
       if (cardItemType === 'product') {

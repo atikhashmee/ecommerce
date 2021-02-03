@@ -15,20 +15,19 @@ function CartItem({product, updateCartArr}) {
   function updateQuantity(quantity) {
     updateCartArr(product.id, quantity, 'quantity');
   }
-
-  function updateSelection() {
+  
+  React.useEffect(() => {
     cartDispatch(toggleSingle(product.id));
     updateCartArr(product.id, checked, 'check');
-  }
+  }, [checked]);
 
   return (
     <View style={styles.cartEachItem}>
       <View style={styles.checkBox}>
         <Checkbox
-          status={product.isChecked ? 'checked' : 'unchecked'}
+          status={checked ? 'checked' : 'unchecked'}
           onPress={() => {
             setChecked(!checked);
-            updateSelection();
           }}
         />
       </View>
@@ -82,7 +81,7 @@ export default function CartView() {
           product.quantity = data;
         } else if (flag === 'check') {
           product.isChecked = data;
-          console.log('called first time', product);
+          //console.log('called first time', product);
         }
       }
     });
