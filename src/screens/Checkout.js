@@ -25,13 +25,15 @@ import {
   Row,
   Input,
   Item,
+  Picker,
 } from 'native-base';
+import {CheckoutContext} from '../utils/CheckoutContext';
 
 const Checkout = () => {
   const navigation = useNavigation();
   const [modalVisible, setModalVisible] = React.useState(false);
   return (
-    <Container>
+    <Container style={styles.containerStyle}>
       <Header transparent hasTabs>
         <Left>
           <Button transparent onPress={() => navigation.goBack()}>
@@ -256,7 +258,7 @@ const ModalView = ({modalVisible, setModalVisible}) => {
       <TouchableOpacity
         activeOpacity={1}
         onPressOut={() => {
-          setModalVisible(false);
+          //setModalVisible(false);
         }}
         style={styles.centeredView}>
         <View style={styles.modalView}>
@@ -274,7 +276,7 @@ const ModalView = ({modalVisible, setModalVisible}) => {
                   borderColor: '#d3d3d3',
                 }}></View>
             </View>
-            <MobileNumberUpdate />
+            <AddressUpdate />
           </View>
         </View>
       </TouchableOpacity>
@@ -300,6 +302,174 @@ const MobileNumberUpdate = () => {
           </Item>
         </Col>
       </Row>
+    </Container>
+  );
+};
+
+const AddressUpdate = () => {
+  const {countries, states, disctricts} = React.useContext(CheckoutContext);
+  const [selectedCountry, setSelectedCountry] = React.useState(null);
+  const [selectedstate, setSelectedstate] = React.useState(null);
+  const [selectedDistrict, setSelectedDistrict] = React.useState(null);
+  const [filteredStates, setFilteredStates] = React.useState([]);
+  const [filteredDistricts, setFilteredDistricts] = React.useState([]);
+  React.useEffect(() => {
+    let initialCountry = 19;
+    setSelectedCountry(initialCountry);
+    if (states.length > 0) {
+      setFilteredStates(
+        states.filter((item) => item.country_id === initialCountry),
+      );
+    }
+    let initialState = filteredStates[0];
+    if (disctricts.length > 0) {
+      setFilteredDistricts(
+        disctricts.filter((item) => item.state_id === initialState),
+      );
+    }
+    console.log(
+      states,
+      disctricts,
+      filteredDistricts,
+      filteredStates,
+      'statess',
+    );
+  }, []);
+
+  return (
+    <Container style={{ paddingHorizontal: 10}}>
+      <Content >
+        <Row style={styles.addressFormRowDesign}>
+          <Col>
+            <Text style={styles.addressFormLabels}>Contact</Text>
+            <Item regular>
+              <Input style={styles.addressInputField} />
+            </Item>
+            <Text style={styles.addressFormLabels}>Phone Number</Text>
+            <Item regular>
+              <Input />
+            </Item>
+          </Col>
+        </Row>
+        <Row style={styles.addressFormRowDesign}>
+          <Col>
+            <Text style={styles.addressFormLabels}>Address 1</Text>
+            <Item regular>
+              <Input style={styles.addressInputField} />
+            </Item>
+          </Col>
+        </Row>
+        <Row style={styles.addressFormRowDesign}>
+          <Col>
+            <Text style={styles.addressFormLabels}>Address 2</Text>
+            <Item regular>
+              <Input style={styles.addressInputField} />
+            </Item>
+          </Col>
+        </Row>
+        <Row style={styles.addressFormRowDesign}>
+          <Col>
+            <Text style={styles.addressFormLabels}>Country</Text>
+            <Item picker>
+              <Picker
+                mode="dropdown"
+                iosIcon={<Icon name="arrow-down" />}
+                style={{width: undefined}}
+                placeholder="Select Country"
+                placeholderStyle={{color: '#bfc6ea'}}
+                placeholderIconColor="#007aff"
+                selectedValue={selectedCountry}
+                onValueChange={(changeSelect) => {
+                  setSelectedCountry(changeSelect);
+                }}>
+                {countries.length > 0 &&
+                  countries.map((item, innd) => {
+                    return (
+                      <Picker.Item
+                        key={innd}
+                        label={item.name}
+                        value={item.id}
+                      />
+                    );
+                  })}
+              </Picker>
+            </Item>
+          </Col>
+          <Col>
+            <Text style={styles.addressFormLabels}>State</Text>
+            <Item picker>
+              <Picker
+                mode="dropdown"
+                iosIcon={<Icon name="arrow-down" />}
+                style={{width: undefined}}
+                placeholder="Select State"
+                placeholderStyle={{color: '#bfc6ea'}}
+                placeholderIconColor="#007aff"
+                selectedValue={selectedstate}
+                onValueChange={(changeSelect) => {
+                  setSelectedstate(changeSelect);
+                }}>
+                {states.length > 0 &&
+                  states.map((item, innd) => {
+                    return (
+                      <Picker.Item
+                        key={innd}
+                        label={item.name}
+                        value={item.id}
+                      />
+                    );
+                  })}
+              </Picker>
+            </Item>
+          </Col>
+        </Row>
+        <Row style={styles.addressFormRowDesign}>
+          <Col>
+            <Text style={styles.addressFormLabels}>District</Text>
+            <Item picker>
+              <Picker
+                mode="dropdown"
+                iosIcon={<Icon name="arrow-down" />}
+                style={{width: undefined}}
+                placeholder="Select District"
+                placeholderStyle={{color: '#bfc6ea'}}
+                placeholderIconColor="#007aff"
+                selectedValue={selectedDistrict}
+                onValueChange={(changeSelect) => {
+                  setSelectedDistrict(changeSelect);
+                }}>
+                {disctricts.length > 0 &&
+                  disctricts.map((item, innd) => {
+                    return (
+                      <Picker.Item
+                        key={innd}
+                        label={item.name}
+                        value={item.id}
+                      />
+                    );
+                  })}
+              </Picker>
+            </Item>
+          </Col>
+          <Col>
+            <Text style={styles.addressFormLabels}>Zip Code</Text>
+            <Item regular>
+              <Input style={styles.addressInputField} />
+            </Item>
+          </Col>
+        </Row>
+        <Row style={styles.addressFormRowDesign}>
+          <Col>
+            <Item>
+              <Button style={styles.placeOrderButtonStyle}>
+                <Text style={styles.placeOrderButtonTextStyle}>
+                  Update Address
+                </Text>
+              </Button>
+            </Item>
+          </Col>
+        </Row>
+      </Content>
     </Container>
   );
 };
@@ -420,9 +590,10 @@ const styles = StyleSheet.create({
   },
   modalView: {
     margin: 20,
-    width: Dimensions.get('screen').width,
-    height: Dimensions.get('screen').height - 500,
+    width: Dimensions.get('screen').width - 15,
+    height: Dimensions.get('screen').height - 200,
     bottom: -16,
+    left: -8,
     backgroundColor: 'white',
     borderTopRightRadius: 20,
     borderTopLeftRadius: 20,
@@ -439,8 +610,20 @@ const styles = StyleSheet.create({
   modalFlexContainer: {
     width: '100%',
     height: '100%',
-    flex: 1,
     paddingVertical: 10,
-    paddingHorizontal: 10,
+  },
+  addressFormRowDesign: {
+    marginBottom: 10,
+  },
+  addressFormLabels: {
+    fontSize: 22,
+    marginLeft: 10,
+    marginBottom: 4,
+    fontFamily: 'UniNeue-Light',
+  },
+  addressInputField: {
+    borderWidth: 1,
+    borderColor: '#d3d3d3',
+    width: '100%',
   },
 });

@@ -3,5 +3,7 @@
     "user_login": "user/login",
     "get_wish_lists": "wishlists",
     "store_wish_lists": "wishlists/store",
-    "delete_wish_lists": "wishlists/trash"
+    "delete_wish_lists": "wishlists/trash",
+    "country_data": "country-region",
+    "get_users_addresses": "get-user-shipping-address"
 }
