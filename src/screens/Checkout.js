@@ -28,10 +28,150 @@ import {
   Picker,
 } from 'native-base';
 import {CheckoutContext} from '../utils/CheckoutContext';
-
+import {CartContext} from '../utils/CartContext';
 const Checkout = () => {
   const navigation = useNavigation();
   const [modalVisible, setModalVisible] = React.useState(false);
+  const [shippingAddresses, setShippingAddresses] = React.useState([
+    {
+      name: 'Atik bin Hashmee',
+      phoneNumber: '01735623513',
+      address: 'House #1, Road# 32, Uttara',
+      address1: 'House #1, Road# 32, Uttara',
+      city: {
+        id: 1,
+        name: 'Dhaka',
+      },
+      country: {
+        id: 1,
+        name: 'Bangladesh',
+      },
+      district: {
+        id: 1,
+        name: 'Dhaka',
+      },
+      zipCode: 1230,
+    },
+    {
+      name: 'Atik bin Hashmee 2',
+      phoneNumber: '01635623513',
+      address: 'House #2, Road# 32, Uttara',
+      address1: 'House #2, Road# 32, Uttara',
+      city: {
+        id: 1,
+        name: 'Dhaka',
+      },
+      country: {
+        id: 1,
+        name: 'Bangladesh',
+      },
+      district: {
+        id: 1,
+        name: 'Dhaka',
+      },
+      zipCode: 1230,
+    },
+  ]);
+  const [selectedShippingAddress, setSelectedShippingAddress] = React.useState(
+    null,
+  );
+  const [billingAddresses, setBillingAddresses] = React.useState([
+    {
+      name: 'Atik bin Hashmee',
+      phoneNumber: '01735623513',
+      address: 'House #1, Road# 32, Uttara, billing',
+      address1: 'House #1, Road# 32, Uttara billing',
+      city: {
+        id: 1,
+        name: 'Dhaka',
+      },
+      country: {
+        id: 1,
+        name: 'Bangladesh',
+      },
+      district: {
+        id: 1,
+        name: 'Dhaka',
+      },
+      zipCode: 1230,
+    },
+    {
+      name: 'Atik bin Hashmee 2',
+      phoneNumber: '01635623513',
+      address: 'House #2, Road# 32, Uttara billing',
+      address1: 'House #2, Road# 32, Uttara billing',
+      city: {
+        id: 1,
+        name: 'Dhaka',
+      },
+      country: {
+        id: 1,
+        name: 'Bangladesh',
+      },
+      district: {
+        id: 1,
+        name: 'Dhaka',
+      },
+      zipCode: 1230,
+    },
+  ]);
+  const [selectedBillingAddress, setBillingShippingAddress] = React.useState(
+    null,
+  );
+  const [modalDataType, setModalDataType] = React.useState('');
+  const [formAddressData, setFormAddressData] = React.useState(null);
+  const [addressLists, setAddresslists] = React.useState([]);
+  const [paymentMethods, setPaymentMethods] = React.useState([
+    {
+      id: 1,
+      name: 'Cash On Deliver',
+    },
+    {
+      id: 2,
+      name: 'PayPal',
+    },
+    {
+      id: 3,
+      name: 'Skrill',
+    },
+    {
+      id: 4,
+      name: 'WebMoney',
+    },
+    {
+      id: 5,
+      name: 'Stripe',
+    },
+  ]);
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = React.useState('');
+  const [subTotal, setsubTotal] = React.useState(0);
+  const [grandTotal, setGrandTotal] = React.useState(0);
+  const {cartItems} = React.useContext(CartContext);
+
+  const setCurrentAddress =
+    modalDataType === 'shippingLists'
+      ? setSelectedShippingAddress
+      : setBillingShippingAddress;
+
+  React.useEffect(() => {
+    setBillingShippingAddress(billingAddresses[0]);
+    setSelectedShippingAddress(shippingAddresses[0]);
+    setSelectedPaymentMethod(paymentMethods[0]);
+    let suTo = 0;
+    cartItems.forEach((prod) => {
+      suTo += parseInt(prod.originalPrice) + parseInt(prod.quantity);
+    });
+    setsubTotal(suTo);
+    setGrandTotal(suTo);
+  }, []);
+
+  React.useEffect(() => {
+    if (modalDataType === 'shippingLists') {
+      setAddresslists(shippingAddresses);
+    } else if (modalDataType === 'bllingLists') {
+      setAddresslists(billingAddresses);
+    }
+  }, [modalDataType]);
   return (
     <Container style={styles.containerStyle}>
       <Header transparent hasTabs>
@@ -49,135 +189,206 @@ const Checkout = () => {
           </Button>
         </Right>
       </Header>
-      <Content style={{backgroundColor: '#d3d3d3'}}>
+      <Content style={{backgroundColor: '#F0F0F0'}}>
         <View style={styles.eachSection}>
           <View style={styles.topHeader}>
-            <Text style={{color: '#000'}}>Shipping Address</Text>
-            <Pressable>
-              <Text style={{color: 'red'}}>Change</Text>
+            <Text style={styles.topHeaderTtitleStyle}>Shipping Address</Text>
+            <Pressable
+              onPress={() => {
+                setModalVisible(true);
+                setModalDataType('shippingLists');
+              }}>
+              <Text
+                style={[
+                  styles.topHeaderTtitleStyle,
+                  styles.topHeaderActionButton,
+                ]}>
+                Change
+              </Text>
             </Pressable>
           </View>
           <View style={styles.contentContainer}>
-            <View style={styles.shippingAdressContainer}>
-              <View style={styles.leftIcon}>
-                <Icon name={'home'} type={'Ionicons'} />
-              </View>
-              <View style={styles.addressContent}>
-                <Text>Lorem ipsum</Text>
-                <Text>Lorem ipsum</Text>
-                <Text>Lorem ipsum</Text>
-                <Text>Lorem ipsum</Text>
-              </View>
-              <View style={styles.editIcon}>
-                <Text style={styles.iconWrapper}>
+            <Row style={{alignItems: 'center'}}>
+              <Col style={styles.leftIcon}>
+                <Pressable
+                  style={{
+                    width: 40,
+                    padding: 10,
+                    borderRadius: 25,
+                    backgroundColor: 'lightgreen',
+                    alignItems: 'center',
+                  }}>
                   <Icon
-                    name={'pencil-outline'}
-                    style={{fontSize: 18}}
+                    name={'home-outline'}
+                    style={{fontSize: 16}}
                     type={'Ionicons'}
                   />
-                </Text>
-              </View>
-            </View>
-          </View>
-        </View>
-        <View style={styles.eachSection}>
-          <View style={styles.topHeader}>
-            <Text style={{color: '#000'}}>Billing Address</Text>
-            <Pressable>
-              <Text style={{color: 'red'}}>Change</Text>
-            </Pressable>
-          </View>
-          <View style={styles.contentContainer}>
-            <View style={styles.shippingAdressContainer}>
-              <View style={styles.leftIcon}>
-                <Icon name={'home'} type={'Ionicons'} />
-              </View>
-              <View style={styles.addressContent}>
-                <Text>Lorem ipsum</Text>
-                <Text>Lorem ipsum</Text>
-                <Text>Lorem ipsum</Text>
-                <Text>Lorem ipsum</Text>
-              </View>
-              <View style={styles.editIcon}>
-                <Text style={styles.iconWrapper}>
-                  <Icon
-                    name={'pencil-outline'}
-                    style={{fontSize: 18}}
-                    type={'Ionicons'}
-                  />
-                </Text>
-              </View>
-            </View>
-          </View>
-        </View>
-        <View style={styles.eachSection}>
-          <View style={styles.topHeader}>
-            <Text style={{color: '#000'}}>Contact Number</Text>
-          </View>
-          <View style={styles.contentContainer}>
-            <View style={styles.shippingAdressContainer}>
-              <View style={styles.leftIcon}>
-                <Icon name={'call-outline'} type={'Ionicons'} />
-              </View>
-              <View style={styles.addressContent}>
-                <Text>01735623513</Text>
-              </View>
-              <View style={styles.editIcon}>
+                </Pressable>
+              </Col>
+              {selectedShippingAddress && (
+                <Col style={styles.addressContent}>
+                  <Title style={{color: '#000'}}>
+                    {selectedShippingAddress.name}
+                  </Title>
+                  <Text>{selectedShippingAddress.address}</Text>
+                  <Text>{selectedShippingAddress.city.name}</Text>
+                  <Text>{selectedShippingAddress.country.name}</Text>
+                </Col>
+              )}
+              <Col style={styles.editIcon}>
                 <Pressable
                   onPress={() => {
                     setModalVisible(true);
+                    setModalDataType('shippingFormData');
+                    setFormAddressData(selectedShippingAddress);
                   }}
                   style={styles.iconWrapper}>
                   <Icon
                     name={'pencil-outline'}
-                    style={{fontSize: 18}}
+                    style={{fontSize: 15}}
                     type={'Ionicons'}
                   />
                 </Pressable>
-              </View>
+              </Col>
+            </Row>
+          </View>
+        </View>
+        <View style={styles.eachSection}>
+          <View style={styles.topHeader}>
+            <Text style={styles.topHeaderTtitleStyle}>Billing Address</Text>
+            <Pressable
+              onPress={() => {
+                setModalVisible(true);
+                setModalDataType('bllingLists');
+              }}>
+              <Text
+                style={[
+                  styles.topHeaderTtitleStyle,
+                  styles.topHeaderActionButton,
+                ]}>
+                Change
+              </Text>
+            </Pressable>
+          </View>
+          <View style={styles.contentContainer}>
+            <Row style={{alignItems: 'center'}}>
+              <Col style={styles.leftIcon}>
+                <Pressable
+                  style={{
+                    width: 40,
+                    padding: 10,
+                    borderRadius: 25,
+                    backgroundColor: 'lightgreen',
+                    alignItems: 'center',
+                  }}>
+                  <Icon
+                    name={'home-outline'}
+                    style={{fontSize: 16}}
+                    type={'Ionicons'}
+                  />
+                </Pressable>
+              </Col>
+              {selectedBillingAddress && (
+                <Col style={styles.addressContent}>
+                  <Title style={{color: '#000'}}>
+                    {selectedBillingAddress.name}
+                  </Title>
+                  <Text>{selectedBillingAddress.address}</Text>
+                  <Text>{selectedBillingAddress.city.name}</Text>
+                  <Text>{selectedBillingAddress.country.name}</Text>
+                </Col>
+              )}
+
+              <Col style={styles.editIcon}>
+                <Pressable
+                  onPress={() => {
+                    setModalVisible(true);
+                    setModalDataType('billingFormData');
+                    setFormAddressData(selectedBillingAddress);
+                  }}
+                  style={styles.iconWrapper}>
+                  <Icon
+                    name={'pencil-outline'}
+                    style={{fontSize: 15}}
+                    type={'Ionicons'}
+                  />
+                </Pressable>
+              </Col>
+            </Row>
+          </View>
+        </View>
+        <View style={styles.eachSection}>
+          <View style={styles.topHeader}>
+            <Text style={styles.topHeaderTtitleStyle}>Payment Methods</Text>
+          </View>
+          <View style={styles.contentContainer}>
+            <View
+              style={[
+                styles.paymentMethodWrapper,
+                styles.shippingAdressContainer,
+              ]}>
+              {paymentMethods.map((item, inndd) => {
+                return (
+                  <Pressable
+                    key={inndd}
+                    onPress={() => {
+                      setSelectedPaymentMethod(item);
+                    }}
+                    style={
+                      selectedPaymentMethod.id === item.id
+                        ? [
+                            styles.paymentEachMethod,
+                            styles.selectedpaymentMethod,
+                          ]
+                        : styles.paymentEachMethod
+                    }>
+                    <Text>{item.name}</Text>
+                  </Pressable>
+                );
+              })}
             </View>
           </View>
         </View>
         <View style={styles.eachSection}>
           <View style={styles.topHeader}>
-            <Text style={{color: '#000'}}>Products</Text>
+            <Text style={styles.topHeaderTtitleStyle}>Products</Text>
           </View>
           <View style={styles.contentContainer}>
-            {Array(5)
-              .fill()
-              .map((item, indd) => {
-                return (
-                  <View key={indd} style={styles.productContainer}>
-                    <View style={styles.imageBox}>
-                      <Image
-                        style={styles.tinyLogo}
-                        source={{
-                          uri: 'bit.ly/2MUleBK',
-                        }}
-                      />
-                    </View>
-                    <View style={styles.productDetail}>
-                      <Text>Cotton Full Sleeve Casual Shirt for Men-15</Text>
-                      <Text style={{fontWeight: 'bold'}}>
-                        Size: L, Color: off White
+            {cartItems.map((item, indd) => {
+              return (
+                <View key={indd} style={styles.productContainer}>
+                  <View style={styles.imageBox}>
+                    <Image
+                      style={styles.tinyLogo}
+                      source={{
+                        uri: item.productFeatureImageUrl,
+                      }}
+                    />
+                  </View>
+                  <View style={styles.productDetail}>
+                    <Text>{item.productName}</Text>
+                    <Text style={{fontWeight: 'bold'}}>
+                      Size: L, Color: off White
+                    </Text>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                      }}>
+                      <Text>
+                        ${item.originalPrice}X {item.quantity}
                       </Text>
-                      <View
-                        style={{
-                          flexDirection: 'row',
-                          justifyContent: 'space-between',
-                        }}>
-                        <Text>$1250 X 1</Text>
-                        <Text>$1250</Text>
-                      </View>
+                      <Text>${item.originalPrice * item.quantity}</Text>
                     </View>
                   </View>
-                );
-              })}
+                </View>
+              );
+            })}
           </View>
         </View>
         <View style={styles.eachSection}>
           <View style={styles.topHeader}>
-            <Text style={{color: '#000'}}>Order Summery</Text>
+            <Text style={styles.topHeaderTtitleStyle}>Order Summery</Text>
           </View>
           <View style={styles.contentContainer}>
             <Row>
@@ -185,7 +396,7 @@ const Checkout = () => {
                 <Text>Subtotal</Text>
               </Col>
               <Col>
-                <Text>$1500</Text>
+                <Text>${subTotal}</Text>
               </Col>
             </Row>
             <Row>
@@ -201,7 +412,7 @@ const Checkout = () => {
                 <Title style={{color: '#000'}}>Total</Title>
               </Col>
               <Col>
-                <Title style={{color: '#000'}}>$1500</Title>
+                <Title style={{color: '#000'}}>${grandTotal}</Title>
               </Col>
             </Row>
           </View>
@@ -219,10 +430,10 @@ const Checkout = () => {
       <View style={styles.checkoutFooterContainer}>
         <Row style={styles.row1Style}>
           <Col>
-            <Text>Items 1</Text>
+            <Text>Items {cartItems.length}</Text>
           </Col>
           <Col style={{alignItems: 'flex-end'}}>
-            <Text>Total $1345</Text>
+            <Text>Total ${grandTotal}</Text>
           </Col>
         </Row>
         <Row style={styles.row2Style}>
@@ -240,13 +451,30 @@ const Checkout = () => {
       <ModalView
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
+        formDataType={modalDataType}
+        formAddressData={formAddressData}
+        setCurrentAddress={setCurrentAddress}
+        addressLists={addressLists}
+        setFormAddressData={setFormAddressData}
+        setModalDataType={setModalDataType}
+        modalDataType={modalDataType}
       />
     </Container>
   );
 };
 export default Checkout;
 
-const ModalView = ({modalVisible, setModalVisible}) => {
+const ModalView = ({
+  modalVisible,
+  setModalVisible,
+  formDataType,
+  formAddressData,
+  addressLists,
+  setCurrentAddress,
+  setFormAddressData,
+  setModalDataType,
+  modalDataType,
+}) => {
   return (
     <Modal
       animationType="slide"
@@ -276,7 +504,23 @@ const ModalView = ({modalVisible, setModalVisible}) => {
                   borderColor: '#d3d3d3',
                 }}></View>
             </View>
-            <AddressUpdate />
+            {(formDataType === 'shippingLists' ||
+              formDataType === 'bllingLists') && (
+              <AddressManagement
+                modalVisible={modalVisible}
+                setModalVisible={setModalVisible}
+                setCurrentAddress={setCurrentAddress}
+                addressLists={addressLists}
+                setFormAddressData={setFormAddressData}
+                setModalDataType={setModalDataType}
+                modalDataType={modalDataType}
+              />
+            )}
+
+            {(formDataType === 'billingFormData' ||
+              formDataType === 'shippingFormData') && (
+              <AddressUpdate formAddressData={formAddressData} />
+            )}
           </View>
         </View>
       </TouchableOpacity>
@@ -284,35 +528,47 @@ const ModalView = ({modalVisible, setModalVisible}) => {
   );
 };
 
-const MobileNumberUpdate = () => {
-  return (
-    <Container>
-      <Row>
-        <Col style={{justifyContent: 'space-around'}}>
-          <Text style={{fontSize: 22}}>Contact Number</Text>
-          <Item regular>
-            <Input placeholder="Contact Number" />
-          </Item>
-          <Item>
-            <Button style={styles.placeOrderButtonStyle}>
-              <Text style={styles.placeOrderButtonTextStyle}>
-                Save Contact Number
-              </Text>
-            </Button>
-          </Item>
-        </Col>
-      </Row>
-    </Container>
-  );
-};
-
-const AddressUpdate = () => {
+const AddressUpdate = ({formAddressData}) => {
   const {countries, states, disctricts} = React.useContext(CheckoutContext);
   const [selectedCountry, setSelectedCountry] = React.useState(null);
   const [selectedstate, setSelectedstate] = React.useState(null);
   const [selectedDistrict, setSelectedDistrict] = React.useState(null);
   const [filteredStates, setFilteredStates] = React.useState([]);
   const [filteredDistricts, setFilteredDistricts] = React.useState([]);
+
+  const [addressForm, setAddressForm] = React.useState({
+    name: null,
+    phoneNumber: null,
+    address: null,
+    address1: null,
+    city: {
+      id: null,
+      name: null,
+    },
+    country: {
+      id: null,
+      name: null,
+    },
+    district: {
+      id: null,
+      name: null,
+    },
+    zipCode: null,
+  });
+
+  React.useEffect(() => {
+    if (formAddressData != null) {
+      setAddressForm({
+        ...addressForm,
+        name: formAddressData.name,
+        phoneNumber: formAddressData.phoneNumber,
+        address: formAddressData.address,
+        address1: formAddressData.address1,
+        zipCode: formAddressData.zipCode,
+      });
+    }
+  }, []);
+
   React.useEffect(() => {
     let initialCountry = 19;
     setSelectedCountry(initialCountry);
@@ -337,17 +593,28 @@ const AddressUpdate = () => {
   }, []);
 
   return (
-    <Container style={{ paddingHorizontal: 10}}>
-      <Content >
+    <Container style={{paddingHorizontal: 10}}>
+      <Content>
         <Row style={styles.addressFormRowDesign}>
           <Col>
             <Text style={styles.addressFormLabels}>Contact</Text>
             <Item regular>
-              <Input style={styles.addressInputField} />
+              <Input
+                onChangeText={(txt) => {
+                  setAddressForm({...addressForm, name: txt});
+                }}
+                style={styles.addressInputField}
+                value={addressForm.name}
+              />
             </Item>
             <Text style={styles.addressFormLabels}>Phone Number</Text>
             <Item regular>
-              <Input />
+              <Input
+                onChangeText={(txt) => {
+                  setAddressForm({...addressForm, phoneNumber: txt});
+                }}
+                value={addressForm.phoneNumber}
+              />
             </Item>
           </Col>
         </Row>
@@ -355,7 +622,13 @@ const AddressUpdate = () => {
           <Col>
             <Text style={styles.addressFormLabels}>Address 1</Text>
             <Item regular>
-              <Input style={styles.addressInputField} />
+              <Input
+                onChangeText={(txt) => {
+                  setAddressForm({...addressForm, address: txt});
+                }}
+                value={addressForm.address}
+                style={styles.addressInputField}
+              />
             </Item>
           </Col>
         </Row>
@@ -363,7 +636,13 @@ const AddressUpdate = () => {
           <Col>
             <Text style={styles.addressFormLabels}>Address 2</Text>
             <Item regular>
-              <Input style={styles.addressInputField} />
+              <Input
+                style={styles.addressInputField}
+                onChangeText={(txt) => {
+                  setAddressForm({...addressForm, address1: txt});
+                }}
+                value={addressForm.address1}
+              />
             </Item>
           </Col>
         </Row>
@@ -454,7 +733,13 @@ const AddressUpdate = () => {
           <Col>
             <Text style={styles.addressFormLabels}>Zip Code</Text>
             <Item regular>
-              <Input style={styles.addressInputField} />
+              <Input
+                style={styles.addressInputField}
+                onChangeText={(txt) => {
+                  setAddressForm({...addressForm, zipCode: txt});
+                }}
+                value={addressForm.zipCode}
+              />
             </Item>
           </Col>
         </Row>
@@ -473,6 +758,158 @@ const AddressUpdate = () => {
     </Container>
   );
 };
+
+const AddressManagement = (props) => {
+  return (
+    <Container style={adrsM.containerStyle}>
+      <Row style={adrsM.topBarStyle}>
+        <Col style={adrsM.topBarCol1}>
+          <Pressable
+            onPress={() => {
+              props.setModalVisible(false);
+            }}>
+            <Icon name="arrow-back-outline" type="Ionicons" />
+          </Pressable>
+        </Col>
+        <Col style={adrsM.tobarCol2}>
+          <Text style={adrsM.topbarTextMiddle}>Select Address</Text>
+        </Col>
+        <Col style={adrsM.topbarCol3}>
+          <Pressable
+            onPress={() => {
+              props.setModalVisible(true);
+              if (props.modalDataType === 'shippingLists') {
+                props.setModalDataType('shippingFormData');
+              } else {
+                props.setModalDataType('billingFormData');
+              }
+              props.setFormAddressData(null);
+            }}>
+            <Icon name="add-outline" type="Ionicons" />
+          </Pressable>
+        </Col>
+      </Row>
+      <Content>
+        {props.addressLists.map((item, innd) => {
+          return (
+            <Pressable
+              key={innd}
+              onPress={() => {
+                props.setCurrentAddress(item);
+                props.setModalVisible(false);
+              }}
+              style={adrsM.addressListItem}>
+              <Row style={adrsM.itemRow}>
+                <Col style={adrsM.leftIconStyle}>
+                  <Pressable style={adrsM.IconWrapper}>
+                    <Icon
+                      name="home-outline"
+                      style={adrsM.contentLeftIconStyle}
+                      type="Ionicons"
+                    />
+                  </Pressable>
+                </Col>
+                <Col style={adrsM.middleContentStyle}>
+                  <Title style={{color: '#000'}}>{item.name}</Title>
+                  <Text>{item.address}</Text>
+                  <Text>{item.city.name}</Text>
+                  <Text>{item.country.name}</Text>
+                </Col>
+              </Row>
+              <View style={adrsM.itemActionButtonWrapper}>
+                <Pressable
+                  style={adrsM.IconWrapper}
+                  onPress={() => {
+                    alert('sdfa');
+                  }}>
+                  <Icon
+                    name="pencil-outline"
+                    style={adrsM.contentLeftIconStyle}
+                    type="Ionicons"
+                  />
+                </Pressable>
+                <Pressable
+                  onPress={() => {
+                    alert('sdfa');
+                  }}
+                  style={[adrsM.IconWrapper, adrsM.contentDeleteIconStyle]}>
+                  <Icon
+                    name="trash-outline"
+                    style={[adrsM.contentLeftIconStyle, adrsM.deleteIconStyle]}
+                    type="Ionicons"
+                  />
+                </Pressable>
+              </View>
+            </Pressable>
+          );
+        })}
+      </Content>
+    </Container>
+  );
+};
+
+const adrsM = StyleSheet.create({
+  containerStyle: {
+    padding: 10,
+  },
+  topBarStyle: {
+    alignItems: 'center',
+    height: 50,
+  },
+  topbarTextMiddle: {
+    fontSize: 19,
+    fontFamily: 'UniNeue-Light',
+  },
+  topBarCol1: {
+    flexBasis: '10%',
+  },
+  tobarCol2: {
+    flexBasis: '80%',
+    alignItems: 'center',
+  },
+  topbarCol3: {
+    flexBasis: '10%',
+  },
+  addressListItem: {
+    padding: 10,
+    marginBottom: 10,
+    borderColor: '#d3d3d3',
+    borderWidth: 1,
+  },
+  itemRow: {
+    color: '#000',
+  },
+  leftIconStyle: {
+    flexBasis: '20%',
+  },
+  middleContentStyle: {
+    flexBasis: '80%',
+  },
+  IconWrapper: {
+    padding: 10,
+    width: 40,
+    backgroundColor: 'lightgreen',
+    borderRadius: 500,
+    alignItems: 'center',
+    marginRight: 5,
+  },
+  contentLeftIconStyle: {
+    fontSize: 17,
+    color: '#0f0f0f',
+  },
+  contentDeleteIconStyle: {
+    backgroundColor: 'red',
+  },
+  deleteIconStyle: {
+    color: '#fff',
+  },
+  itemActionButtonWrapper: {
+    borderColor: 1,
+    borderColor: 'red',
+    flexDirection: 'row',
+    alignSelf: 'flex-end',
+  },
+});
 
 const styles = StyleSheet.create({
   productWrapperContainer: {
@@ -533,16 +970,36 @@ const styles = StyleSheet.create({
     paddingHorizontal: 5,
     paddingVertical: 5,
   },
+  topHeaderTtitleStyle: {
+    color: '#000',
+    fontSize: 18,
+    fontFamily: 'UniNeue-Light',
+  },
+  topHeaderActionButton: {
+    color: 'red',
+  },
   contentContainer: {
     flexBasis: '90%',
     color: '#fff',
     backgroundColor: '#fff',
     paddingHorizontal: 10,
+    paddingVertical: 10,
     borderRadius: 10,
   },
   shippingAdressContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  paymentMethodWrapper: {
+    flexWrap: 'wrap',
+    paddingVertical: 10,
+  },
+  paymentEachMethod: {
+    borderWidth: 2,
+    borderColor: '#d3d3d3',
+    borderRadius: 25,
+    padding: 5,
+    margin: 3,
   },
   leftIcon: {
     flexBasis: '20%',
@@ -576,8 +1033,9 @@ const styles = StyleSheet.create({
     backgroundColor: 'lightblue',
   },
   iconWrapper: {
-    backgroundColor: '#d3d3d3',
+    backgroundColor: 'lightgreen',
     borderRadius: 25,
+    alignSelf: 'center',
     width: 35,
     padding: 10,
   },
@@ -593,7 +1051,6 @@ const styles = StyleSheet.create({
     width: Dimensions.get('screen').width - 15,
     height: Dimensions.get('screen').height - 200,
     bottom: -16,
-    left: -8,
     backgroundColor: 'white',
     borderTopRightRadius: 20,
     borderTopLeftRadius: 20,
@@ -625,5 +1082,9 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#d3d3d3',
     width: '100%',
+  },
+  selectedpaymentMethod: {
+    borderWidth: 2,
+    borderColor: 'red',
   },
 });
