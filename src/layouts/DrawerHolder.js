@@ -10,6 +10,7 @@ import WishListProvider from '../providers/WishListProvider';
 import CheckoutProvider from '../providers/CheckoutProvider';
 import CartProvider from '../providers/CartProvider';
 import AppUtilityProvder from '../providers/AppUtilityProvder';
+import AddressProvider from '../providers/AddressProvider';
 
 const defaultArr = {
   store_id: 1,
@@ -258,34 +259,36 @@ const DrawerHolder = () => {
       <AppContext.Provider value={appContextVal}>
         <CartProvider>
           <WishListProvider>
-            <CheckoutProvider>
-              <Drawer.Navigator
-                drawerType={'front'}
-                drawerStyle={{
-                  width: 280,
-                }}
-                drawerContent={(props) => <CustomDrawerContent {...props} />}
-                drawerContentOptions={{
-                  activeTintColor: '#535b6c',
-                  itemStyle: AppStyle.drawerItem,
-                  labelStyle: {fontSize: 17, fontWeight: 'bold'},
-                }}>
-                <Drawer.Screen
-                  name="dashboard"
-                  component={Dashboard}
-                  options={{
-                    title: 'Home',
-                    // drawerIcon: () => (
-                    //   <IonIcon name="md-home" size={30} color= '#ccc' />
-                    // ),
-                    style: {
-                      borderWidth: 1,
-                      borderColor: '#535b6c',
-                    },
+            <AddressProvider>
+              <CheckoutProvider>
+                <Drawer.Navigator
+                  drawerType={'front'}
+                  drawerStyle={{
+                    width: 280,
                   }}
-                />
-              </Drawer.Navigator>
-            </CheckoutProvider>
+                  drawerContent={(props) => <CustomDrawerContent {...props} />}
+                  drawerContentOptions={{
+                    activeTintColor: '#535b6c',
+                    itemStyle: AppStyle.drawerItem,
+                    labelStyle: {fontSize: 17, fontWeight: 'bold'},
+                  }}>
+                  <Drawer.Screen
+                    name="dashboard"
+                    component={Dashboard}
+                    options={{
+                      title: 'Home',
+                      // drawerIcon: () => (
+                      //   <IonIcon name="md-home" size={30} color= '#ccc' />
+                      // ),
+                      style: {
+                        borderWidth: 1,
+                        borderColor: '#535b6c',
+                      },
+                    }}
+                  />
+                </Drawer.Navigator>
+              </CheckoutProvider>
+            </AddressProvider>
           </WishListProvider>
         </CartProvider>
       </AppContext.Provider>

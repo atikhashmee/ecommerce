@@ -13,12 +13,10 @@ export default function WishListProvider(props) {
   );
   const {auth, isLoggedin} = React.useContext(AppContext);
   React.useEffect(() => {
-    console.log('run');
     getAllWishLists();
   }, []);
 
   const getAllWishLists = () => {
-    console.log(isLoggedin(), auth, 'logged in');
     if (isLoggedin()) {
       var formdata = new FormData();
       formdata.append('user_id', auth.user.user_id);
@@ -34,7 +32,6 @@ export default function WishListProvider(props) {
         .then((response) => response.json())
         .then((result) => {
           if (result.status) {
-            console.log('run inside......');
             wishlistDispatch(fetchInitial(result.data));
           }
         })

@@ -27,7 +27,7 @@ import {
   Item,
   Picker,
 } from 'native-base';
-import {CheckoutContext} from '../utils/CheckoutContext';
+import {CheckoutContext, AddressContext} from '../utils/CheckoutContext';
 import {CartContext} from '../utils/CartContext';
 const Checkout = () => {
   const navigation = useNavigation();
@@ -519,7 +519,11 @@ const ModalView = ({
 
             {(formDataType === 'billingFormData' ||
               formDataType === 'shippingFormData') && (
-              <AddressUpdate formAddressData={formAddressData} />
+              <AddressUpdate
+                formAddressData={formAddressData}
+                setModalDataType={setModalDataType}
+                modalDataType={modalDataType}
+              />
             )}
           </View>
         </View>
@@ -528,13 +532,15 @@ const ModalView = ({
   );
 };
 
-const AddressUpdate = ({formAddressData}) => {
+const AddressUpdate = ({formAddressData, setModalDataType, modalDataType}) => {
   const {countries, states, disctricts} = React.useContext(CheckoutContext);
   const [selectedCountry, setSelectedCountry] = React.useState(null);
   const [selectedstate, setSelectedstate] = React.useState(null);
   const [selectedDistrict, setSelectedDistrict] = React.useState(null);
   const [filteredStates, setFilteredStates] = React.useState([]);
   const [filteredDistricts, setFilteredDistricts] = React.useState([]);
+
+  const {addAddressBook} = React.useContext(AddressContext);
 
   const [addressForm, setAddressForm] = React.useState({
     name: null,
@@ -554,6 +560,7 @@ const AddressUpdate = ({formAddressData}) => {
       name: null,
     },
     zipCode: null,
+    address_type: modalDataType === "shippingLists" ? "shipping" : "billing"
   });
 
   React.useEffect(() => {
@@ -569,9 +576,27 @@ const AddressUpdate = ({formAddressData}) => {
     }
   }, []);
 
+  const saveData = () => {
+    addAddressBook(addressForm);
+  };
+
   React.useEffect(() => {
     let initialCountry = 19;
+    let initialCity = 1;
+    let initialDistrict = 1;
     setSelectedCountry(initialCountry);
+    setAddressForm({
+      ...addressForm,
+      country: {...addressForm.country, id: initialCountry},
+    });
+    setAddressForm({
+      ...addressForm,
+      city: {...addressForm.city, id: initialCity},
+    });
+    setAddressForm({
+      ...addressForm,
+      district: {...addressForm.district, id: initialDistrict},
+    });
     if (states.length > 0) {
       setFilteredStates(
         states.filter((item) => item.country_id === initialCountry),
@@ -583,13 +608,6 @@ const AddressUpdate = ({formAddressData}) => {
         disctricts.filter((item) => item.state_id === initialState),
       );
     }
-    console.log(
-      states,
-      disctricts,
-      filteredDistricts,
-      filteredStates,
-      'statess',
-    );
   }, []);
 
   return (
@@ -660,6 +678,10 @@ const AddressUpdate = ({formAddressData}) => {
                 selectedValue={selectedCountry}
                 onValueChange={(changeSelect) => {
                   setSelectedCountry(changeSelect);
+                  setAddressForm({
+                    ...addressForm,
+                    country: {...addressForm.country, id: changeSelect},
+                  });
                 }}>
                 {countries.length > 0 &&
                   countries.map((item, innd) => {
@@ -687,6 +709,10 @@ const AddressUpdate = ({formAddressData}) => {
                 selectedValue={selectedstate}
                 onValueChange={(changeSelect) => {
                   setSelectedstate(changeSelect);
+                  setAddressForm({
+                    ...addressForm,
+                    city: {...addressForm.city, id: changeSelect},
+                  });
                 }}>
                 {states.length > 0 &&
                   states.map((item, innd) => {
@@ -716,6 +742,10 @@ const AddressUpdate = ({formAddressData}) => {
                 selectedValue={selectedDistrict}
                 onValueChange={(changeSelect) => {
                   setSelectedDistrict(changeSelect);
+                  setAddressForm({
+                    ...addressForm,
+                    district: {...addressForm.district, id: changeSelect},
+                  });
                 }}>
                 {disctricts.length > 0 &&
                   disctricts.map((item, innd) => {
@@ -746,7 +776,11 @@ const AddressUpdate = ({formAddressData}) => {
         <Row style={styles.addressFormRowDesign}>
           <Col>
             <Item>
-              <Button style={styles.placeOrderButtonStyle}>
+              <Button
+                onPress={() => {
+                  saveData();
+                }}
+                style={styles.placeOrderButtonStyle}>
                 <Text style={styles.placeOrderButtonTextStyle}>
                   Update Address
                 </Text>
@@ -760,13 +794,36 @@ const AddressUpdate = ({formAddressData}) => {
 };
 
 const AddressManagement = (props) => {
+  const {addresses, resetArr, adrsDispacth, getAddress} = React.useContext(
+    AddressContext,
+  );
+  const [addrestype, setAddresstype] = React.useState(props.modalDataType);
+  const [addressLists, setAddressLists] = React.useState([]);
+  React.useEffect(() => {
+    if (addressLists.length === 0) {
+      if (addrestype === 'shippingLists') {
+        getAddress('shipping');
+      } else if (addrestype === 'bllingLists') {
+        getAddress('billing');
+      }
+    }
+    if (addresses.length !== 0) {
+      setAddressLists(addresses);
+    }
+  }, [addrestype, addresses]);
+
+  function modalClose() {
+    props.setModalVisible(false);
+    setAddressLists([]);
+  }
+
   return (
     <Container style={adrsM.containerStyle}>
       <Row style={adrsM.topBarStyle}>
         <Col style={adrsM.topBarCol1}>
           <Pressable
             onPress={() => {
-              props.setModalVisible(false);
+              modalClose();
             }}>
             <Icon name="arrow-back-outline" type="Ionicons" />
           </Pressable>
@@ -790,59 +847,63 @@ const AddressManagement = (props) => {
         </Col>
       </Row>
       <Content>
-        {props.addressLists.map((item, innd) => {
-          return (
-            <Pressable
-              key={innd}
-              onPress={() => {
-                props.setCurrentAddress(item);
-                props.setModalVisible(false);
-              }}
-              style={adrsM.addressListItem}>
-              <Row style={adrsM.itemRow}>
-                <Col style={adrsM.leftIconStyle}>
-                  <Pressable style={adrsM.IconWrapper}>
+        {addressLists.length > 0 &&
+          addressLists.map((item, innd) => {
+            return (
+              <Pressable
+                key={innd}
+                onPress={() => {
+                  props.setCurrentAddress(item);
+                  props.setModalVisible(false);
+                }}
+                style={adrsM.addressListItem}>
+                <Row style={adrsM.itemRow}>
+                  <Col style={adrsM.leftIconStyle}>
+                    <Pressable style={adrsM.IconWrapper}>
+                      <Icon
+                        name="home-outline"
+                        style={adrsM.contentLeftIconStyle}
+                        type="Ionicons"
+                      />
+                    </Pressable>
+                  </Col>
+                  <Col style={adrsM.middleContentStyle}>
+                    <Title style={{color: '#000'}}>{item.name}</Title>
+                    <Text>{item.address_line_1}</Text>
+                    <Text>{item.city}</Text>
+                    <Text>{item.country_id}</Text>
+                  </Col>
+                </Row>
+                <View style={adrsM.itemActionButtonWrapper}>
+                  <Pressable
+                    style={adrsM.IconWrapper}
+                    onPress={() => {
+                      alert('sdfa');
+                    }}>
                     <Icon
-                      name="home-outline"
+                      name="pencil-outline"
                       style={adrsM.contentLeftIconStyle}
                       type="Ionicons"
                     />
                   </Pressable>
-                </Col>
-                <Col style={adrsM.middleContentStyle}>
-                  <Title style={{color: '#000'}}>{item.name}</Title>
-                  <Text>{item.address}</Text>
-                  <Text>{item.city.name}</Text>
-                  <Text>{item.country.name}</Text>
-                </Col>
-              </Row>
-              <View style={adrsM.itemActionButtonWrapper}>
-                <Pressable
-                  style={adrsM.IconWrapper}
-                  onPress={() => {
-                    alert('sdfa');
-                  }}>
-                  <Icon
-                    name="pencil-outline"
-                    style={adrsM.contentLeftIconStyle}
-                    type="Ionicons"
-                  />
-                </Pressable>
-                <Pressable
-                  onPress={() => {
-                    alert('sdfa');
-                  }}
-                  style={[adrsM.IconWrapper, adrsM.contentDeleteIconStyle]}>
-                  <Icon
-                    name="trash-outline"
-                    style={[adrsM.contentLeftIconStyle, adrsM.deleteIconStyle]}
-                    type="Ionicons"
-                  />
-                </Pressable>
-              </View>
-            </Pressable>
-          );
-        })}
+                  <Pressable
+                    onPress={() => {
+                      alert('sdfa');
+                    }}
+                    style={[adrsM.IconWrapper, adrsM.contentDeleteIconStyle]}>
+                    <Icon
+                      name="trash-outline"
+                      style={[
+                        adrsM.contentLeftIconStyle,
+                        adrsM.deleteIconStyle,
+                      ]}
+                      type="Ionicons"
+                    />
+                  </Pressable>
+                </View>
+              </Pressable>
+            );
+          })}
       </Content>
     </Container>
   );
