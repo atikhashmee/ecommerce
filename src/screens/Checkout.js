@@ -539,6 +539,7 @@ const AddressUpdate = ({formAddressData, setModalDataType, modalDataType}) => {
   const [selectedDistrict, setSelectedDistrict] = React.useState(null);
   const [filteredStates, setFilteredStates] = React.useState([]);
   const [filteredDistricts, setFilteredDistricts] = React.useState([]);
+  const [addressName, setAddressName] = React.useState(null);
 
   const {addAddressBook} = React.useContext(AddressContext);
 
@@ -560,7 +561,7 @@ const AddressUpdate = ({formAddressData, setModalDataType, modalDataType}) => {
       name: null,
     },
     zipCode: null,
-    address_type: modalDataType === "shippingLists" ? "shipping" : "billing"
+    address_type: modalDataType === "shippingFormData" ? "shipping" : "billing"
   });
 
   React.useEffect(() => {
@@ -568,13 +569,13 @@ const AddressUpdate = ({formAddressData, setModalDataType, modalDataType}) => {
       setAddressForm({
         ...addressForm,
         name: formAddressData.name,
-        phoneNumber: formAddressData.phoneNumber,
-        address: formAddressData.address,
-        address1: formAddressData.address1,
-        zipCode: formAddressData.zipCode,
       });
+      setAddressName(formAddressData.name);
     }
+   
   }, []);
+
+
 
   const saveData = () => {
     addAddressBook(addressForm);
@@ -615,14 +616,15 @@ const AddressUpdate = ({formAddressData, setModalDataType, modalDataType}) => {
       <Content>
         <Row style={styles.addressFormRowDesign}>
           <Col>
-            <Text style={styles.addressFormLabels}>Contact</Text>
+            <Text style={styles.addressFormLabels}>Contact {addressName}</Text>
             <Item regular>
               <Input
                 onChangeText={(txt) => {
-                  setAddressForm({...addressForm, name: txt});
+                  //setAddressForm({...addressForm, name: txt});
+                  setAddressName(txt);
                 }}
                 style={styles.addressInputField}
-                value={addressForm.name}
+                value={addressName}
               />
             </Item>
             <Text style={styles.addressFormLabels}>Phone Number</Text>
@@ -797,6 +799,7 @@ const AddressManagement = (props) => {
   const {addresses, resetArr, adrsDispacth, getAddress} = React.useContext(
     AddressContext,
   );
+  const {countries, states, disctricts} = React.useContext(CheckoutContext);
   const [addrestype, setAddresstype] = React.useState(props.modalDataType);
   const [addressLists, setAddressLists] = React.useState([]);
   React.useEffect(() => {
@@ -870,15 +873,21 @@ const AddressManagement = (props) => {
                   <Col style={adrsM.middleContentStyle}>
                     <Title style={{color: '#000'}}>{item.name}</Title>
                     <Text>{item.address_line_1}</Text>
-                    <Text>{item.city}</Text>
-                    <Text>{item.country_id}</Text>
+                    <Text>{item.state_name} {item.district_name}</Text>
+                    <Text>{item.country_name}</Text>
                   </Col>
                 </Row>
                 <View style={adrsM.itemActionButtonWrapper}>
                   <Pressable
                     style={adrsM.IconWrapper}
                     onPress={() => {
-                      alert('sdfa');
+                      //props.setModalVisible(true);
+                      if (props.modalDataType === 'shippingLists') {
+                        props.setModalDataType('shippingFormData');
+                      } else {
+                        props.setModalDataType('billingFormData');
+                      }
+                      props.setFormAddressData(item);
                     }}>
                     <Icon
                       name="pencil-outline"

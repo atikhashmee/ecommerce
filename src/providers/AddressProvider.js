@@ -48,9 +48,9 @@ export default function AddressProvider(props) {
       var formdata = new FormData();
       formdata.append('user_id', auth.user.user_id);
       formdata.append('address_type', data.address_type);
-      formdata.append('country_id', data.country.id);
-      formdata.append('city', data.city.id);
-      formdata.append('state_id', data.district.id);
+      formdata.append('country_id', data.country.id || 19);
+      formdata.append('city', data.city.id || 1);
+      formdata.append('state_id', data.district.id || 1);
       formdata.append('phone', data.phoneNumber);
       formdata.append('zip_code', data.zipCode);
       formdata.append('address_line_1', data.address);
