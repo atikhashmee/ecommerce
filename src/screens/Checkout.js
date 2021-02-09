@@ -586,18 +586,6 @@ const AddressUpdate = ({formAddressData, setModalDataType, modalDataType}) => {
     let initialCity = 1;
     let initialDistrict = 1;
     setSelectedCountry(initialCountry);
-    setAddressForm({
-      ...addressForm,
-      country: {...addressForm.country, id: initialCountry},
-    });
-    setAddressForm({
-      ...addressForm,
-      city: {...addressForm.city, id: initialCity},
-    });
-    setAddressForm({
-      ...addressForm,
-      district: {...addressForm.district, id: initialDistrict},
-    });
     if (states.length > 0) {
       setFilteredStates(
         states.filter((item) => item.country_id === initialCountry),
@@ -616,15 +604,14 @@ const AddressUpdate = ({formAddressData, setModalDataType, modalDataType}) => {
       <Content>
         <Row style={styles.addressFormRowDesign}>
           <Col>
-            <Text style={styles.addressFormLabels}>Contact {addressName}</Text>
+            <Text style={styles.addressFormLabels}>Contact</Text>
             <Item regular>
               <Input
                 onChangeText={(txt) => {
-                  //setAddressForm({...addressForm, name: txt});
-                  setAddressName(txt);
+                  setAddressForm({...addressForm, name: txt});
                 }}
                 style={styles.addressInputField}
-                value={addressName}
+                value={addressForm.name}
               />
             </Item>
             <Text style={styles.addressFormLabels}>Phone Number</Text>
