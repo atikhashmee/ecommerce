@@ -539,27 +539,25 @@ const AddressUpdate = ({formAddressData, setModalDataType, modalDataType}) => {
   const [selectedDistrict, setSelectedDistrict] = React.useState(null);
   const [filteredStates, setFilteredStates] = React.useState([]);
   const [filteredDistricts, setFilteredDistricts] = React.useState([]);
-  const [addressName, setAddressName] = React.useState(null);
-
+  const {addresses, adrsDispacth} = React.useContext(AddressContext);
   const {addAddressBook} = React.useContext(AddressContext);
 
+  React.useEffect(()=>{
+      console.log(addresses, 'changed data');
+  }, [addresses])
   const [addressForm, setAddressForm] = React.useState({
+    formType: 'save',
+    address_id: null,
     name: null,
     phoneNumber: null,
     address: null,
     address1: null,
-    city: {
-      id: null,
-      name: null,
-    },
-    country: {
-      id: null,
-      name: null,
-    },
-    district: {
-      id: null,
-      name: null,
-    },
+    country_id: null,
+    country_name: null,
+    district_id: null,
+    district_name: null,
+    state_id: null,
+    state_name: null,
     zipCode: null,
     address_type: modalDataType === "shippingFormData" ? "shipping" : "billing"
   });
@@ -568,10 +566,39 @@ const AddressUpdate = ({formAddressData, setModalDataType, modalDataType}) => {
     if (formAddressData != null) {
       setAddressForm({
         ...addressForm,
+        formType: 'edit',
+        address_id: formAddressData.id,
         name: formAddressData.name,
+        phoneNumber: formAddressData.phone,
+        address: formAddressData.address_line_1,
+        address1: formAddressData.address_line_2,
+        country_id: formAddressData.country_id,
+        country_name: formAddressData.country_name,
+        district_id: formAddressData.district_id,
+        district_name: formAddressData.district_name,
+        state_id: formAddressData.state_id,
+        state_name: formAddressData.state_name,
+        zipCode: formAddressData.zip_code,
       });
-      setAddressName(formAddressData.name);
+      setSelectedDistrict(formAddressData.district_id);
+      setSelectedCountry(formAddressData.country_id);
+      setSelectedstate(formAddressData.state_id);
+    } else {
+      let initialCity = 1;
+      let initialDistrict = 1;
+      let initialCountry = 19;
+      setSelectedstate(initialCity);
+      setSelectedDistrict(initialDistrict);
+      setSelectedCountry(initialCountry);
+      setAddressForm({
+        ...addressForm,
+        country_id: initialCountry,
+        district_id: initialDistrict,
+        state_id: initialCity,
+      });
     }
+
+    
    
   }, []);
 
@@ -581,23 +608,20 @@ const AddressUpdate = ({formAddressData, setModalDataType, modalDataType}) => {
     addAddressBook(addressForm);
   };
 
-  React.useEffect(() => {
-    let initialCountry = 19;
-    let initialCity = 1;
-    let initialDistrict = 1;
-    setSelectedCountry(initialCountry);
-    if (states.length > 0) {
-      setFilteredStates(
-        states.filter((item) => item.country_id === initialCountry),
-      );
-    }
-    let initialState = filteredStates[0];
-    if (disctricts.length > 0) {
-      setFilteredDistricts(
-        disctricts.filter((item) => item.state_id === initialState),
-      );
-    }
-  }, []);
+  // React.useEffect(() => {
+    
+  //   if (states.length > 0) {
+  //     setFilteredStates(
+  //       states.filter((item) => item.country_id === initialCountry),
+  //     );
+  //   }
+  //   let initialState = filteredStates[0];
+  //   if (disctricts.length > 0) {
+  //     setFilteredDistricts(
+  //       disctricts.filter((item) => item.state_id === initialState),
+  //     );
+  //   }
+  // }, []);
 
   return (
     <Container style={{paddingHorizontal: 10}}>
@@ -667,10 +691,7 @@ const AddressUpdate = ({formAddressData, setModalDataType, modalDataType}) => {
                 selectedValue={selectedCountry}
                 onValueChange={(changeSelect) => {
                   setSelectedCountry(changeSelect);
-                  setAddressForm({
-                    ...addressForm,
-                    country: {...addressForm.country, id: changeSelect},
-                  });
+                  setAddressForm({...addressForm, country_id: changeSelect});
                 }}>
                 {countries.length > 0 &&
                   countries.map((item, innd) => {
@@ -698,10 +719,7 @@ const AddressUpdate = ({formAddressData, setModalDataType, modalDataType}) => {
                 selectedValue={selectedstate}
                 onValueChange={(changeSelect) => {
                   setSelectedstate(changeSelect);
-                  setAddressForm({
-                    ...addressForm,
-                    city: {...addressForm.city, id: changeSelect},
-                  });
+                  setAddressForm({...addressForm, district_id: changeSelect});
                 }}>
                 {states.length > 0 &&
                   states.map((item, innd) => {
@@ -731,10 +749,7 @@ const AddressUpdate = ({formAddressData, setModalDataType, modalDataType}) => {
                 selectedValue={selectedDistrict}
                 onValueChange={(changeSelect) => {
                   setSelectedDistrict(changeSelect);
-                  setAddressForm({
-                    ...addressForm,
-                    district: {...addressForm.district, id: changeSelect},
-                  });
+                  setAddressForm({...addressForm, state_id: changeSelect});
                 }}>
                 {disctricts.length > 0 &&
                   disctricts.map((item, innd) => {
@@ -771,7 +786,7 @@ const AddressUpdate = ({formAddressData, setModalDataType, modalDataType}) => {
                 }}
                 style={styles.placeOrderButtonStyle}>
                 <Text style={styles.placeOrderButtonTextStyle}>
-                  Update Address
+                  {addressForm.formType==='save'? 'Save': 'Update'} Address
                 </Text>
               </Button>
             </Item>

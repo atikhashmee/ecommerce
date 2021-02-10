@@ -5,6 +5,7 @@ import {
   fetchInitial,
   resetArr,
   add,
+  updateData,
 } from '../store/addressReducer';
 import {
   get_address,
@@ -44,13 +45,22 @@ export default function AddressProvider(props) {
   };
 
   const addAddressBook = (data) => {
+    let finalUrl = null;
+    var formdata = new FormData();
+    if (data.formType === 'edit') {
+      finalUrl = baseUrl + update_address + '/' + data.address_id;
+      formdata.append('_method', 'PUT');
+    } else if (data.formType === 'save') {
+      finalUrl = baseUrl + store_address;
+    }
+    if (finalUrl === null) return;
+
     if (auth.user !== null) {
-      var formdata = new FormData();
       formdata.append('user_id', auth.user.user_id);
       formdata.append('address_type', data.address_type);
-      formdata.append('country_id', data.country.id || 19);
-      formdata.append('city', data.city.id || 1);
-      formdata.append('state_id', data.district.id || 1);
+      formdata.append('country_id', data.country_id);
+      formdata.append('city', data.state_id);
+      formdata.append('state_id', data.district_id);
       formdata.append('phone', data.phoneNumber);
       formdata.append('zip_code', data.zipCode);
       formdata.append('address_line_1', data.address);
@@ -64,18 +74,20 @@ export default function AddressProvider(props) {
         body: formdata,
         redirect: 'follow',
       };
-      console.log('nentere');
-      fetch(baseUrl + store_address, requestOptions)
+      fetch(finalUrl, requestOptions)
         .then((res) => res.json())
         .then((res) => {
           console.log(res, 'res check');
-          adrsDispacth(add(res.data));
+          if (data.formType === 'save') {
+            adrsDispacth(add(res.data));
+          } else if (data.formType === 'edit') {
+            adrsDispacth(updateData(res.data));
+          }
         })
         .catch((err) => {
           console.log(err, 'err check');
         });
     }
-    console.log(data, 'address book');
   };
 
   return (
