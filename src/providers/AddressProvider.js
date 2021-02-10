@@ -12,6 +12,7 @@ import {
   store_address,
   update_address,
   delete_address,
+  get_address_lists,
 } from '../api.json';
 import {baseUrl} from '../env.json';
 import {AppContext} from '../utils/GlobalContext';
@@ -19,9 +20,32 @@ import {AppContext} from '../utils/GlobalContext';
 export default function AddressProvider(props) {
   const [addresses, adrsDispacth] = React.useReducer(addressReducer, []);
   const {auth, isLoggedin} = React.useContext(AppContext);
+  const [addressListsNew, setAddressListsNew] = React.useState([]);
   React.useEffect(() => {
     getAddress('shipping');
   }, []);
+
+
+
+  const getAddressListsNew = () => {
+    if (auth.user !== null) {
+      var formdata = new FormData();
+      formdata.append('user_id', auth.user.user_id);
+      var myHeaders = new Headers();
+      myHeaders.append('Authorization', 'Bearer ' + auth.auth_token);
+      let requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: formdata,
+        redirect: 'follow',
+      };
+      fetch(baseUrl + get_address_lists, requestOptions)
+        .then((res) => res.json())
+        .then((res) => {
+          setAddressListsNew(res.data);
+        });
+    }
+  };
 
   const getAddress = (adrs_type) => {
     if (auth.user !== null) {
@@ -44,7 +68,7 @@ export default function AddressProvider(props) {
     }
   };
 
-  const addAddressBook = (data) => {
+  const addAddressBook = (data, callback) => {
     let finalUrl = null;
     var formdata = new FormData();
     if (data.formType === 'edit') {
@@ -77,12 +101,12 @@ export default function AddressProvider(props) {
       fetch(finalUrl, requestOptions)
         .then((res) => res.json())
         .then((res) => {
-          console.log(res, 'res check');
           if (data.formType === 'save') {
             adrsDispacth(add(res.data));
           } else if (data.formType === 'edit') {
             adrsDispacth(updateData(res.data));
           }
+          callback(res);
         })
         .catch((err) => {
           console.log(err, 'err check');
@@ -94,11 +118,13 @@ export default function AddressProvider(props) {
     <AddressContext.Provider
       value={{
         addresses,
+        addressListsNew,
         resetArr,
         addAddressBook,
         adrsDispacth,
         getAddress,
         fetchInitial,
+        getAddressListsNew,
       }}>
       {props.children}
     </AddressContext.Provider>

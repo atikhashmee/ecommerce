@@ -32,89 +32,11 @@ import {CartContext} from '../utils/CartContext';
 const Checkout = () => {
   const navigation = useNavigation();
   const [modalVisible, setModalVisible] = React.useState(false);
-  const [shippingAddresses, setShippingAddresses] = React.useState([
-    {
-      name: 'Atik bin Hashmee',
-      phoneNumber: '01735623513',
-      address: 'House #1, Road# 32, Uttara',
-      address1: 'House #1, Road# 32, Uttara',
-      city: {
-        id: 1,
-        name: 'Dhaka',
-      },
-      country: {
-        id: 1,
-        name: 'Bangladesh',
-      },
-      district: {
-        id: 1,
-        name: 'Dhaka',
-      },
-      zipCode: 1230,
-    },
-    {
-      name: 'Atik bin Hashmee 2',
-      phoneNumber: '01635623513',
-      address: 'House #2, Road# 32, Uttara',
-      address1: 'House #2, Road# 32, Uttara',
-      city: {
-        id: 1,
-        name: 'Dhaka',
-      },
-      country: {
-        id: 1,
-        name: 'Bangladesh',
-      },
-      district: {
-        id: 1,
-        name: 'Dhaka',
-      },
-      zipCode: 1230,
-    },
-  ]);
+  const [shippingAddresses, setShippingAddresses] = React.useState([]);
   const [selectedShippingAddress, setSelectedShippingAddress] = React.useState(
     null,
   );
-  const [billingAddresses, setBillingAddresses] = React.useState([
-    {
-      name: 'Atik bin Hashmee',
-      phoneNumber: '01735623513',
-      address: 'House #1, Road# 32, Uttara, billing',
-      address1: 'House #1, Road# 32, Uttara billing',
-      city: {
-        id: 1,
-        name: 'Dhaka',
-      },
-      country: {
-        id: 1,
-        name: 'Bangladesh',
-      },
-      district: {
-        id: 1,
-        name: 'Dhaka',
-      },
-      zipCode: 1230,
-    },
-    {
-      name: 'Atik bin Hashmee 2',
-      phoneNumber: '01635623513',
-      address: 'House #2, Road# 32, Uttara billing',
-      address1: 'House #2, Road# 32, Uttara billing',
-      city: {
-        id: 1,
-        name: 'Dhaka',
-      },
-      country: {
-        id: 1,
-        name: 'Bangladesh',
-      },
-      district: {
-        id: 1,
-        name: 'Dhaka',
-      },
-      zipCode: 1230,
-    },
-  ]);
+  const [billingAddresses, setBillingAddresses] = React.useState([]);
   const [selectedBillingAddress, setBillingShippingAddress] = React.useState(
     null,
   );
@@ -148,15 +70,45 @@ const Checkout = () => {
   const [grandTotal, setGrandTotal] = React.useState(0);
   const {cartItems} = React.useContext(CartContext);
 
+  const {addressListsNew, getAddressListsNew} = React.useContext(AddressContext);
+
   const setCurrentAddress =
     modalDataType === 'shippingLists'
       ? setSelectedShippingAddress
       : setBillingShippingAddress;
 
   React.useEffect(() => {
+    let shippingLists = [];
+    let billingLists = [];
+    if (addressListsNew.length == 0) {
+      getAddressListsNew();
+    }
+    if (addressListsNew.length > 0) {
+      addressListsNew.forEach((item) => {
+        if (item.address_type === 'shipping') {
+          shippingLists.push(item);
+        } else if (item.address_type === 'billing') {
+          billingLists.push(item);
+        }
+      });
+    }
+
+    if (shippingLists.length > 0) {
+      setShippingAddresses(shippingLists);
+    }
+
+    if (billingLists.length > 0) {
+      setBillingAddresses(billingLists);
+    }
+  }, [addressListsNew]);
+
+  React.useEffect(() => {
     setBillingShippingAddress(billingAddresses[0]);
     setSelectedShippingAddress(shippingAddresses[0]);
     setSelectedPaymentMethod(paymentMethods[0]);
+  }, [billingAddresses, shippingAddresses]);
+
+  React.useEffect(() => {
     let suTo = 0;
     cartItems.forEach((prod) => {
       suTo += parseInt(prod.originalPrice) + parseInt(prod.quantity);
@@ -230,9 +182,10 @@ const Checkout = () => {
                   <Title style={{color: '#000'}}>
                     {selectedShippingAddress.name}
                   </Title>
-                  <Text>{selectedShippingAddress.address}</Text>
-                  <Text>{selectedShippingAddress.city.name}</Text>
-                  <Text>{selectedShippingAddress.country.name}</Text>
+                  <Text>{selectedShippingAddress.address_line_1}</Text>
+                  <Text>{selectedShippingAddress.address_line_2}</Text>
+                  <Text>{selectedShippingAddress.state_name}</Text>
+                  <Text>{selectedShippingAddress.country_name}</Text>
                 </Col>
               )}
               <Col style={styles.editIcon}>
@@ -293,9 +246,10 @@ const Checkout = () => {
                   <Title style={{color: '#000'}}>
                     {selectedBillingAddress.name}
                   </Title>
-                  <Text>{selectedBillingAddress.address}</Text>
-                  <Text>{selectedBillingAddress.city.name}</Text>
-                  <Text>{selectedBillingAddress.country.name}</Text>
+                  <Text>{selectedBillingAddress.address_line_1}</Text>
+                  <Text>{selectedBillingAddress.address_line_2}</Text>
+                  <Text>{selectedBillingAddress.state_name}</Text>
+                  <Text>{selectedBillingAddress.country_name}</Text>
                 </Col>
               )}
 
@@ -522,6 +476,7 @@ const ModalView = ({
               <AddressUpdate
                 formAddressData={formAddressData}
                 setModalDataType={setModalDataType}
+                setModalVisible={setModalVisible}
                 modalDataType={modalDataType}
               />
             )}
@@ -532,7 +487,12 @@ const ModalView = ({
   );
 };
 
-const AddressUpdate = ({formAddressData, setModalDataType, modalDataType}) => {
+const AddressUpdate = ({
+  formAddressData,
+  setModalVisible,
+  setModalDataType,
+  modalDataType,
+}) => {
   const {countries, states, disctricts} = React.useContext(CheckoutContext);
   const [selectedCountry, setSelectedCountry] = React.useState(null);
   const [selectedstate, setSelectedstate] = React.useState(null);
@@ -542,9 +502,6 @@ const AddressUpdate = ({formAddressData, setModalDataType, modalDataType}) => {
   const {addresses, adrsDispacth} = React.useContext(AddressContext);
   const {addAddressBook} = React.useContext(AddressContext);
 
-  React.useEffect(()=>{
-      console.log(addresses, 'changed data');
-  }, [addresses])
   const [addressForm, setAddressForm] = React.useState({
     formType: 'save',
     address_id: null,
@@ -559,7 +516,7 @@ const AddressUpdate = ({formAddressData, setModalDataType, modalDataType}) => {
     state_id: null,
     state_name: null,
     zipCode: null,
-    address_type: modalDataType === "shippingFormData" ? "shipping" : "billing"
+    address_type: modalDataType === 'shippingFormData' ? 'shipping' : 'billing',
   });
 
   React.useEffect(() => {
@@ -597,31 +554,17 @@ const AddressUpdate = ({formAddressData, setModalDataType, modalDataType}) => {
         state_id: initialCity,
       });
     }
-
-    
-   
   }, []);
 
-
-
   const saveData = () => {
-    addAddressBook(addressForm);
+    addAddressBook(addressForm, (res) => {
+      if (modalDataType === 'shippingFormData') {
+        setModalDataType('shippingLists');
+      } else if (modalDataType === 'billingFormData') {
+        setModalDataType('bllingLists');
+      }
+    });
   };
-
-  // React.useEffect(() => {
-    
-  //   if (states.length > 0) {
-  //     setFilteredStates(
-  //       states.filter((item) => item.country_id === initialCountry),
-  //     );
-  //   }
-  //   let initialState = filteredStates[0];
-  //   if (disctricts.length > 0) {
-  //     setFilteredDistricts(
-  //       disctricts.filter((item) => item.state_id === initialState),
-  //     );
-  //   }
-  // }, []);
 
   return (
     <Container style={{paddingHorizontal: 10}}>
@@ -786,7 +729,7 @@ const AddressUpdate = ({formAddressData, setModalDataType, modalDataType}) => {
                 }}
                 style={styles.placeOrderButtonStyle}>
                 <Text style={styles.placeOrderButtonTextStyle}>
-                  {addressForm.formType==='save'? 'Save': 'Update'} Address
+                  {addressForm.formType === 'save' ? 'Save' : 'Update'} Address
                 </Text>
               </Button>
             </Item>
@@ -875,7 +818,9 @@ const AddressManagement = (props) => {
                   <Col style={adrsM.middleContentStyle}>
                     <Title style={{color: '#000'}}>{item.name}</Title>
                     <Text>{item.address_line_1}</Text>
-                    <Text>{item.state_name} {item.district_name}</Text>
+                    <Text>
+                      {item.state_name} {item.district_name}
+                    </Text>
                     <Text>{item.country_name}</Text>
                   </Col>
                 </Row>

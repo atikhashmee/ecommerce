@@ -6,6 +6,7 @@
     "delete_wish_lists": "wishlists/trash",
     "country_data": "country-region",
     "get_users_addresses": "get-user-shipping-address",
+    "get_address_lists": "get-address-lists",
     "get_address": "get-address",
     "store_address": "store-address",
     "update_address": "update-address",  //Original Format update-address/{id}
