@@ -1,27 +1,14 @@
 import React from 'react';
-import {Text, View, Modal, StyleSheet, Dimensions} from 'react-native';
 import HomePage from '../tabComponents/HomePage';
 import FooterTabs from '../layouts/FooterTabs';
-import {
-  Container,
-  Content,
-} from 'native-base';
-import {useNavigation} from '@react-navigation/native';
+import {Container, Content} from 'native-base';
 export default function HomeTabs() {
-  const navigation = useNavigation();
   return (
     <Container>
-      <Content> 
+      <Content>
         <HomePage />
       </Content>
       <FooterTabs />
     </Container>
   );
 }
-
-
-const styles = StyleSheet.create({
-  scene: {
-    flex: 1,
-  }
-});

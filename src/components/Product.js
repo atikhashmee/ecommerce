@@ -90,7 +90,11 @@ const Product = ({product, handleClick, itemType = null}) => {
               ...AppStyle.cartButton,
               borderLeftWidth: 1,
             }}>
-            <IonIcon name="heart-outline" color="#000" size={20} />
+            {product.is_wishList ? (
+              <IonIcon name="heart" color="red" size={20} />
+            ) : (
+              <IonIcon name="heart-outline" color="#000" size={20} />
+            )}
           </Pressable>
         </View>
       ) : (

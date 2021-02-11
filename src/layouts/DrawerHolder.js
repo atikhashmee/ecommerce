@@ -102,12 +102,20 @@ const DrawerHolder = () => {
     return {
       setInit: async () => {
         let formD = new FormData();
-        formD.append('api_token', defaultArr.api_token);
-        formD.append('store_id', defaultArr.store_id);
-        await fetch(baseUrl + 'home-content', {
+        let requestOptions = {
           method: 'POST',
           body: formD,
-        })
+          redirect: 'follow',
+        };
+        //formD.append('api_token', defaultArr.api_token);
+        if (auth !== null && auth.user !== null) {
+          var myHeaders = new Headers();
+          myHeaders.append('Authorization', 'Bearer ' + auth.auth_token);
+          requestOptions.headers = myHeaders;
+        }
+
+        formD.append('store_id', defaultArr.store_id);
+        await fetch(baseUrl + 'home-content', requestOptions)
           .then((res) => {
             if (!res.ok) {
               throw res;

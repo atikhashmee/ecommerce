@@ -4,11 +4,11 @@ import {AppContext} from '../utils/GlobalContext';
 import HomeTabs from '../Tabs/HomeTabs';
 
 function Home() {
-  let {setInit} = React.useContext(AppContext);
+  let {setInit, auth} = React.useContext(AppContext);
 
   useEffect(() => {
     setInit();
-  }, []);
+  }, [auth]);
 
   return (
     <View style={{flex: 1}}>
