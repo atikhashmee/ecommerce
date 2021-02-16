@@ -11,7 +11,7 @@ export default function WishListProvider(props) {
     wishlistReducer,
     items,
   );
-  const {auth, isLoggedin} = React.useContext(AppContext);
+  const {auth, isLoggedin, setIsAuthModalOpen} = React.useContext(AppContext);
   React.useEffect(() => {
     getAllWishLists();
   }, []);
@@ -85,6 +85,8 @@ export default function WishListProvider(props) {
           }
         })
         .catch((error) => console.log('add To wish lists', error));
+    } else {
+      setIsAuthModalOpen(true);
     }
   };
 

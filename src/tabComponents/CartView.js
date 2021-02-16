@@ -6,6 +6,8 @@ import FooterTabs from '../layouts/FooterTabs';
 import {Container, Header, Left, Body, Right, Icon, Content} from 'native-base';
 import {useNavigation} from '@react-navigation/native';
 import {CartContext} from '../utils/CartContext';
+import {AppContext} from '../utils/GlobalContext';
+
 
 function CartItem({product, updateCartArr}) {
   const [checked, setChecked] = React.useState(product.isChecked);
@@ -68,7 +70,7 @@ export default function CartView() {
   const [modalVisible, setModalVisible] = React.useState(true);
   const [totalCartPrice, setTotalCartPrice] = React.useState(0);
   const {cartItems, toggleAll, cartDispatch} = React.useContext(CartContext);
-
+  const {auth, isLoggedin, setIsAuthModalOpen} = React.useContext(AppContext);
   const navigation = useNavigation();
   const [checked, setChecked] = React.useState(false);
   const [cartArr, setCartArr] = React.useState([]);
@@ -148,6 +150,14 @@ export default function CartView() {
     }
   }, []);
 
+  const goToCheckout = () => {
+    if (isLoggedin()) {
+      navigation.navigate('checkout');
+    } else {
+      setIsAuthModalOpen(true);
+    }
+  };
+
   return (
     <Container>
       <Header
@@ -214,9 +224,7 @@ export default function CartView() {
               style={{backgroundColor: 'blue'}}
               icon="cart"
               mode="contained"
-              onPress={() => {
-                navigation.navigate('checkout')
-              }}>
+              onPress={() => {goToCheckout();}}>
               Checkout
             </Button>
           </View>
@@ -314,25 +322,4 @@ const styles = StyleSheet.create({
   },
 });
 
-function HalfModal() {
-  return (
-    <Modal
-      animationType="slide"
-      transparent={true}
-      visible={modalVisible}
-      onRequestClose={() => {
-        Alert.alert('Modal has been closed.');
-      }}>
-      <View
-        style={{
-          position: 'absolute',
-          backgroundColor: '#fff',
-          bottom: 0,
-          height: '50%',
-          width: '100%',
-        }}>
-        <Text>Hello world</Text>
-      </View>
-    </Modal>
-  );
-}
+

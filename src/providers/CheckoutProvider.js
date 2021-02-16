@@ -13,7 +13,7 @@ export default function CheckoutProvider(props) {
   const [disctricts, setDistricts] = React.useState([]);
   const [userShippingAddress, setUserShippingAddress] = React.useState(null);
   const [userBillingAddress, setUserBillingAddress] = React.useState(null);
-  const {auth, isLoggedin} = React.useContext(AppContext);
+  const {auth, isLoggedin, setIsAuthModalOpen} = React.useContext(AppContext);
   const fetchCountryData = () => {
     fetch(baseUrl + country_data + '?store_id=' + store_id)
       .then((res) => res.json())
@@ -80,6 +80,8 @@ export default function CheckoutProvider(props) {
         .catch((err) => {
           console.log('checkout error', err);
         });
+    } else {
+      setIsAuthModalOpen(true);
     }
   };
 

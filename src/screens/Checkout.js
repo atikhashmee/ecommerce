@@ -133,7 +133,7 @@ const Checkout = () => {
     if (cartItems.length > 0) {
       let placeOrderObj = {};
       placeOrderObj.shippingAddress = selectedShippingAddress;
-      placeOrderObj.billingAddress = selectedShippingAddress;
+      placeOrderObj.billingAddress = selectedBillingAddress;
       placeOrderObj.paymentType = selectedPaymentMethod;
       placeOrderObj.grandTotal = grandTotal;
       placeOrderObj.items = cartItems;
