@@ -20,6 +20,7 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import Products from '../screens/Products';
+import OrderSubmitted from '../screens/OrderSubmitted';
 import AccountPage from '../screens/AccountPage';
 import WishLists from '../tabComponents/WishLists';
 import CartView from '../tabComponents/CartView';
@@ -226,6 +227,30 @@ function Dashboard(props) {
           options={{
             title: 'Detail',
             headerShown: false,
+            headerTintColor: '#000',
+            headerStyle: {
+              backgroundColor: '#fff',
+              elevation: 1,
+            },
+            headerTitleStyle: {
+              fontFamily: 'Montserrat-Light',
+              fontWeight: 'bold',
+              position: 'absolute',
+              left: screenWidth / 4,
+              top: -15,
+              color: '#000',
+            },
+            headerBackImage: () => {
+              return <IonIcon name="ios-arrow-back" color="#000" size={30} />;
+            },
+          }}
+        />
+        <Authenticate.Screen
+          name="order_submitted"
+          component={OrderSubmitted}
+          options={{
+            title: 'Order Submitted',
+            headerShown: true,
             headerTintColor: '#000',
             headerStyle: {
               backgroundColor: '#fff',

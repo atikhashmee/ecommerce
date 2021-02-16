@@ -21,9 +21,10 @@ export default function CheckoutProvider(props) {
         setCountries(res.countries);
         setStates(res.states);
         setDistricts(res.districts);
-      }).catch(err=>{
-        console.log('fetchCountryData', err);
       })
+      .catch((err) => {
+        console.log('fetchCountryData', err);
+      });
   };
 
   const userAddresses = () => {
@@ -41,15 +42,16 @@ export default function CheckoutProvider(props) {
       .then((res) => {
         setUserShippingAddress(res.shipping);
         setUserBillingAddress(res.billing);
-      }).catch(err=>{
-        console.log('userAddresses ', err);
       })
+      .catch((err) => {
+        console.log('userAddresses ', err);
+      });
   };
 
-  const placeOrders = (dataObj) => {
+  const placeOrders = (dataObj, callback) => {
     if (isLoggedin()) {
       var myHeaders = new Headers();
-      let formD = new FormData;
+      let formD = new FormData();
       myHeaders.append('Authorization', 'Bearer ' + auth.auth_token);
       formD.append('shippingAddress', JSON.stringify(dataObj.shippingAddress));
       formD.append('billingAddress', JSON.stringify(dataObj.billingAddress));
@@ -65,16 +67,15 @@ export default function CheckoutProvider(props) {
       };
       fetch(baseUrl + place_orders, requestOptions)
         .then((res) => {
-          console.log('err log', res);
           if (!res.ok) {
-            return res.text().then((text) => {
-              console.log(text, 'loogggg');
+            res.text().then((text) => {
               throw new Error(text);
             });
           }
           return res.json();
         })
         .then((res) => {
+          callback(res);
           console.log(res, 'api response');
         })
         .catch((err) => {

@@ -138,7 +138,11 @@ const Checkout = () => {
       placeOrderObj.grandTotal = grandTotal;
       placeOrderObj.items = cartItems;
       placeOrderObj.user_id = 3;
-      placeOrders(placeOrderObj);
+      placeOrders(placeOrderObj, res=>{
+        navigation.navigate('order_submitted', {
+          order_id: res.data,
+        })
+      });
     } else {
       alert('You have nothing in your cart');
     }
