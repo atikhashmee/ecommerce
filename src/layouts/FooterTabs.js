@@ -5,10 +5,12 @@ import {useNavigation} from '@react-navigation/native';
 import AuthModal from '../auth/AuthModal';
 import {AppContext} from '../utils/GlobalContext';
 import {WishListsContextTwo} from '../utils/WishListsContextTwo';
+import {CartContext} from '../utils/CartContext';
 
 export default function FooterTabs() {
   const navigation = useNavigation();
   const [wishListsCount, setWishListCount] = React.useState(0);
+  const [cartListsCount, setCartListsCount] = React.useState(0);
   const {
     auth,
     isLoggedin,
@@ -16,10 +18,16 @@ export default function FooterTabs() {
     setIsAuthModalOpen,
   } = React.useContext(AppContext);
   const {wishlists} = React.useContext(WishListsContextTwo);
+  const {cartItems} = React.useContext(CartContext);
 
   React.useEffect(() => {
     setWishListCount(wishlists.length);
-  }, []);
+  }, [wishlists]);
+
+  React.useEffect(()=>{
+    setCartListsCount(cartItems.length);
+  }, [cartItems])
+
   function checkAuthenticate() {
     if (isLoggedin()) {
       navigation.navigate('account');
@@ -60,6 +68,9 @@ export default function FooterTabs() {
             navigation.navigate('cart_view');
           }}>
           <View style={styles.middleIcon}>
+            <Badge style={styles.badgeStyleCenter} default>
+              <Text style={styles.badgeTextStyle}>{cartListsCount}</Text>
+            </Badge>
             <Icon
               name="cart-outline"
               style={{color: '#fff', fontSize: 30}}
@@ -73,16 +84,13 @@ export default function FooterTabs() {
             navigation.navigate('cart_view');
           }}>
           <View>
-            <Badge style={styles.badgeStyle} default>
-              <Text style={styles.badgeTextStyle}>20</Text>
-            </Badge>
             <Icon
-              name="cart-outline"
+              name="flash-outline"
               style={styles.iconStyle}
               type="Ionicons"
             />
           </View>
-          <Text style={styles.tabTextStyle}>Cart</Text>
+          <Text style={styles.tabTextStyle}>Offers</Text>
         </Button>
         <Button
           style={styles.tabHeading}
@@ -116,6 +124,13 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: -5,
     right: 0,
+    height: 20,
+    zIndex: 10,
+  },
+  badgeStyleCenter: {
+    position: 'absolute',
+    top: 5,
+    right: 5,
     height: 20,
     zIndex: 10,
   },

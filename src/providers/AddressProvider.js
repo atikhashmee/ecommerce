@@ -43,7 +43,9 @@ export default function AddressProvider(props) {
         .then((res) => res.json())
         .then((res) => {
           setAddressListsNew(res.data);
-        });
+        }).catch(err=>{
+          console.log('getAdres lists', err);
+        })
     }
   };
 
@@ -64,7 +66,9 @@ export default function AddressProvider(props) {
         .then((res) => res.json())
         .then((res) => {
           adrsDispacth(fetchInitial(res.data));
-        });
+        }).catch(err=>{
+          console.log('getAdres', err);
+        })
     }
   };
 

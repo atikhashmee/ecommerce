@@ -30,12 +30,14 @@ import {
 import {CheckoutContext, AddressContext} from '../utils/CheckoutContext';
 import {CartContext} from '../utils/CartContext';
 const Checkout = () => {
+  const {placeOrders} = React.useContext(CheckoutContext);
   const navigation = useNavigation();
   const [modalVisible, setModalVisible] = React.useState(false);
   const [shippingAddresses, setShippingAddresses] = React.useState([]);
   const [selectedShippingAddress, setSelectedShippingAddress] = React.useState(
     null,
   );
+
   const [billingAddresses, setBillingAddresses] = React.useState([]);
   const [selectedBillingAddress, setBillingShippingAddress] = React.useState(
     null,
@@ -70,7 +72,9 @@ const Checkout = () => {
   const [grandTotal, setGrandTotal] = React.useState(0);
   const {cartItems} = React.useContext(CartContext);
 
-  const {addressListsNew, getAddressListsNew} = React.useContext(AddressContext);
+  const {addressListsNew, getAddressListsNew} = React.useContext(
+    AddressContext,
+  );
 
   const setCurrentAddress =
     modalDataType === 'shippingLists'
@@ -124,6 +128,22 @@ const Checkout = () => {
       setAddresslists(billingAddresses);
     }
   }, [modalDataType]);
+
+  const placeOrder = () => {
+    if (cartItems.length > 0) {
+      let placeOrderObj = {};
+      placeOrderObj.shippingAddress = selectedShippingAddress;
+      placeOrderObj.billingAddress = selectedShippingAddress;
+      placeOrderObj.paymentType = selectedPaymentMethod;
+      placeOrderObj.grandTotal = grandTotal;
+      placeOrderObj.items = cartItems;
+      placeOrderObj.user_id = 3;
+      placeOrders(placeOrderObj);
+    } else {
+      alert('You have nothing in your cart');
+    }
+  };
+
   return (
     <Container style={styles.containerStyle}>
       <Header transparent hasTabs>
@@ -394,7 +414,7 @@ const Checkout = () => {
           <Col>
             <Button
               onPress={() => {
-                alert('hello world');
+                placeOrder();
               }}
               style={styles.placeOrderButtonStyle}>
               <Text style={styles.placeOrderButtonTextStyle}>Place Order</Text>
@@ -493,7 +513,9 @@ const AddressUpdate = ({
   setModalDataType,
   modalDataType,
 }) => {
-  const {countries, states, disctricts} = React.useContext(CheckoutContext);
+  const {countries, placeOrders, states, disctricts} = React.useContext(
+    CheckoutContext,
+  );
   const [selectedCountry, setSelectedCountry] = React.useState(null);
   const [selectedstate, setSelectedstate] = React.useState(null);
   const [selectedDistrict, setSelectedDistrict] = React.useState(null);

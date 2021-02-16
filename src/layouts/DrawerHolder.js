@@ -104,10 +104,9 @@ const DrawerHolder = () => {
         let formD = new FormData();
         let requestOptions = {
           method: 'POST',
-          body: formD,
-          redirect: 'follow',
+          body: formD
         };
-        //formD.append('api_token', defaultArr.api_token);
+        formD.append('api_token', defaultArr.api_token);
         if (auth !== null && auth.user !== null) {
           var myHeaders = new Headers();
           myHeaders.append('Authorization', 'Bearer ' + auth.auth_token);
@@ -126,7 +125,7 @@ const DrawerHolder = () => {
             setLoadData(res);
           })
           .catch((err) => {
-            console.log(err);
+            console.log('errno ', err);
           });
       },
       loadCategories: async () => {

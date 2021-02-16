@@ -32,10 +32,11 @@ export default function WishListProvider(props) {
         .then((response) => response.json())
         .then((result) => {
           if (result.status) {
+            console.log('response comes');
             wishlistDispatch(fetchInitial(result.data));
           }
         })
-        .catch((error) => console.log('error', error));
+        .catch((error) => console.log('get wish lists', error));
     }
   };
 
@@ -83,7 +84,7 @@ export default function WishListProvider(props) {
             getAllWishLists();
           }
         })
-        .catch((error) => console.log('error', error));
+        .catch((error) => console.log('add To wish lists', error));
     }
   };
 
