@@ -1,8 +1,14 @@
 import React, {useEffect} from 'react';
 import {View, StyleSheet, Text, Pressable} from 'react-native';
 import {Col, Container, Icon, Row} from 'native-base';
+import {useNavigation} from '@react-navigation/native';
 
-function OrderSubmitted() {
+function OrderSubmitted({route}) {
+  const navigation = useNavigation();
+  const [orderId, setOrderId] = React.useState(null);
+  React.useEffect(() => {
+    setOrderId(route.params.order_id);
+  }, []);
   return (
     <Container>
       <Row>
@@ -23,9 +29,11 @@ function OrderSubmitted() {
             <Text>Tract Order</Text>
             <Pressable
               onPress={() => {
-                alert('go to another');
+                navigation.navigate('order_detail', {
+                  order_id: orderId,
+                });
               }}>
-              <Text style={styles.heyperLink}>#124586</Text>
+              <Text style={styles.heyperLink}>#{orderId}</Text>
             </Pressable>
           </View>
         </Col>
@@ -56,7 +64,7 @@ const styles = StyleSheet.create({
     fontSize: 30,
     fontFamily: 'UniNeue-Light',
   },
-  downTextContainer:{
+  downTextContainer: {
     justifyContent: null,
-  }
+  },
 });
