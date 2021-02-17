@@ -81,7 +81,7 @@ export default function FooterTabs() {
         <Button
           style={styles.tabHeading}
           onPress={() => {
-            navigation.navigate('order_submitted');
+            navigation.navigate('order_detail');
           }}>
           <View>
             <Icon
