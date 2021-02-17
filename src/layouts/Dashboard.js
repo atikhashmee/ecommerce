@@ -257,10 +257,9 @@ function Dashboard(props) {
               elevation: 1,
             },
             headerTitleStyle: {
-              fontFamily: 'Montserrat-Light',
-              fontWeight: 'bold',
+              fontFamily: 'UniNeue-Light',
               position: 'absolute',
-              left: screenWidth / 4,
+              left: screenWidth / 40,
               top: -15,
               color: '#000',
             },
