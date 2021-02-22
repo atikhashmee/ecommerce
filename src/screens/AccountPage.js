@@ -6,6 +6,7 @@ import {
   Modal,
   Text,
   Dimensions,
+  Pressable,
   TouchableHighlight,
   ScrollView,
 } from 'react-native';
@@ -24,8 +25,10 @@ import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
+import {useNavigation} from '@react-navigation/native';
 
 export default function AccountPage() {
+  const navigation = useNavigation();
   const LeftContent = (props) => (
     <Avatar.Icon {...props} style={{margin: 0}} icon="folder" />
   );
@@ -58,22 +61,26 @@ export default function AccountPage() {
                     </Badge>
                   </View>
                   <View style={styles.overViewSetion}>
-                    <View style={styles.eachItem}>
+                    <Pressable
+                      onPress={() => {
+                        navigation.navigate('order_list');
+                      }}
+                      style={styles.eachItem}>
                       <Card.Title style={styles.cardTitle} left={LeftContent} />
                       <Title style={{margin: 0}}>Orders</Title>
-                    </View>
-                    <View style={styles.eachItem}>
+                    </Pressable>
+                    <Pressable style={styles.eachItem}>
                       <Card.Title style={styles.cardTitle} left={LeftContent} />
                       <Title>Profile</Title>
-                    </View>
-                    <View style={styles.eachItem}>
+                    </Pressable>
+                    <Pressable style={styles.eachItem}>
                       <Card.Title style={styles.cardTitle} left={LeftContent} />
                       <Title>Address</Title>
-                    </View>
-                    <View style={styles.eachItem}>
+                    </Pressable>
+                    <Pressable style={styles.eachItem}>
                       <Card.Title style={styles.cardTitle} left={LeftContent} />
                       <Title>Messages</Title>
-                    </View>
+                    </Pressable>
                   </View>
                 </Card.Content>
               </Card>

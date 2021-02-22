@@ -29,6 +29,7 @@ import Account from '../tabComponents/Account';
 import SignUp from '../components/page/SignUp';
 import HalfModal from '../components/HalfModal';
 import CartModal from '../components/CartModal';
+import OrderLists from '../screens/accounts/OrderLists';
 
 const Authenticate = createStackNavigator();
 const screenWidth = Math.round(Dimensions.get('window').width);
@@ -274,6 +275,29 @@ function Dashboard(props) {
           component={OrderDetail}
           options={{
             title: 'Order Detail',
+            headerShown: true,
+            headerTintColor: '#000',
+            headerStyle: {
+              backgroundColor: '#fff',
+              elevation: 1,
+            },
+            headerTitleStyle: {
+              fontFamily: 'UniNeue-Light',
+              position: 'absolute',
+              left: screenWidth / 40,
+              top: -15,
+              color: '#000',
+            },
+            headerBackImage: () => {
+              return <IonIcon name="ios-arrow-back" color="#000" size={30} />;
+            },
+          }}
+        />
+        <Authenticate.Screen
+          name="order_list"
+          component={OrderLists}
+          options={{
+            title: 'Order Lists',
             headerShown: true,
             headerTintColor: '#000',
             headerStyle: {

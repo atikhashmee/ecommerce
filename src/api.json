@@ -11,5 +11,6 @@
     "store_address": "store-address",
     "update_address": "update-address",  //Original Format update-address/{id}
     "delete_address": "delete-address",   //Original Format  delete-address/{id}
-    "place_orders" : "place-orders"
+    "place_orders" : "place-orders",
+    "get_order"    : "get-order"            //get-order/{order_id}
 }

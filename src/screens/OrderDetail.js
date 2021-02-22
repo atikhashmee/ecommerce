@@ -2,9 +2,33 @@ import React, {useEffect} from 'react';
 import {View, StyleSheet, Text, Image, Pressable} from 'react-native';
 import {Col, Container, Content, Icon, Row, Title, Badge} from 'native-base';
 import Timeline from 'react-native-timeline-flatlist';
+import {get_order} from '../api.json';
+import {baseUrl} from '../env.json';
 
-function OrderDetail() {
+function OrderDetail({route}) {
   const [dataTimeLine, setDataTimeLine] = React.useState([]);
+  const [orderId, setOrderId] = React.useState(null);
+  const [orderdetail, setorderdetail] = React.useState(null);
+  React.useEffect(() => {
+    setOrderId(route.params.order_id);
+  }, []);
+
+  React.useEffect(() => {
+    var formdata = new FormData();
+    var requestOptions = {
+      method: 'POST',
+      body: formdata,
+      redirect: 'follow',
+    };
+
+    fetch(baseUrl + get_order + '/' + orderId, requestOptions)
+      .then((response) => response.json())
+      .then((result) => {
+        console.log(result, 'asdf');
+      })
+      .catch((error) => console.log('error', error));
+  }, [orderId]);
+
   return (
     <Container style={{backgroundColor: '#d3d3d3'}}>
       <Content>
@@ -151,7 +175,7 @@ function OrderDetail() {
               </Col>
               <Col>
                 <Badge success>
-                  <Text style={{ color: '#fff' }}>$2260</Text>
+                  <Text style={{color: '#fff'}}>$2260</Text>
                 </Badge>
               </Col>
             </Row>
