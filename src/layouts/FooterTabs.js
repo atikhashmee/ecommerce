@@ -24,13 +24,13 @@ export default function FooterTabs() {
     setWishListCount(wishlists.length);
   }, [wishlists]);
 
-  React.useEffect(()=>{
+  React.useEffect(() => {
     setCartListsCount(cartItems.length);
-  }, [cartItems])
+  }, [cartItems]);
 
-  function checkAuthenticate() {
+  function checkAuthenticate(routeName) {
     if (isLoggedin()) {
-      navigation.navigate('account');
+      navigation.navigate(routeName);
     } else {
       setIsAuthModalOpen(true);
     }
@@ -50,7 +50,7 @@ export default function FooterTabs() {
         <Button
           style={styles.tabHeading}
           onPress={() => {
-            navigation.navigate('wishLists');
+            checkAuthenticate('wishLists');
           }}>
           <View>
             {wishListsCount > 0 && (
@@ -68,9 +68,12 @@ export default function FooterTabs() {
             navigation.navigate('cart_view');
           }}>
           <View style={styles.middleIcon}>
-            <Badge style={styles.badgeStyleCenter} default>
-              <Text style={styles.badgeTextStyle}>{cartListsCount}</Text>
-            </Badge>
+            {cartListsCount > 0 && (
+              <Badge style={styles.badgeStyleCenter} default>
+                <Text style={styles.badgeTextStyle}>{cartListsCount}</Text>
+              </Badge>
+            )}
+
             <Icon
               name="cart-outline"
               style={{color: '#fff', fontSize: 30}}
@@ -95,7 +98,7 @@ export default function FooterTabs() {
         <Button
           style={styles.tabHeading}
           onPress={() => {
-            checkAuthenticate();
+            checkAuthenticate('account');
           }}>
           <Icon name="user" style={styles.iconStyle} type="Feather" />
           <Text style={styles.tabTextStyle}>Account</Text>

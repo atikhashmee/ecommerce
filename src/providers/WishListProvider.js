@@ -14,7 +14,7 @@ export default function WishListProvider(props) {
   const {auth, isLoggedin, setIsAuthModalOpen} = React.useContext(AppContext);
   React.useEffect(() => {
     getAllWishLists();
-  }, []);
+  }, [auth]);
 
   const getAllWishLists = () => {
     if (isLoggedin()) {
@@ -28,15 +28,18 @@ export default function WishListProvider(props) {
         body: formdata,
         redirect: 'follow',
       };
-      fetch(baseUrl + get_wish_lists, requestOptions)
-        .then((response) => response.json())
-        .then((result) => {
-          if (result.status) {
-            console.log('response comes');
-            wishlistDispatch(fetchInitial(result.data));
-          }
-        })
-        .catch((error) => console.log('get wish lists', error));
+      if (wishlists.length === 0) {
+        fetch(baseUrl + get_wish_lists, requestOptions)
+          .then((response) => response.json())
+          .then((result) => {
+            if (result.status) {
+              wishlistDispatch(fetchInitial(result.data));
+            }
+          })
+          .catch((error) => console.log('get wish lists', error));
+      }
+    } else {
+      wishlistDispatch(fetchInitial([]));
     }
   };
 
