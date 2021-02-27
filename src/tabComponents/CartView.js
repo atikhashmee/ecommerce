@@ -8,7 +8,6 @@ import {useNavigation} from '@react-navigation/native';
 import {CartContext} from '../utils/CartContext';
 import {AppContext} from '../utils/GlobalContext';
 
-
 function CartItem({product, updateCartArr}) {
   const [checked, setChecked] = React.useState(product.isChecked);
   const [quantity, setQuantity] = React.useState(1);
@@ -17,7 +16,7 @@ function CartItem({product, updateCartArr}) {
   function updateQuantity(quantity) {
     updateCartArr(product.id, quantity, 'quantity');
   }
-  
+
   React.useEffect(() => {
     cartDispatch(toggleSingle(product.id));
     updateCartArr(product.id, checked, 'check');
@@ -152,7 +151,11 @@ export default function CartView() {
 
   const goToCheckout = () => {
     if (isLoggedin()) {
-      navigation.navigate('checkout');
+      if (cartItems.length > 0) {
+        navigation.navigate('checkout');
+      } else {
+        alert('No Items');
+      }
     } else {
       setIsAuthModalOpen(true);
     }
@@ -164,7 +167,6 @@ export default function CartView() {
         style={{
           backgroundColor: '#fff',
           elevation: 5,
-          marginBottom: 20,
         }}>
         <Left
           style={{
@@ -192,20 +194,33 @@ export default function CartView() {
           </Button>
         </Right>
       </Header>
-      <Content>
-        <View style={styles.itemContainer}>
-          {cartArr.length > 0 &&
-            cartArr.map((item, index) => {
-              return (
-                <CartItem
-                  key={index}
-                  product={item}
-                  updateCartArr={updateCartArr}
-                />
-              );
-            })}
+
+      {cartItems.length > 0 && (
+        <Content style={{marginTop: 20}}>
+          <View style={styles.itemContainer}>
+            {cartArr.length > 0 &&
+              cartArr.map((item, index) => {
+                return (
+                  <CartItem
+                    key={index}
+                    product={item}
+                    updateCartArr={updateCartArr}
+                  />
+                );
+              })}
+          </View>
+        </Content>
+      )}
+      {cartItems.length === 0 && (
+        <View
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center'
+          }}>
+          <Text>No Item selected</Text>
         </View>
-      </Content>
+      )}
       <View style={styles.cartViewPageFooterContainer}>
         <View style={styles.cartViewPageFooterContent}>
           <View style={{flexBasis: '10%'}}>
@@ -224,7 +239,9 @@ export default function CartView() {
               style={{backgroundColor: 'blue'}}
               icon="cart"
               mode="contained"
-              onPress={() => {goToCheckout();}}>
+              onPress={() => {
+                goToCheckout();
+              }}>
               Checkout
             </Button>
           </View>
@@ -321,5 +338,3 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
   },
 });
-
-

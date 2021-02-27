@@ -55,35 +55,116 @@ function ListItem() {
 }
 
 export default function OrderLists() {
+  const [selectedCategory, setSelectedCategory] = React.useState('all');
+  const categorySelect = (str) => {
+    setSelectedCategory(str);
+  };
   return (
     <Container style={{backgroundColor: '#f5f5f5'}}>
-      <ScrollView horizontal={true}>
-        <View style={statusBarStyle.itemContainer}>
-          <Text>All</Text>
-        </View>
-        <View style={statusBarStyle.itemContainer}>
-          <Text>Pending</Text>
-        </View>
-        <View style={statusBarStyle.itemContainer}>
-          <Text>Confirmed</Text>
-        </View>
-        <View style={statusBarStyle.itemContainer}>
-          <Text>Processing</Text>
-        </View>
-        <View style={statusBarStyle.itemContainer}>
-          <Text>Picked</Text>
-        </View>
-        <View style={statusBarStyle.itemContainer}>
-          <Text>SHIPPED</Text>
-        </View>
-        <View style={statusBarStyle.itemContainer}>
-          <Text>Delivered</Text>
-        </View>
-        <View style={statusBarStyle.itemContainer}>
-          <Text>Canceled</Text>
-        </View>
-      </ScrollView>
-      <Content>
+      <View
+        style={{
+          flexBasis: '10%',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
+        <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+          <Pressable
+            onPress={() => {
+              categorySelect('all');
+            }}
+            style={[
+              statusBarStyle.itemContainer,
+              selectedCategory === 'all' ? statusBarStyle.selectedStatus : {},
+            ]}>
+            <Text>All</Text>
+          </Pressable>
+          <Pressable
+            onPress={() => {
+              categorySelect('pending');
+            }}
+            style={[
+              statusBarStyle.itemContainer,
+              selectedCategory === 'pending'
+                ? statusBarStyle.selectedStatus
+                : {},
+            ]}>
+            <Text>Pending</Text>
+          </Pressable>
+          <Pressable
+            onPress={() => {
+              categorySelect('confirmed');
+            }}
+            style={[
+              statusBarStyle.itemContainer,
+              selectedCategory === 'confirmed'
+                ? statusBarStyle.selectedStatus
+                : {},
+            ]}>
+            <Text>Confirmed</Text>
+          </Pressable>
+          <Pressable
+            onPress={() => {
+              categorySelect('processing');
+            }}
+            style={[
+              statusBarStyle.itemContainer,
+              selectedCategory === 'processing'
+                ? statusBarStyle.selectedStatus
+                : {},
+            ]}>
+            <Text>Processing</Text>
+          </Pressable>
+          <Pressable
+            onPress={() => {
+              categorySelect('picked');
+            }}
+            style={[
+              statusBarStyle.itemContainer,
+              selectedCategory === 'picked'
+                ? statusBarStyle.selectedStatus
+                : {},
+            ]}>
+            <Text>Picked</Text>
+          </Pressable>
+          <Pressable
+            onPress={() => {
+              categorySelect('shipped');
+            }}
+            style={[
+              statusBarStyle.itemContainer,
+              selectedCategory === 'picked'
+                ? statusBarStyle.selectedStatus
+                : {},
+            ]}>
+            <Text>SHIPPED</Text>
+          </Pressable>
+          <Pressable
+            onPress={() => {
+              categorySelect('delivered');
+            }}
+            style={[
+              statusBarStyle.itemContainer,
+              selectedCategory === 'delivered'
+                ? statusBarStyle.selectedStatus
+                : {},
+            ]}>
+            <Text>Delivered</Text>
+          </Pressable>
+          <Pressable
+            onPress={() => {
+              categorySelect('canceled');
+            }}
+            style={[
+              statusBarStyle.itemContainer,
+              selectedCategory === 'canceled'
+                ? statusBarStyle.selectedStatus
+                : {},
+            ]}>
+            <Text>Canceled</Text>
+          </Pressable>
+        </ScrollView>
+      </View>
+      <Content style={{flexBasis: '90%'}}>
         {Array(10)
           .fill(0)
           .map((item, indexKey) => {
@@ -131,11 +212,17 @@ const listItemStyle = StyleSheet.create({
 
 const statusBarStyle = StyleSheet.create({
   scrollviewContainer: {
-    flexDirection: 'row'
-  },  
+    flexDirection: 'row',
+  },
   itemContainer: {
     width: 100,
     padding: 10,
     backgroundColor: '#fff',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  selectedStatus: {
+    borderBottomColor: 'green',
+    borderBottomWidth: 5,
   },
 });
