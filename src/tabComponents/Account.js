@@ -62,7 +62,6 @@ export default function Account() {
       <Content>
         <AccountPage />
       </Content>
-
       <FooterTabs />
     </Container>
   );

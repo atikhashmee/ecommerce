@@ -3,35 +3,23 @@ import {
   View,
   SafeAreaView,
   StyleSheet,
-  Modal,
   Text,
-  Dimensions,
   Pressable,
-  TouchableHighlight,
   ScrollView,
 } from 'react-native';
-import Feather from 'react-native-vector-icons/Feather';
 import {
   Provider as PaperProvider,
   Avatar,
   Badge,
-  Button,
   Card,
   List,
   Title,
-  Paragraph,
 } from 'react-native-paper';
-import {
-  heightPercentageToDP as hp,
-  widthPercentageToDP as wp,
-} from 'react-native-responsive-screen';
 import {useNavigation} from '@react-navigation/native';
+import {Icon} from 'native-base';
 
 export default function AccountPage() {
   const navigation = useNavigation();
-  const LeftContent = (props) => (
-    <Avatar.Icon {...props} style={{margin: 0}} icon="folder" />
-  );
   return (
     <PaperProvider>
       <SafeAreaView>
@@ -62,24 +50,44 @@ export default function AccountPage() {
                   </View>
                   <View style={styles.overViewSetion}>
                     <Pressable
+                      style={styles.eachItem}
                       onPress={() => {
                         navigation.navigate('order_list');
-                      }}
-                      style={styles.eachItem}>
-                      <Card.Title style={styles.cardTitle} left={LeftContent} />
-                      <Title style={{margin: 0}}>Orders</Title>
+                      }}>
+                      <View style={styles.iconBackground}>
+                        <Icon name="file-text" type="Feather" />
+                      </View>
+                      <Text> Orders </Text>
                     </Pressable>
-                    <Pressable style={styles.eachItem}>
-                      <Card.Title style={styles.cardTitle} left={LeftContent} />
-                      <Title>Profile</Title>
+                    <Pressable
+                      style={styles.eachItem}
+                      onPress={() => {
+                        alert('withdraw');
+                      }}>
+                      <View style={styles.iconBackground}>
+                        <Icon name="user" type="Feather" />
+                      </View>
+                      <Text> Profile </Text>
                     </Pressable>
-                    <Pressable style={styles.eachItem}>
-                      <Card.Title style={styles.cardTitle} left={LeftContent} />
-                      <Title>Address</Title>
+                    <Pressable
+                      style={styles.eachItem}
+                      onPress={() => {
+                        alert('withdraw');
+                      }}>
+                      <View style={styles.iconBackground}>
+                        <Icon name="map-pin" type="Feather" />
+                      </View>
+                      <Text> Address </Text>
                     </Pressable>
-                    <Pressable style={styles.eachItem}>
-                      <Card.Title style={styles.cardTitle} left={LeftContent} />
-                      <Title>Messages</Title>
+                    <Pressable
+                      style={styles.eachItem}
+                      onPress={() => {
+                        alert('withdraw');
+                      }}>
+                      <View style={styles.iconBackground}>
+                        <Icon name="message-square" type="Feather" />
+                      </View>
+                      <Text> Messages </Text>
                     </Pressable>
                   </View>
                 </Card.Content>
@@ -125,12 +133,21 @@ const styles = StyleSheet.create({
   overViewSetion: {
     marginTop: 15,
     flexDirection: 'row',
-    justifyContent: 'center',
+    justifyContent: 'space-around',
   },
   eachItem: {
+    marginHorizontal: 15,
     alignItems: 'center',
-    marginRight: 15,
     justifyContent: 'center',
+  },
+  iconBackground: {
+    backgroundColor: '#76e29796',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 60,
+    height: 60,
+    padding: 10,
+    borderRadius: 40,
   },
   cardTitle: {
     margin: -20,
