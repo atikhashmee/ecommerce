@@ -1,23 +1,18 @@
 import React from 'react';
-import {
-  View,
-  SafeAreaView,
-  StyleSheet,
-  Modal,
-  Text,
-  Dimensions,
-  Pressable,
-  TouchableHighlight,
-  ScrollView,
-} from 'react-native';
+import {View, StyleSheet, Text, Pressable, ScrollView} from 'react-native';
 import {OrderContext} from '../../utils/OrderContext';
 import {Col, Container, Content, Row} from 'native-base';
+import {useNavigation} from '@react-navigation/native';
+import FooterTabs from '../../layouts/FooterTabs';
 
 function ListItem({order}) {
+  const navigation = useNavigation();
   return (
     <Pressable
       onPress={() => {
-        alert('click');
+        navigation.navigate('order_detail', {
+          order_id: order.id,
+        });
       }}>
       <Row style={listItemStyle.rowContainer}>
         <Col style={[listItemStyle.colGeneral]}>
@@ -134,6 +129,7 @@ export default function OrderLists() {
             return <ListItem key={indexKey} order={item} />;
           })}
       </Content>
+      <FooterTabs />
     </Container>
   );
 }
